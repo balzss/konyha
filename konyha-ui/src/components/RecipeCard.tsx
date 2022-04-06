@@ -33,7 +33,7 @@ export default function RecipeCard({
       </CardActionArea>
       <CardActions>
         {recipe.tags.map((tag) => (
-          <Chip label={tag.name} size="small" onClick={() => console.log(`Tag ID: ${tag.id}`)} />
+          <Chip key={tag.id} label={tag.name} size="small" onClick={() => console.log(`Tag ID: ${tag.id}`)} />
         ))}
       </CardActions>
     </Card>

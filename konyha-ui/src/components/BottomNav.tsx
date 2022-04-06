@@ -1,9 +1,14 @@
-import BottomNavigation from '@mui/material/BottomNavigation';
-import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import {
+  BottomNavigation,
+  BottomNavigationAction,
+} from '@mui/material';
 
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import LocalGroceryStoreIcon from '@mui/icons-material/LocalGroceryStore';
-import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import {
+  MenuBook as MenuBookIcon,
+  LocalGroceryStore as LocalGroceryStoreIcon,
+  NoteAdd as NoteAddIcon,
+  Timer as TimerIcon,
+} from '@mui/icons-material';
 
 type BottomBarProps = {
   currentPage: number;
@@ -12,7 +17,7 @@ type BottomBarProps = {
 
 export default function BottomBar({
   currentPage = 0,
-  setCurrentPage
+  setCurrentPage,
 }: BottomBarProps) {
   return (
     <BottomNavigation
@@ -29,8 +34,9 @@ export default function BottomBar({
       }}
     >
       <BottomNavigationAction label="Receptek" icon={<MenuBookIcon />} />
-      <BottomNavigationAction label="Bevásárlás" icon={<LocalGroceryStoreIcon />} />
-      <BottomNavigationAction label="Új recept" icon={<NoteAddIcon />} />
+      <BottomNavigationAction label="Bevásárlás" icon={<LocalGroceryStoreIcon />} disabled/>
+      <BottomNavigationAction label="Új recept" icon={<NoteAddIcon />}/>
+      <BottomNavigationAction label="Időzítők" icon={<TimerIcon />} disabled/>
     </BottomNavigation>
   );
 }
