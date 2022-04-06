@@ -3,7 +3,7 @@ Személyes recept manager, ami engedi, hogy:
 - kezeld a bevásárló listád,
 - saját időzítőket használj
 
-A project elindítható a `start-with-tmux.sh` scripttel vagy a `konyha-backend` és a `konyha-ui` mappákban külön-külön az
+A project elindítható a [start-with-tmux.sh](start-with-tmux.sh) scripttel vagy a [konyha-backend](konyha-backend) és a [konyha-ui](konyha-ui) mappákban külön-külön az
 `npm start` parancs futtatásával.
 
-A TODO-k a `konyha-ui/README.md` fájlban olvashatóak.
+A TODO-k a [konyha-ui/README.md](konyha-ui/README.md) fájlban olvashatóak.
