@@ -8,9 +8,9 @@ export type Recipe = {
 
 export type RawRecipe = {
   recipeName: string;
-  description: string;
+  description?: string | undefined;
   ingredients: string;
   instructions: string;
-  tags: string[];
-  newTag: string;
+  tags?: string[] | undefined;
+  newTag?: string | undefined;
 };

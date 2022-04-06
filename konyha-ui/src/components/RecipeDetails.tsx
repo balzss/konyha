@@ -27,35 +27,39 @@ type RecipeDetaisArgs = {
 
 function RecipeIngredients({ingredients}: {ingredients: string[]}) {
   return (
-    <FormControl sx={{my: 2}}>
-      <FormLabel id="demo-radio-buttons-group-label"><b>Hozzávalók</b></FormLabel>
-      <RadioGroup
-        aria-labelledby="demo-radio-buttons-group-label"
-        defaultValue="female"
-        name="radio-buttons-group"
-      >
-        { ingredients.map((ingredient, index) => (
-          <FormControlLabel value={index} control={<Checkbox size="small" />} label={ingredient} />
-        )) }
-      </RadioGroup>
-    </FormControl>
+    <div>
+      <FormControl sx={{my: 2}}>
+        <FormLabel id="demo-radio-buttons-group-label"><b>Hozzávalók</b></FormLabel>
+        <RadioGroup
+          aria-labelledby="demo-radio-buttons-group-label"
+          defaultValue="female"
+          name="radio-buttons-group"
+        >
+          { ingredients.map((ingredient, index) => (
+            <FormControlLabel value={index} control={<Checkbox size="small" />} label={ingredient} />
+          )) }
+        </RadioGroup>
+      </FormControl>
+    </div>
   );
 }
 
 function RecipeInstructions({instructions}: {instructions: string[]}) {
   return (
-    <FormControl sx={{my: 2}}>
-      <FormLabel id="demo-radio-buttons-group-label"><b>Elkészítés</b></FormLabel>
-      <RadioGroup
-        aria-labelledby="demo-radio-buttons-group-label"
-        defaultValue="female"
-        name="radio-buttons-group"
-      >
-        { instructions.map((instruction, index) => (
-          <FormControlLabel value={index} control={<Radio size="small" />} label={instruction} sx={{py: 0.5}}/>
-        )) }
-      </RadioGroup>
-    </FormControl>
+    <div>
+      <FormControl sx={{my: 2}}>
+        <FormLabel id="demo-radio-buttons-group-label"><b>Elkészítés</b></FormLabel>
+        <RadioGroup
+          aria-labelledby="demo-radio-buttons-group-label"
+          defaultValue="female"
+          name="radio-buttons-group"
+        >
+          { instructions.map((instruction, index) => (
+            <FormControlLabel value={index} control={<Radio size="small" />} label={instruction} sx={{py: 0.5}}/>
+          )) }
+        </RadioGroup>
+      </FormControl>
+    </div>
   );
 }
 
@@ -80,7 +84,7 @@ export default function RecipeDetails({open, handleClose, recipe}: RecipeDetaisA
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent>
+      <DialogContent  sx={{width: '500px', maxWidth: '100%'}}>
         <DialogContentText>
           { recipe?.description && (
             <>

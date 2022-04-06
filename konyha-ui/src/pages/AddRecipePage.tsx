@@ -38,7 +38,7 @@ export default function AddRecipePage() {
   const [instructions, setInstructions] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState<string>('');
-  const [tags, setTags] = useState<string[]>([]);
+  const [tags, setTags] = useState<{tagName: string; id: string}[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
 
   useEffect(() => {
@@ -60,7 +60,11 @@ export default function AddRecipePage() {
       setErrors(fieldErrors);
       return;
     }
-    await saveNewRecipe({recipeName, description, ingredients, instructions, tags: selectedTags, newTag});
+
+    const selectedTagIds = selectedTags
+      .map((selectedTag) => tags.find((tag) => tag.tagName === selectedTag)?.id || '')
+      .filter((tag) => tag);
+    await saveNewRecipe({recipeName, description, ingredients, instructions, tags: selectedTagIds, newTag});
   };
 
   const handleTagChange = (event: SelectChangeEvent<typeof selectedTags>) => {
@@ -139,10 +143,10 @@ export default function AddRecipePage() {
               input={<OutlinedInput label="Mentett címkék" />}
               renderValue={(selected) => selected.join(', ')}
             >
-              {tags.map((name) => (
-                <MenuItem key={name} value={name}>
-                  <Checkbox checked={selectedTags.indexOf(name) > -1} />
-                  <ListItemText primary={name} />
+              {tags.map(({tagName}) => (
+                <MenuItem key={tagName} value={tagName}>
+                  <Checkbox checked={selectedTags.indexOf(tagName) > -1} />
+                  <ListItemText primary={tagName} />
                 </MenuItem>
               ))}
             </Select>

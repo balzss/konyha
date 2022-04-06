@@ -66,7 +66,7 @@ export default function RecipesPage() {
     >
       <Container maxWidth="md">
         <Grid container spacing={2}>
-          {[...recipes, ...recipes, ...recipes, ...recipes].map((recipe) => (
+          {recipes.map((recipe) => (
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <RecipeCard recipe={recipe} onClick={(recipeId) => {setShowDetails(recipeId)}}/>
             </Grid>

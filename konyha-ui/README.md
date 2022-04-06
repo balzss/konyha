@@ -1,6 +1,7 @@
 A `konyha` recept manager frontendje.
 
 TODO:
+- [ ] új tag létrehozás
 - [ ] react router
 - [ ] material ui -> carbon design
 - [ ] címke filter
@@ -9,3 +10,4 @@ TODO:
   - [ ] elemek hozzáadása kézzel
   - [ ] elemek hozzáadása a recept oldalról
 - [ ] időzítő oldal
+- [ ] i18n
