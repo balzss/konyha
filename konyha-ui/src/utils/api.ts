@@ -2,13 +2,32 @@ import { RawRecipe } from './types';
 
 const API_HOST = 'http://192.168.1.76:1337';
 
-export const saveNewRecipe = async ({recipeName, description, ingredients, instructions, tags, newTag}: RawRecipe) => {
+const createNewTags = async (newTags: string[] | undefined) => {
+  if (!newTags || !newTags.length) return [];
+  return await Promise.all(newTags.map(async (tag) => {
+    const tagData = {
+      name: tag,
+    };
+    return await fetch(`${API_HOST}/api/tags`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({data: tagData}),
+    }).then((r) => r.json())
+      .then(({data}) => data.id);
+  }));
+}; 
+
+export const saveNewRecipe = async ({recipeName, description, ingredients, instructions, tags = [], newTag}: RawRecipe) => {
+  const formattedNewTags = newTag?.split(',').map((tag) => tag.trim());
+  const newTagIds = await createNewTags(formattedNewTags);
   const data = {
     name: recipeName.trim(),
     description: description ? description.trim() : '',
     ingredients: ingredients.split('\n').map((ingredient) => ingredient.trim()),
     instructions: instructions.split('\n').map((instruction) => instruction.trim()),
-    tags,
+    tags: [...tags, ...newTagIds],
   };
 
   fetch(`${API_HOST}/api/recipes`, {
