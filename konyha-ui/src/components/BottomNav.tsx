@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import {
   BottomNavigation,
@@ -10,11 +11,6 @@ import {
   NoteAdd as NoteAddIcon,
   Timer as TimerIcon,
 } from '@mui/icons-material';
-
-type BottomBarProps = {
-  currentPage: number;
-  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
-};
 
 const bottomNavItems = [
   {
@@ -43,10 +39,8 @@ const bottomNavItems = [
   },
 ];
 
-export default function BottomBar({
-  currentPage = 0,
-  setCurrentPage,
-}: BottomBarProps) {
+export default function BottomBar() {
+  const [currentPage, setCurrentPage] = useState<number>(0);
   const navigate = useNavigate();
   return (
     <BottomNavigation

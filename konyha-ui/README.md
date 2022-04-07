@@ -3,7 +3,7 @@ A `konyha` recept manager frontendje.
 TODO alpha release:
 - [x] új tag létrehozás
 - [x] react router
-- [ ] react router `<Outlet />`
+- [x] react router `<Outlet />`
 - [ ] recept létrehozás confirm és load screen
 - [ ] recept módosítás és törlés
 - [ ] material ui -> carbon design
