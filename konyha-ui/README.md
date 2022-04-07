@@ -1,6 +1,7 @@
 A `konyha` recept manager frontendje.
 
-TODO alpha release:
+## Alpha release TODO:
+
 - [x] új tag létrehozás
 - [x] react router
 - [x] react router `<Outlet />`
@@ -10,7 +11,8 @@ TODO alpha release:
 - [ ] redux store
 - [ ] host és deploy folyamat
 
-TODO beta release:
+## Beta release TODO:
+
 - [ ] címke/recept filter
 - [ ] bevásárló lista oldal
   - [ ] elemek hozzáadása kézzel
