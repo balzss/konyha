@@ -21,3 +21,5 @@ A `konyha` recept manager frontendje.
   - [ ] elemek hozzáadása a recept oldalról
 - [ ] időzítő oldal
 - [ ] i18n
+- [ ] userspaces, login/register
+- [ ] project page, ami bemutatja az oldal célját, működését, használatát, stb
