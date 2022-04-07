@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {
   BottomNavigation,
   BottomNavigationAction,
@@ -15,15 +16,44 @@ type BottomBarProps = {
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
+const bottomNavItems = [
+  {
+    displayName: 'Receptek',
+    icon: <MenuBookIcon />,
+    path: '/',
+    disabled: false,
+  },
+  {
+    displayName: 'Bevásárlás',
+    icon: <LocalGroceryStoreIcon />,
+    path: '/',
+    disabled: true,
+  },
+  {
+    displayName: 'Új recept',
+    icon: <NoteAddIcon />,
+    path: '/add',
+    disabled: false,
+  },
+  {
+    displayName: 'Időzítők',
+    icon: <TimerIcon />,
+    path: '/',
+    disabled: true,
+  },
+];
+
 export default function BottomBar({
   currentPage = 0,
   setCurrentPage,
 }: BottomBarProps) {
+  const navigate = useNavigate();
   return (
     <BottomNavigation
       showLabels
       value={currentPage}
       onChange={(_event, newValue: number) => {
+        navigate(bottomNavItems[newValue].path);
         setCurrentPage(newValue);
       }}
       sx={{
@@ -33,10 +63,9 @@ export default function BottomBar({
         zIndex: 1000,
       }}
     >
-      <BottomNavigationAction label="Receptek" icon={<MenuBookIcon />} />
-      <BottomNavigationAction label="Bevásárlás" icon={<LocalGroceryStoreIcon />} disabled/>
-      <BottomNavigationAction label="Új recept" icon={<NoteAddIcon />}/>
-      <BottomNavigationAction label="Időzítők" icon={<TimerIcon />} disabled/>
+      {bottomNavItems.map(({displayName, icon, disabled}) => (
+        <BottomNavigationAction key={displayName} label={displayName} icon={icon} disabled={disabled}/>
+      ))}
     </BottomNavigation>
   );
 }

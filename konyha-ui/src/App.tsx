@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import BottomNav from './components/BottomNav';
 import RecipesPage from './pages/RecipesPage';
@@ -15,9 +16,15 @@ function App() {
   const [currentPage, setCurrentPage] = useState<number>(0);
   return (
     <ThemeProvider theme={theme}>
-      { currentPage === 0 && <RecipesPage/>}
-      { currentPage === 2 && <AddRecipePage/>}
-      <BottomNav currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<RecipesPage />}/>
+          <Route path="/add" element={<AddRecipePage />} />
+          <Route path="/edit/:recipeId" element={<AddRecipePage />} />
+          <Route path="*" element={<RecipesPage />} />
+        </Routes>
+        <BottomNav currentPage={currentPage} setCurrentPage={setCurrentPage}/>
+      </BrowserRouter>
     </ThemeProvider>
   );
 }

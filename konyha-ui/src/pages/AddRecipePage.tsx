@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useParams } from "react-router-dom";
 import {
   OutlinedInput,
   ListItemText,
@@ -32,6 +33,9 @@ function getErrors({recipeName, ingredients, instructions}: RequiredFields) {
 }
 
 export default function AddRecipePage() {
+  const params = useParams();
+  console.log({params});
+
   const [recipeName, setRecipeName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [ingredients, setIngredients] = useState<string>('');
@@ -84,7 +88,7 @@ export default function AddRecipePage() {
         color: 'text.primary',
         minHeight: '100%',
         pt: 3,
-        pb: '50%',
+        pb: '30%',
       }}
     >
       <Container maxWidth="sm">
@@ -94,6 +98,7 @@ export default function AddRecipePage() {
             label="Recept neve"
             variant="outlined"
             margin="normal"
+            autoFocus
             error={errors.includes('recipeName')}
             helperText={errors.includes('recipeName') ? 'A mező kitöltése kötelező' : ''}
             required
@@ -119,7 +124,7 @@ export default function AddRecipePage() {
             multiline
             rows={5}
             sx={{width: '100%'}}
-            value={ingredients} 
+            value={ingredients}
             onChange={({target}) => setIngredients(target.value)}
           />
           <TextField
@@ -152,15 +157,15 @@ export default function AddRecipePage() {
             </Select>
           </FormControl>
           <TextField 
-            label="Új címke" 
-            variant="outlined" 
-            margin="normal" 
-            sx={{width: '100%'}} 
-            value={newTag} 
+            label="Új címke"
+            variant="outlined"
+            margin="normal"
+            sx={{width: '100%'}}
+            value={newTag}
             onChange={({target}) => setNewTag(target.value)}
           />
           <div style={{display: 'flex', justifyContent: 'flex-end', margin: '1rem 0'}}>
-            <Button autoFocus onClick={handleSubmitRecipe} variant="outlined" type="submit">
+            <Button onClick={handleSubmitRecipe} variant="outlined" type="submit">
               Mentés
             </Button>
           </div>
