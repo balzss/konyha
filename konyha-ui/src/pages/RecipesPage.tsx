@@ -1,22 +1,23 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../hooks'
-import { Recipe } from '../utils/types'
-import { selectAllRecipes, fetchRecipes } from '../store/recipeSlice';
 import {
+  Alert,
   Button,
   Container,
   Grid,
   Box
 } from '@mui/material';
 import RecipeCard from '../components/RecipeCard';
+import { useAppDispatch, useAppSelector } from '../hooks'
+import { Recipe } from '../utils/types'
+import { selectAllRecipes, fetchRecipes } from '../store/recipeSlice';
 
 export default function RecipesPage() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const recipes: Recipe[] = useAppSelector(selectAllRecipes);
   const recipeStatus = useAppSelector((state) => state.recipes.status);
-  // const error = useAppSelector((state) => state.recipes.error);
+  const error = useAppSelector((state) => state.recipes.error);
 
   useEffect(() => {
     if (recipeStatus === 'idle') {
@@ -48,6 +49,11 @@ export default function RecipesPage() {
           </Button>
         </div>
         <Grid container spacing={2}>
+          {error && (
+            <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Alert severity="error">{error}</Alert>
+            </Grid>
+          )}
           {recipes.map((recipe) => (
             <Grid item xs={12} sm={6} md={4} lg={3} key={recipe.id}>
               <RecipeCard recipe={recipe} onClick={handleClickRecipe}/>

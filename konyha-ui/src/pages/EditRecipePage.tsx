@@ -28,13 +28,12 @@ type RequiredFields = {
   instructions: string;
 };
 
-function getErrors({recipeName, ingredients, instructions}: RequiredFields) {
-  const fieldErrors = [
+function getMissingFields({recipeName, ingredients, instructions}: RequiredFields) {
+  return [
     ...recipeName.trim() ? [] : ['recipeName'],
     ...ingredients.trim() ? [] : ['ingredients'],
     ...instructions.trim() ? [] : ['instructions'],
   ];
-  return fieldErrors;
 }
 
 export default function EditRecipePage() {
@@ -47,7 +46,6 @@ export default function EditRecipePage() {
   const [instructions, setInstructions] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState<string>('');
-  const [errors, setErrors] = useState<string[]>([]);
   const [missingFields, setMissingFields] = useState<boolean>(true);
 
   const dispatch = useAppDispatch();
@@ -76,17 +74,11 @@ export default function EditRecipePage() {
   }, [recipeStatus, tagStatus, dispatch, recipe])
 
   useEffect(() => {
-    setErrors([]);
-    setMissingFields(!!getErrors({recipeName, ingredients, instructions}).length);
+    setMissingFields(!!getMissingFields({recipeName, ingredients, instructions}).length);
   }, [recipeName, ingredients, instructions]);
 
   const handleSubmitRecipe = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const fieldErrors = getErrors({recipeName, ingredients, instructions});
-    if (fieldErrors.length) {
-      setErrors(fieldErrors);
-      return;
-    }
 
     if (params.recipeId) {
       console.error('Editing recipes is not yet supported!');
@@ -138,9 +130,7 @@ export default function EditRecipePage() {
             label="Recept neve"
             variant="outlined"
             margin="normal"
-            autoFocus
-            error={errors.includes('recipeName')}
-            helperText={errors.includes('recipeName') ? 'A mező kitöltése kötelező' : ''}
+            autoFocus={!params.recipeId}
             required
             sx={{width: '100%'}}
             value={recipeName}

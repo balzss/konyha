@@ -25,9 +25,9 @@ export const recipeSlice = createSlice({
         state.status = 'succeeded';
         state.recipes = action.payload;
       })
-      .addCase(fetchRecipes.rejected, (state, action) => {
+      .addCase(fetchRecipes.rejected, (state, _action) => {
         state.status = 'failed';
-        state.error = action.error.message || '';
+        state.error = 'Failed to fetch recipes';
       });
   }
 })
