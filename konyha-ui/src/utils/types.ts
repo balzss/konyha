@@ -41,3 +41,9 @@ export type Tag = {
   id: string;
   name: string;
 }
+
+export type TagState = {
+  tags: Tag[],
+  status: string;
+  error: string;
+};

@@ -10,12 +10,9 @@ import {
   Box
 } from '@mui/material';
 import RecipeCard from '../components/RecipeCard';
-import RecipeDetails from '../pages/RecipeDetailsPage';
 
 export default function RecipesPage() {
   const navigate = useNavigate();
-  const [showDetails, setShowDetails] = useState<string | null>(null); // null for no recipe, $id for recipe to show
-
   const dispatch = useAppDispatch();
   const recipes: Recipe[] = useAppSelector(selectAllRecipes);
   const recipeStatus = useAppSelector((state) => state.recipes.status);
@@ -42,7 +39,6 @@ export default function RecipesPage() {
         color: 'text.primary',
         minHeight: '100%',
         pt: 3,
-        pb: '50%',
       }}
     >
       <Container maxWidth="md">

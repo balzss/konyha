@@ -43,7 +43,7 @@ export const getTags = async () => {
   return await fetch(`${API_HOST}/api/tags`)
     .then((r) => r.json())
     .then(({data}) => {
-      return data.map(({attributes, id}: {attributes: {name: string}, id: string}) => ({tagName: attributes.name, id}));
+      return data.map(({attributes, id}: {attributes: {name: string}, id: string}) => ({name: attributes.name, id}));
     });
 };
 

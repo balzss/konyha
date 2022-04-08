@@ -1,27 +1,21 @@
 import { useEffect } from 'react';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { useTheme } from '@mui/material/styles';
 import { useNavigate, useParams } from "react-router-dom";
+import {
+  Box,
+  Container,
+  Typography,
+  Button,
+  Checkbox,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
+  FormLabel,
+  Chip,
+} from '@mui/material';
 import { fetchRecipes, selectRecipeById } from '../store/recipeSlice';
 import { useAppSelector, useAppDispatch } from '../hooks';
-
-import Typography from '@mui/material/Typography';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogActions from '@mui/material/DialogActions';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
-import CloseIcon from '@mui/icons-material/Close';
 import { Recipe } from '../utils/types';
-
-import Checkbox from '@mui/material/Checkbox';
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 
 function RecipeIngredients({ingredients}: {ingredients: string[]}) {
   return (
@@ -62,8 +56,6 @@ function RecipeInstructions({instructions}: {instructions: string[]}) {
 }
 
 export default function RecipeDetails() {
-  const theme = useTheme();
-  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
   const navigate = useNavigate();
   const params = useParams();
 
@@ -79,45 +71,46 @@ export default function RecipeDetails() {
   }, [recipeStatus, dispatch])
 
 
-  const handleClose = () => {
+  const handleClickBack = () => {
     navigate('/');
   };
 
+  const handleClickEdit = () => {
+    navigate(`/${recipe.id}/edit`);
+  };
+
   return (
-    <Dialog open={true} onClose={handleClose} fullScreen={fullScreen}>
-      <DialogTitle> 
-        {recipe && recipe.name} 
-        <IconButton
-          aria-label="close"
-          onClick={handleClose}
-          sx={{
-            position: 'absolute',
-            right: 8,
-            top: 8,
-            color: (theme) => theme.palette.grey[500],
-          }}
-        >
-          <CloseIcon />
-        </IconButton>
-      </DialogTitle>
-      <DialogContent  sx={{width: '500px', maxWidth: '100%'}}>
-        <DialogContentText>
+    <Box
+      sx={{
+        bgcolor: 'background.paper',
+        color: 'text.primary',
+        minHeight: '100%',
+        pt: 3,
+      }}
+    >
+      <Container maxWidth="sm">
+          <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '1rem'}}>
+            <Typography variant="h5" component="div">{recipe?.name}</Typography>
+            <Button onClick={handleClickEdit} variant="outlined">
+              Szerkesztés
+            </Button>
+          </div>
           { recipe?.description && (
-            <>
-              <Typography variant="body1" component="div" paragraph>
-                { recipe.description }
-              </Typography>
-            </>
+            <Typography variant="body1" component="div">
+              { recipe.description }
+            </Typography>
           )}
           { recipe?.ingredients && <RecipeIngredients ingredients={recipe.ingredients}/>}
           { recipe?.instructions && <RecipeInstructions instructions={recipe.instructions}/>}
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button autoFocus onClick={handleClose}>
-          Vissza
-        </Button>
-      </DialogActions>
-    </Dialog>
+          {recipe.tags.map((tag) => (
+            <Chip key={tag.id} label={tag.name} size="small" onClick={() => console.log(`Tag ID: ${tag.id}`)} />
+          ))}
+          <div style={{display: 'flex', justifyContent: 'flex-end', margin: '1rem 0'}}>
+            <Button onClick={handleClickBack}>
+              Vissza
+            </Button>
+          </div>
+      </Container>
+    </Box>
   );
 };

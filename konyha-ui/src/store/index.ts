@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
 import recipeReducer from './recipeSlice';
+import tagReducer from './tagSlice';
 
 const store = configureStore({
   reducer: {
     recipes: recipeReducer,
+    tags: tagReducer,
   },
 });
 

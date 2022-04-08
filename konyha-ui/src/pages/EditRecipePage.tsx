@@ -15,7 +15,12 @@ import {
   Select,
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
-import { getTags, saveNewRecipe } from '../utils/api';
+
+import { fetchRecipes, selectRecipeById } from '../store/recipeSlice';
+import { fetchTags, selectAllTags } from '../store/tagSlice';
+import { useAppSelector, useAppDispatch } from '../hooks';
+import { saveNewRecipe } from '../utils/api';
+import { Recipe, Tag } from '../utils/types';
 
 type RequiredFields = {
   recipeName: string;
@@ -32,10 +37,9 @@ function getErrors({recipeName, ingredients, instructions}: RequiredFields) {
   return fieldErrors;
 }
 
-export default function AddRecipePage() {
+export default function EditRecipePage() {
   const params = useParams();
   const navigate = useNavigate();
-  // console.log({params});
 
   const [recipeName, setRecipeName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -43,17 +47,33 @@ export default function AddRecipePage() {
   const [instructions, setInstructions] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState<string>('');
-  const [tags, setTags] = useState<{tagName: string; id: string}[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
   const [missingFields, setMissingFields] = useState<boolean>(true);
 
+  const dispatch = useAppDispatch();
+  const recipe: Recipe = useAppSelector((state) => selectRecipeById(state, params.recipeId));
+  const recipeStatus = useAppSelector((state) => state.recipes.status);
+  const tags: Tag[] = useAppSelector(selectAllTags);
+  const tagStatus = useAppSelector((state) => state.tags.status);
+  // const error = useAppSelector((state) => state.recipes.error);
+
   useEffect(() => {
-    async function fetchTags() {
-      const fetchedTags = await getTags();
-      setTags(fetchedTags);
+    if (recipeStatus === 'idle') {
+      dispatch(fetchRecipes())
     }
-    fetchTags();
-  }, []);
+    if (tagStatus === 'idle') {
+      dispatch(fetchTags())
+    }
+    if (recipe) {
+      setRecipeName(recipe.name);
+      setIngredients(recipe.ingredients.join('\n'));
+      setInstructions(recipe.instructions.join('\n'));
+      setSelectedTags(recipe.tags.map((tag) => tag.name));
+      if (recipe.description) {
+        setDescription(recipe.description);
+      }
+    }
+  }, [recipeStatus, tagStatus, dispatch, recipe])
 
   useEffect(() => {
     setErrors([]);
@@ -68,8 +88,13 @@ export default function AddRecipePage() {
       return;
     }
 
+    if (params.recipeId) {
+      console.error('Editing recipes is not yet supported!');
+      return;
+    }
+
     const selectedTagIds = selectedTags
-      .map((selectedTag) => tags.find((tag) => tag.tagName === selectedTag)?.id || '')
+      .map((selectedTag) => tags.find((tag) => tag.name === selectedTag)?.id || '')
       .filter((tag) => tag);
     await saveNewRecipe({recipeName, description, ingredients, instructions, tags: selectedTagIds, newTag});
     // TODO handle error response
@@ -97,13 +122,14 @@ export default function AddRecipePage() {
         color: 'text.primary',
         minHeight: '100%',
         pt: 3,
-        pb: '30%',
       }}
     >
       <Container maxWidth="sm">
         <form onSubmit={handleSubmitRecipe}>
           <div style={{display: 'flex', justifyContent: 'space-between'}}>
-            <Typography variant="h5" component="div">Új recept</Typography>
+            <Typography variant="h5" component="div"> 
+              {params.recipeId ? 'Recept szerkesztése' : 'Új recept'}
+            </Typography>
             <Button onClick={handleSubmitRecipe} variant="outlined" type="submit" disabled={missingFields}>
               Mentés
             </Button>
@@ -125,7 +151,7 @@ export default function AddRecipePage() {
             variant="outlined"
             margin="normal"
             multiline
-            rows={2}
+            minRows={2}
             sx={{width: '100%'}}
             value={description}
             onChange={({target}) => setDescription(target.value)}
@@ -136,7 +162,7 @@ export default function AddRecipePage() {
             margin="normal"
             required
             multiline
-            rows={5}
+            minRows={4}
             sx={{width: '100%'}}
             value={ingredients}
             onChange={({target}) => setIngredients(target.value)}
@@ -147,9 +173,9 @@ export default function AddRecipePage() {
             margin="normal"
             required
             multiline
-            rows={5}
+            minRows={4}
             sx={{width: '100%'}}
-            value={instructions} 
+            value={instructions}
             onChange={({target}) => setInstructions(target.value)}
           />
           <FormControl margin="normal" sx={{ width: "100%" }}>
@@ -162,10 +188,10 @@ export default function AddRecipePage() {
               input={<OutlinedInput label="Mentett címkék" />}
               renderValue={(selected) => selected.join(', ')}
             >
-              {tags.map(({tagName}) => (
-                <MenuItem key={tagName} value={tagName}>
-                  <Checkbox checked={selectedTags.indexOf(tagName) > -1} />
-                  <ListItemText primary={tagName} />
+              {tags.map(({name}) => (
+                <MenuItem key={name} value={name}>
+                  <Checkbox checked={selectedTags.indexOf(name) > -1} />
+                  <ListItemText primary={name} />
                 </MenuItem>
               ))}
             </Select>
