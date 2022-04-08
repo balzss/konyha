@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   BottomNavigation,
   BottomNavigationAction,
@@ -25,12 +25,12 @@ const bottomNavItems = [
     path: '/',
     disabled: true,
   },
-  {
-    displayName: 'Új recept',
-    icon: <NoteAddIcon />,
-    path: '/add',
-    disabled: false,
-  },
+  // {
+  //   displayName: 'Új recept',
+  //   icon: <NoteAddIcon />,
+  //   path: '/add',
+  //   disabled: false,
+  // },
   {
     displayName: 'Időzítők',
     icon: <TimerIcon />,
@@ -40,8 +40,10 @@ const bottomNavItems = [
 ];
 
 export default function BottomBar() {
-  const [currentPage, setCurrentPage] = useState<number>(0);
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const [currentPage, setCurrentPage] = useState<number>(bottomNavItems.map((item) => item.path).indexOf(pathname));
+
   return (
     <BottomNavigation
       showLabels

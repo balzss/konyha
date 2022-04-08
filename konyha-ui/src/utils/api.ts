@@ -1,4 +1,4 @@
-import { RawRecipe } from './types';
+import { RawRecipe, RecipeRequest, Recipe, TagRequest } from './types';
 
 const API_HOST = 'http://192.168.1.76:1337';
 
@@ -44,5 +44,21 @@ export const getTags = async () => {
     .then((r) => r.json())
     .then(({data}) => {
       return data.map(({attributes, id}: {attributes: {name: string}, id: string}) => ({tagName: attributes.name, id}));
+    });
+};
+
+export const getRecipes = async () => {
+  return await fetch(`${API_HOST}/api/recipes?populate=tags`)
+    .then((r) => r.json())
+    .then(({data}) => {
+      const formattedData = data.map(({attributes, id}: RecipeRequest) => {
+        const tags = attributes.tags.data.map((tag: TagRequest) => ({name: tag.attributes.name, id: `${tag.id}`}));
+        return {
+          ...attributes,
+          id: `${id}`,
+          tags,
+        };
+      });
+      return formattedData;
     });
 };

@@ -7,10 +7,11 @@ A `konyha` recept manager frontendje.
 - [x] új tag létrehozás
 - [x] react router
 - [x] react router `<Outlet />`
-- [ ] recept létrehozás confirm és load screen
+- [x] recept létrehozás confirm és load screen
+- [x] redux store
+- [ ] recept details modal -> page design
 - [ ] recept módosítás és törlés
 - [ ] material ui -> carbon design
-- [ ] redux store
 - [ ] host és deploy folyamat
 
 ### Beta release:

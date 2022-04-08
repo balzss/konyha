@@ -1,10 +1,10 @@
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
+// import CardMedia from '@mui/material/CardMedia';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import Typography from '@mui/material/Typography';
 import { Chip, CardActionArea, CardActions } from '@mui/material';
-import { Recipe } from '../pages/RecipesPage';
+import { Recipe } from '../utils/types';
 
 type RecipeCardProps = {
   recipe: Recipe;

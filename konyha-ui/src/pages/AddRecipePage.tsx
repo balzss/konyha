@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   OutlinedInput,
   ListItemText,
@@ -34,7 +34,8 @@ function getErrors({recipeName, ingredients, instructions}: RequiredFields) {
 
 export default function AddRecipePage() {
   const params = useParams();
-  console.log({params});
+  const navigate = useNavigate();
+  // console.log({params});
 
   const [recipeName, setRecipeName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -44,6 +45,7 @@ export default function AddRecipePage() {
   const [newTag, setNewTag] = useState<string>('');
   const [tags, setTags] = useState<{tagName: string; id: string}[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
+  const [missingFields, setMissingFields] = useState<boolean>(true);
 
   useEffect(() => {
     async function fetchTags() {
@@ -55,6 +57,7 @@ export default function AddRecipePage() {
 
   useEffect(() => {
     setErrors([]);
+    setMissingFields(!!getErrors({recipeName, ingredients, instructions}).length);
   }, [recipeName, ingredients, instructions]);
 
   const handleSubmitRecipe = async (e: React.SyntheticEvent) => {
@@ -69,6 +72,8 @@ export default function AddRecipePage() {
       .map((selectedTag) => tags.find((tag) => tag.tagName === selectedTag)?.id || '')
       .filter((tag) => tag);
     await saveNewRecipe({recipeName, description, ingredients, instructions, tags: selectedTagIds, newTag});
+    // TODO handle error response
+    navigate('/');
   };
 
   const handleTagChange = (event: SelectChangeEvent<typeof selectedTags>) => {
@@ -79,6 +84,10 @@ export default function AddRecipePage() {
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
+  };
+
+  const handleClickBack = (_event: React.SyntheticEvent) => {
+    navigate('/');
   };
 
   return (
@@ -93,7 +102,12 @@ export default function AddRecipePage() {
     >
       <Container maxWidth="sm">
         <form onSubmit={handleSubmitRecipe}>
-          <Typography variant="h5" component="div">Új recept hozzáadása</Typography>
+          <div style={{display: 'flex', justifyContent: 'space-between'}}>
+            <Typography variant="h5" component="div">Új recept</Typography>
+            <Button onClick={handleSubmitRecipe} variant="outlined" type="submit" disabled={missingFields}>
+              Mentés
+            </Button>
+          </div>
           <TextField 
             label="Recept neve"
             variant="outlined"
@@ -165,8 +179,8 @@ export default function AddRecipePage() {
             onChange={({target}) => setNewTag(target.value)}
           />
           <div style={{display: 'flex', justifyContent: 'flex-end', margin: '1rem 0'}}>
-            <Button onClick={handleSubmitRecipe} variant="outlined" type="submit">
-              Mentés
+            <Button onClick={handleClickBack}>
+              Vissza
             </Button>
           </div>
         </form>

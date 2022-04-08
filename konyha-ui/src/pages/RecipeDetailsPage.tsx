@@ -1,5 +1,9 @@
+import { useEffect } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useTheme } from '@mui/material/styles';
+import { useNavigate, useParams } from "react-router-dom";
+import { fetchRecipes, selectRecipeById } from '../store/recipeSlice';
+import { useAppSelector, useAppDispatch } from '../hooks';
 
 import Typography from '@mui/material/Typography';
 import Dialog from '@mui/material/Dialog';
@@ -10,7 +14,7 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
-import { Recipe } from '../pages/RecipesPage';
+import { Recipe } from '../utils/types';
 
 import Checkbox from '@mui/material/Checkbox';
 import Radio from '@mui/material/Radio';
@@ -18,12 +22,6 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
-
-type RecipeDetaisArgs = {
-  open: boolean;
-  handleClose: () => void,
-  recipe?: Recipe | null;
-};
 
 function RecipeIngredients({ingredients}: {ingredients: string[]}) {
   return (
@@ -36,7 +34,7 @@ function RecipeIngredients({ingredients}: {ingredients: string[]}) {
           name="radio-buttons-group"
         >
           { ingredients.map((ingredient, index) => (
-            <FormControlLabel value={index} control={<Checkbox size="small" />} label={ingredient} />
+            <FormControlLabel key={index} value={index} control={<Checkbox size="small" />} label={ingredient} />
           )) }
         </RadioGroup>
       </FormControl>
@@ -55,7 +53,7 @@ function RecipeInstructions({instructions}: {instructions: string[]}) {
           name="radio-buttons-group"
         >
           { instructions.map((instruction, index) => (
-            <FormControlLabel value={index} control={<Radio size="small" />} label={instruction} sx={{py: 0.5}}/>
+            <FormControlLabel key={index} value={index} control={<Radio size="small" />} label={instruction} sx={{py: 0.5}}/>
           )) }
         </RadioGroup>
       </FormControl>
@@ -63,12 +61,30 @@ function RecipeInstructions({instructions}: {instructions: string[]}) {
   );
 }
 
-export default function RecipeDetails({open, handleClose, recipe}: RecipeDetaisArgs) {
+export default function RecipeDetails() {
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+  const navigate = useNavigate();
+  const params = useParams();
+
+  const dispatch = useAppDispatch();
+  const recipe: Recipe = useAppSelector((state) => selectRecipeById(state, params.recipeId));
+  const recipeStatus = useAppSelector((state) => state.recipes.status);
+  // const error = useAppSelector((state) => state.recipes.error);
+
+  useEffect(() => {
+    if (recipeStatus === 'idle') {
+      dispatch(fetchRecipes())
+    }
+  }, [recipeStatus, dispatch])
+
+
+  const handleClose = () => {
+    navigate('/');
+  };
 
   return (
-    <Dialog open={open} onClose={handleClose} fullScreen={fullScreen}>
+    <Dialog open={true} onClose={handleClose} fullScreen={fullScreen}>
       <DialogTitle> 
         {recipe && recipe.name} 
         <IconButton
