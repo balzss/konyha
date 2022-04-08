@@ -8,7 +8,7 @@ import {
 import {
   MenuBook as MenuBookIcon,
   LocalGroceryStore as LocalGroceryStoreIcon,
-  NoteAdd as NoteAddIcon,
+  AccountCircle as AccountCircleIcon,
   Timer as TimerIcon,
 } from '@mui/icons-material';
 
@@ -25,15 +25,15 @@ const bottomNavItems = [
     path: '/',
     disabled: true,
   },
-  // {
-  //   displayName: 'Új recept',
-  //   icon: <NoteAddIcon />,
-  //   path: '/add',
-  //   disabled: false,
-  // },
   {
     displayName: 'Időzítők',
     icon: <TimerIcon />,
+    path: '/',
+    disabled: true,
+  },
+  {
+    displayName: 'Személyes',
+    icon: <AccountCircleIcon />,
     path: '/',
     disabled: true,
   },
