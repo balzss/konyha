@@ -11,6 +11,7 @@ A `konyha` recept manager frontendje.
 - [x] redux store
 - [ ] recept details modal -> page design
 - [ ] recept módosítás és törlés
+- [ ] recept slug
 - [ ] material ui -> carbon design
 - [ ] host és deploy folyamat
 
