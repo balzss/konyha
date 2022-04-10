@@ -4,12 +4,18 @@ const API_HOST = 'http://192.168.1.76:1337';
 
 // transform recipe data before sending it to backend
 function transformRawRecipe(rawRecipe: RawRecipe, newTagIds: string[]): Omit<Recipe, 'id'> {
+  const name = rawRecipe.recipeName.trim();
+  const slug = slugify(name);
+  const description = rawRecipe.description ? rawRecipe.description.trim() : '';
+  const ingredients = rawRecipe.ingredients.split('\n').map((ingredient) => ingredient.trim());
+  const instructions = rawRecipe.instructions.split('\n').map((instruction) => instruction.trim());
   return {
-    name: rawRecipe.recipeName.trim(),
-    description: rawRecipe.description ? rawRecipe.description.trim() : '',
+    name,
+    slug,
+    description,
     image: '',
-    ingredients: rawRecipe.ingredients.split('\n').map((ingredient) => ingredient.trim()),
-    instructions: rawRecipe.instructions.split('\n').map((instruction) => instruction.trim()),
+    ingredients,
+    instructions,
     tags: [...rawRecipe.tags || [], ...newTagIds],
   };
 }
@@ -22,6 +28,15 @@ function transformRecipeRequest(recipeRequest: RecipeRequest): Recipe {
     id: `${recipeRequest.id}`,
     tags: tagIds,
   };
+}
+
+function slugify(input: string): string {
+  return input
+    .normalize('NFKD')
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, '')
+    .trim()
+    .replace(/[-\s]+/g, '-');
 }
 
 export const getRecipes = async (): Promise<Recipe[]> => {

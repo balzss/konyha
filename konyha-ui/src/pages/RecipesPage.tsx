@@ -34,8 +34,8 @@ export default function RecipesPage() {
     navigate('/add');
   };
 
-  const handleClickRecipe = (recipeId: string) => {
-    navigate(`/${recipeId}`);
+  const handleClickRecipe = (recipeSlug: string) => {
+    navigate(`/${recipeSlug}`);
   };
 
   return (

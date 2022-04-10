@@ -32,8 +32,8 @@ function App() {
             <Route index element={<RecipesPage />}/>
             <Route path="*" element={<RecipesPage />} />
           </Route>
-          <Route path="/:recipeId" element={<RecipeDetailsPage />} />
-          <Route path="/:recipeId/edit" element={<EditRecipePage />} />
+          <Route path="/:recipeSlug" element={<RecipeDetailsPage />} />
+          <Route path="/:recipeSlug/edit" element={<EditRecipePage />} />
           <Route path="/add" element={<EditRecipePage />} />
         </Routes>
       </BrowserRouter>

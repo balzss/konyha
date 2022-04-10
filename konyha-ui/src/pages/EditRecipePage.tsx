@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 
-import { fetchRecipes, selectRecipeById, addRecipe, editRecipe, removeRecipe } from '../store/recipeSlice';
+import { fetchRecipes, selectRecipeBySlug, addRecipe, editRecipe, removeRecipe } from '../store/recipeSlice';
 import { fetchTags, selectAllTags } from '../store/tagSlice';
 import { useAppSelector, useAppDispatch } from '../hooks';
 import { Recipe, Tag } from '../utils/types';
@@ -49,7 +49,7 @@ export default function EditRecipePage() {
   const [missingFields, setMissingFields] = useState<boolean>(true);
 
   const dispatch = useAppDispatch();
-  const recipe: Recipe = useAppSelector((state) => selectRecipeById(state, params.recipeId));
+  const recipe: Recipe = useAppSelector((state) => selectRecipeBySlug(state, params.recipeSlug ?? ''));
   const recipeStatus = useAppSelector((state) => state.recipes.status);
   const tags: Tag[] = useAppSelector(selectAllTags);
   const tagStatus = useAppSelector((state) => state.tags.status);
@@ -62,36 +62,48 @@ export default function EditRecipePage() {
     if (tagStatus === 'idle') {
       dispatch(fetchTags())
     }
-    if (recipe) {
+  }, [recipeStatus, tagStatus, dispatch])
+
+  useEffect(() => {
+    if (recipe && tags.length) {
       setRecipeName(recipe.name);
       setIngredients(recipe.ingredients.join('\n'));
       setInstructions(recipe.instructions.join('\n'));
-      setSelectedTags(recipe.tags);
+      setSelectedTags(recipe.tags.map((tagId) => tags.find(tag => tag.id === tagId)?.name) as string[]);
       if (recipe.description) {
         setDescription(recipe.description);
       }
     }
-  }, [recipeStatus, tagStatus, dispatch, recipe])
+  }, [recipe, tags]);
 
   useEffect(() => {
     setMissingFields(!!getMissingFields({recipeName, ingredients, instructions}).length);
   }, [recipeName, ingredients, instructions]);
 
+  const getTagByName = (tagName: string) => {
+    return tags.find((tag) => tag.name === tagName)?.name;
+  };
+
   const handleSubmitRecipe = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    // TODO clean up this tag logic
-    const selectedTagIds = selectedTags
-      .map((selectedTag) => tags.find((tag) => tag.name === selectedTag)?.id || '')
-      .filter((tag) => tag);
-    const newRecipeData = {recipeName, description, ingredients, instructions, tags: selectedTagIds, newTag};
+    const newRecipeData = {
+      recipeName,
+      description,
+      ingredients,
+      instructions,
+      tags: selectedTags.map(getTagByName) as string[],
+      newTag,
+    };
 
     try {
-      if (params.recipeId) {
-        await dispatch(editRecipe({updatedRecipe: newRecipeData, recipeId: params.recipeId})).unwrap();
+      if (params.recipeSlug) {
+        await dispatch(editRecipe({updatedRecipe: newRecipeData, recipeId: recipe.id})).unwrap();
       } else {
         await dispatch(addRecipe(newRecipeData)).unwrap();
       }
+      // re-fetching the tags in case there were new ones created
+      await dispatch(fetchTags()).unwrap();
     } catch (e) {
       // TODO handle error response
       console.error(e);
@@ -101,14 +113,7 @@ export default function EditRecipePage() {
   };
 
   const handleTagChange = (event: SelectChangeEvent<typeof selectedTags>) => {
-    const {
-      target: { value },
-    } = event;
-    // TODO fixme
-    setSelectedTags(
-      // On autofill we get a stringified value.
-      typeof value === 'string' ? value.split(',') : value,
-    );
+    setSelectedTags(event.target.value as string[]);
   };
 
   const handleClickBack = (_e: React.SyntheticEvent) => {
@@ -197,10 +202,10 @@ export default function EditRecipePage() {
             <Select
               labelId="tag-select-label"
               multiple
-              value={selectedTags}
+              value={selectedTags.map((selectedTag) => getTagByName(selectedTag) as string)}
               onChange={handleTagChange}
               input={<OutlinedInput label="Mentett címkék" />}
-              renderValue={(selected) => selected.map((item) => tags.find((tag) => tag.id === item)?.name).join(', ')}
+              renderValue={(selected) => selected.join(', ')}
             >
               {tags.map(({name}) => (
                 <MenuItem key={name} value={name}>

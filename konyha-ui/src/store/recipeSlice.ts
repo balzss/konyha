@@ -60,4 +60,8 @@ export const selectRecipeById = (state: any, recipeId: any) => {
   return state.recipes.recipes.find((recipe: any) => recipe.id === recipeId);
 };
 
+export const selectRecipeBySlug = (state: any, recipeSlug: string) => {
+  return state.recipes.recipes.find((recipe: any) => recipe.slug === recipeSlug);
+};
+
 export default recipeSlice.reducer;

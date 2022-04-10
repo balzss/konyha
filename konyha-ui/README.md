@@ -15,7 +15,7 @@ A `konyha` recept manager frontendje.
 - [x] recept módosítás
 - [x] recept törlés
 - [x] címkék törlése ha nincsenek használatban
-- [ ] recept slug
+- [x] recept slug
 - [ ] material ui -> carbon design
 - [ ] url, host és deploy folyamat
 - [ ] LICENSE

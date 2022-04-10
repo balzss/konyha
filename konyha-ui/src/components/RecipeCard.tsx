@@ -20,7 +20,7 @@ export default function RecipeCard({
   const tags: Tag[] = useAppSelector((state) => selectTagsByIds(state, recipe.tags));
   return (
     <Card variant="outlined">
-      <CardActionArea onClick={() => onClick(recipe.id)}>
+      <CardActionArea onClick={() => onClick(recipe.slug)}>
         {/*<CardMedia
           component="img"
           height="120"

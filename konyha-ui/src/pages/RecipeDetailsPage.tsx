@@ -14,7 +14,7 @@ import {
   Chip,
   Stack,
 } from '@mui/material';
-import { fetchRecipes, selectRecipeById } from '../store/recipeSlice';
+import { fetchRecipes, selectRecipeBySlug } from '../store/recipeSlice';
 import { fetchTags, selectTagsByIds } from '../store/tagSlice';
 import { useAppSelector, useAppDispatch } from '../hooks';
 import { Recipe, Tag } from '../utils/types';
@@ -62,7 +62,7 @@ export default function RecipeDetails() {
   const params = useParams();
 
   const dispatch = useAppDispatch();
-  const recipe: Recipe = useAppSelector((state) => selectRecipeById(state, params.recipeId));
+  const recipe: Recipe = useAppSelector((state) => selectRecipeBySlug(state, params.recipeSlug ?? ''));
   const recipeStatus = useAppSelector((state) => state.recipes.status);
   const tags: Tag[] = useAppSelector((state) => selectTagsByIds(state, recipe?.tags || []));
   const tagStatus = useAppSelector((state) => state.tags.status);
@@ -83,7 +83,7 @@ export default function RecipeDetails() {
   };
 
   const handleClickEdit = () => {
-    navigate(`/${recipe.id}/edit`);
+    navigate(`/${recipe.slug}/edit`);
   };
 
   return (

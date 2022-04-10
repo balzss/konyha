@@ -6,9 +6,10 @@ export type RecipeRequest = {
 
 // for displaying
 export type Recipe = {
-  name: string;
-  image: string;
   id: string;
+  name: string;
+  slug: string;
+  image: string;
   ingredients: string[];
   instructions: string[];
   tags: string[],
