@@ -104,6 +104,7 @@ export default function EditRecipePage() {
     const {
       target: { value },
     } = event;
+    // TODO fixme
     setSelectedTags(
       // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
