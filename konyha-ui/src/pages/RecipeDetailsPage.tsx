@@ -12,10 +12,12 @@ import {
   FormControl,
   FormLabel,
   Chip,
+  Stack,
 } from '@mui/material';
 import { fetchRecipes, selectRecipeById } from '../store/recipeSlice';
+import { fetchTags, selectTagsByIds } from '../store/tagSlice';
 import { useAppSelector, useAppDispatch } from '../hooks';
-import { Recipe } from '../utils/types';
+import { Recipe, Tag } from '../utils/types';
 
 function RecipeIngredients({ingredients}: {ingredients: string[]}) {
   return (
@@ -62,13 +64,18 @@ export default function RecipeDetails() {
   const dispatch = useAppDispatch();
   const recipe: Recipe = useAppSelector((state) => selectRecipeById(state, params.recipeId));
   const recipeStatus = useAppSelector((state) => state.recipes.status);
+  const tags: Tag[] = useAppSelector((state) => selectTagsByIds(state, recipe?.tags || []));
+  const tagStatus = useAppSelector((state) => state.tags.status);
   // const error = useAppSelector((state) => state.recipes.error);
 
   useEffect(() => {
     if (recipeStatus === 'idle') {
-      dispatch(fetchRecipes())
+      dispatch(fetchRecipes());
     }
-  }, [recipeStatus, dispatch])
+    if (tagStatus === 'idle') {
+      dispatch(fetchTags());
+    }
+  }, [recipeStatus, tagStatus, dispatch])
 
 
   const handleClickBack = () => {
@@ -89,27 +96,29 @@ export default function RecipeDetails() {
       }}
     >
       <Container maxWidth="sm">
-          <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '1rem'}}>
-            <Typography variant="h5" component="div">{recipe?.name}</Typography>
-            <Button onClick={handleClickEdit} variant="outlined">
-              Szerkesztés
-            </Button>
-          </div>
-          { recipe?.description && (
-            <Typography variant="body1" component="div">
-              { recipe.description }
-            </Typography>
-          )}
-          { recipe?.ingredients && <RecipeIngredients ingredients={recipe.ingredients}/>}
-          { recipe?.instructions && <RecipeInstructions instructions={recipe.instructions}/>}
-          {recipe.tags.map((tag) => (
-            <Chip key={tag.id} label={tag.name} size="small" onClick={() => console.log(`Tag ID: ${tag.id}`)} />
+        <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '1rem'}}>
+          <Typography variant="h5" component="div">{recipe?.name}</Typography>
+          <Button onClick={handleClickEdit} variant="outlined">
+            Szerkesztés
+          </Button>
+        </div>
+        { recipe?.description && (
+          <Typography variant="body1" component="div">
+            { recipe.description }
+          </Typography>
+        )}
+        { recipe?.ingredients && <RecipeIngredients ingredients={recipe.ingredients}/>}
+        { recipe?.instructions && <RecipeInstructions instructions={recipe.instructions}/>}
+        <Stack direction="row" spacing={1}>
+          {tags.map((tag) => (
+            <Chip key={tag.id} label={`${tag.name}`} size="small" onClick={() => console.log(`Tag ID: ${tag.id}`)} />
           ))}
-          <div style={{display: 'flex', justifyContent: 'flex-end', margin: '1rem 0'}}>
-            <Button onClick={handleClickBack}>
-              Vissza
-            </Button>
-          </div>
+        </Stack>
+        <div style={{display: 'flex', justifyContent: 'flex-end', margin: '1rem 0'}}>
+          <Button onClick={handleClickBack}>
+            Vissza
+          </Button>
+        </div>
       </Container>
     </Box>
   );

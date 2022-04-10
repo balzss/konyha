@@ -13,13 +13,13 @@ import {
   TextField,
   Container,
   Select,
+  Stack,
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 
-import { fetchRecipes, selectRecipeById } from '../store/recipeSlice';
+import { fetchRecipes, selectRecipeById, addRecipe, editRecipe, removeRecipe } from '../store/recipeSlice';
 import { fetchTags, selectAllTags } from '../store/tagSlice';
 import { useAppSelector, useAppDispatch } from '../hooks';
-import { saveNewRecipe } from '../utils/api';
 import { Recipe, Tag } from '../utils/types';
 
 type RequiredFields = {
@@ -40,12 +40,12 @@ export default function EditRecipePage() {
   const params = useParams();
   const navigate = useNavigate();
 
-  const [recipeName, setRecipeName] = useState<string>('');
+  const [recipeName, setRecipeName] = useState<string>('add test');
   const [description, setDescription] = useState<string>('');
-  const [ingredients, setIngredients] = useState<string>('');
-  const [instructions, setInstructions] = useState<string>('');
+  const [ingredients, setIngredients] = useState<string>('1111');
+  const [instructions, setInstructions] = useState<string>('2222');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [newTag, setNewTag] = useState<string>('');
+  const [newTag, setNewTag] = useState<string>('newtag1');
   const [missingFields, setMissingFields] = useState<boolean>(true);
 
   const dispatch = useAppDispatch();
@@ -66,7 +66,7 @@ export default function EditRecipePage() {
       setRecipeName(recipe.name);
       setIngredients(recipe.ingredients.join('\n'));
       setInstructions(recipe.instructions.join('\n'));
-      setSelectedTags(recipe.tags.map((tag) => tag.name));
+      setSelectedTags(recipe.tags);
       if (recipe.description) {
         setDescription(recipe.description);
       }
@@ -80,17 +80,24 @@ export default function EditRecipePage() {
   const handleSubmitRecipe = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    if (params.recipeId) {
-      console.error('Editing recipes is not yet supported!');
-      return;
-    }
-
+    // TODO clean up this tag logic
     const selectedTagIds = selectedTags
       .map((selectedTag) => tags.find((tag) => tag.name === selectedTag)?.id || '')
       .filter((tag) => tag);
-    await saveNewRecipe({recipeName, description, ingredients, instructions, tags: selectedTagIds, newTag});
-    // TODO handle error response
-    navigate('/');
+    const newRecipeData = {recipeName, description, ingredients, instructions, tags: selectedTagIds, newTag};
+
+    try {
+      if (params.recipeId) {
+        await dispatch(editRecipe({updatedRecipe: newRecipeData, recipeId: params.recipeId})).unwrap();
+      } else {
+        await dispatch(addRecipe(newRecipeData)).unwrap();
+      }
+    } catch (e) {
+      // TODO handle error response
+      console.error(e);
+    } finally {
+      navigate('/');
+    }
   };
 
   const handleTagChange = (event: SelectChangeEvent<typeof selectedTags>) => {
@@ -103,8 +110,21 @@ export default function EditRecipePage() {
     );
   };
 
-  const handleClickBack = (_event: React.SyntheticEvent) => {
+  const handleClickBack = (_e: React.SyntheticEvent) => {
     navigate('/');
+  };
+
+  const handleDeleteRecipe = async (_e: React.SyntheticEvent) => {
+    if (!params.recipeId) return;
+    // TODO ask for confirmation
+    try {
+        await dispatch(removeRecipe(params.recipeId)).unwrap();
+    } catch (e) {
+      // TODO handle error response
+      console.error(e);
+    } finally {
+      navigate('/');
+    }
   };
 
   return (
@@ -118,14 +138,17 @@ export default function EditRecipePage() {
     >
       <Container maxWidth="sm">
         <form onSubmit={handleSubmitRecipe}>
-          <div style={{display: 'flex', justifyContent: 'space-between'}}>
             <Typography variant="h5" component="div"> 
               {params.recipeId ? 'Recept szerkesztése' : 'Új recept'}
             </Typography>
+          <Stack direction="row-reverse" spacing={1}>
             <Button onClick={handleSubmitRecipe} variant="outlined" type="submit" disabled={missingFields}>
               Mentés
             </Button>
-          </div>
+            <Button onClick={handleDeleteRecipe} color="error">
+              Törlés
+            </Button>
+          </Stack>
           <TextField 
             label="Recept neve"
             variant="outlined"

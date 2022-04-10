@@ -4,7 +4,9 @@ import CardContent from '@mui/material/CardContent';
 import ArrowForwardRoundedIcon from '@mui/icons-material/ArrowForwardRounded';
 import Typography from '@mui/material/Typography';
 import { Chip, CardActionArea, CardActions } from '@mui/material';
-import { Recipe } from '../utils/types';
+import { useAppSelector } from '../hooks';
+import { Recipe, Tag } from '../utils/types';
+import { selectTagsByIds } from '../store/tagSlice';
 
 type RecipeCardProps = {
   recipe: Recipe;
@@ -15,6 +17,7 @@ export default function RecipeCard({
   recipe,
   onClick,
 }: RecipeCardProps) {
+  const tags: Tag[] = useAppSelector((state) => selectTagsByIds(state, recipe.tags));
   return (
     <Card variant="outlined">
       <CardActionArea onClick={() => onClick(recipe.id)}>
@@ -32,8 +35,8 @@ export default function RecipeCard({
         </CardContent>
       </CardActionArea>
       <CardActions>
-        {recipe.tags.map((tag) => (
-          <Chip key={tag.id} label={tag.name} size="small" onClick={() => console.log(`Tag ID: ${tag.id}`)} />
+        {tags.map((tag) => (
+          <Chip key={tag.id} label={`${tag.name}`} size="small" onClick={() => console.log(`Tag ID: ${tag.id}`)} />
         ))}
       </CardActions>
     </Card>

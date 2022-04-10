@@ -1,6 +1,6 @@
 // for get request
 export type RecipeRequest = {
-  attributes: Recipe | { tags: any };
+  attributes: Omit<Recipe, 'tags'> & { tags: { data: TagRequest[] } };
   id: string;
 }
 
@@ -11,7 +11,7 @@ export type Recipe = {
   id: string;
   ingredients: string[];
   instructions: string[];
-  tags: Tag[],
+  tags: string[],
   description?: string;
 };
 
