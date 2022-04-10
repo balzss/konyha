@@ -199,7 +199,7 @@ export default function EditRecipePage() {
               value={selectedTags}
               onChange={handleTagChange}
               input={<OutlinedInput label="Mentett címkék" />}
-              renderValue={(selected) => selected.join(', ')}
+              renderValue={(selected) => selected.map((item) => tags.find((tag) => tag.id === item)?.name).join(', ')}
             >
               {tags.map(({name}) => (
                 <MenuItem key={name} value={name}>

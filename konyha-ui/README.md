@@ -14,6 +14,7 @@ A `konyha` recept manager frontendje.
 - [x] címkék kezelése a store-on keresztül
 - [x] recept módosítás
 - [x] recept törlés
+- [x] címkék törlése ha nincsenek használatban
 - [ ] recept slug
 - [ ] material ui -> carbon design
 - [ ] url, host és deploy folyamat
@@ -22,6 +23,7 @@ A `konyha` recept manager frontendje.
 ### Beta release:
 
 - [ ] címke/recept filter
+- [ ] szemetes és töröltek visszaállítása
 - [ ] bevásárló lista oldal
   - [ ] elemek hozzáadása kézzel
   - [ ] elemek hozzáadása a recept oldalról

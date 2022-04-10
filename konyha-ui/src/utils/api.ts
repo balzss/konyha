@@ -47,6 +47,7 @@ export const saveNewRecipe = async (rawRecipe: RawRecipe): Promise<Recipe> => {
 };
 
 export const updateRecipe = async (rawRecipe: RawRecipe, recipeId: string): Promise<Recipe> => {
+  // TODO remove unused tags like when deleting
   const formattedNewTags = rawRecipe.newTag?.split(',').map((tag) => tag.trim());
   const newTagIds = await createNewTags(formattedNewTags);
   const data = transformRawRecipe(rawRecipe, newTagIds);
@@ -60,13 +61,15 @@ export const updateRecipe = async (rawRecipe: RawRecipe, recipeId: string): Prom
 }
 
 export const deleteRecipe = async (recipeId: string) => {
-  // TODO remove unused tags if any
-  return await fetch(`${API_HOST}/api/recipes/${recipeId}`, {
+  return await fetch(`${API_HOST}/api/recipes/${recipeId}?populate=tags`, {
     method: 'DELETE',
     headers: {
       'Content-Type': 'application/json',
     },
-  }).then((r) => r.json()).then(({data}) => console.log(data));
+  }).then((r) => r.json()).then(async ({data}) => {
+    const tags = data.attributes.tags.data;
+    return await Promise.all(tags.map(async (tag: Tag) => removeTagIfUnused(tag.id)));
+  });
 }
 
 const createNewTags = async (newTags: string[] = []): Promise<string[]> => {
@@ -84,6 +87,24 @@ const createNewTags = async (newTags: string[] = []): Promise<string[]> => {
     }).then((r) => r.json())
       .then(({data}) => data.id);
   }));
+};
+
+const removeTagIfUnused = async (tagId: string): Promise<any> => {
+  // TODO error handling
+  const recipesWithTag = await fetch(`${API_HOST}/api/tags/${tagId}?populate=recipes`)
+    .then((r) => r.json())
+    .then(({data}) => { 
+      return data.attributes.recipes?.data;
+    });
+
+  if (!recipesWithTag.length) {
+    return await fetch(`${API_HOST}/api/tags/${tagId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }).then((r) => r.json()).then(({data}) => console.log(data));
+  }
 };
 
 export const getTags = async (): Promise<Tag[]> => {
