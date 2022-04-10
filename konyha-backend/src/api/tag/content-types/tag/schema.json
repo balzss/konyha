@@ -18,7 +18,7 @@
       "type": "relation",
       "relation": "manyToMany",
       "target": "api::recipe.recipe",
-      "inversedBy": "tags"
+      "mappedBy": "tags"
     }
   }
 }

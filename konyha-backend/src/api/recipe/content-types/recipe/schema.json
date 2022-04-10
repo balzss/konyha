@@ -32,6 +32,11 @@
       "relation": "manyToMany",
       "target": "api::tag.tag",
       "inversedBy": "recipes"
+    },
+    "slug": {
+      "type": "uid",
+      "targetField": "name",
+      "required": true
     }
   }
 }
