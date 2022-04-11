@@ -6,7 +6,6 @@ import RecipesPage from './pages/RecipesPage';
 import EditRecipePage from './pages/EditRecipePage';
 import RecipeDetailsPage from './pages/RecipeDetailsPage';
 
-import './carbon.scss';
 import './App.scss';
 
 const theme = createTheme({

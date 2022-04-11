@@ -16,10 +16,7 @@ A `konyha` recept manager frontendje.
 - [x] recept törlés
 - [x] címkék törlése ha nincsenek használatban
 - [x] recept slug
-- [-] material ui -> carbon design
-  - [ ] RecipesPage háttere
-  - [ ] RecipeCard
-  - [ ] RecipesPage add button
+- [ ] material ui -> carbon design -> material (carbon nem az igazi)
 - [ ] url, host és deploy folyamat
 - [ ] LICENSE
 
