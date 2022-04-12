@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from "react-router-dom";
 import {
   Box,
@@ -19,6 +19,7 @@ import {
   Delete as DeleteIcon,
 } from '@mui/icons-material'
 import TopBar from '../components/TopBar';
+import ConfirmModal from '../components/ConfirmModal';
 import { fetchRecipes, selectRecipeBySlug, removeRecipe } from '../store/recipeSlice';
 import { fetchTags, selectTagsByIds } from '../store/tagSlice';
 import { useAppSelector, useAppDispatch } from '../hooks';
@@ -65,6 +66,7 @@ function RecipeInstructions({instructions}: {instructions: string[]}) {
 export default function RecipeDetails() {
   const navigate = useNavigate();
   const params = useParams();
+  const [errorConfirmOpen, setErrorConfirmOpen] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const recipe: Recipe = useAppSelector((state) => selectRecipeBySlug(state, params.recipeSlug ?? ''));
@@ -121,8 +123,16 @@ export default function RecipeDetails() {
           {icon: <EditIcon/>, action: handleClickEdit, label: 'Szerkesztés'},
         ]}
         hiddenActions={[
-          {icon: <DeleteIcon fontSize="small"/>, action: handleDeleteRecipe, label: 'Recept törlése'},
+          {icon: <DeleteIcon fontSize="small"/>, action: () => setErrorConfirmOpen(true), label: 'Recept törlése'},
         ]}
+      />
+      <ConfirmModal
+        open={errorConfirmOpen}
+        title={'Törlés'}
+        desription={'Biztosan törlöd a receptet?'}
+        handleClose={() => setErrorConfirmOpen(false)}
+        handleConfirm={handleDeleteRecipe}
+        confirmText={'Törlés'}
       />
       <Container maxWidth="sm">
         { recipe?.description && (

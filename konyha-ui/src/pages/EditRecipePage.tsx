@@ -18,6 +18,7 @@ import {
   Save as SaveIcon,
 } from '@mui/icons-material'
 import TopBar from '../components/TopBar';
+import ConfirmModal from '../components/ConfirmModal';
 
 import { fetchRecipes, selectRecipeBySlug, addRecipe, editRecipe } from '../store/recipeSlice';
 import { fetchTags, selectAllTags } from '../store/tagSlice';
@@ -49,6 +50,7 @@ export default function EditRecipePage() {
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [newTag, setNewTag] = useState<string>('');
   const [missingFields, setMissingFields] = useState<boolean>(true); // TODO use for save button
+  const [saveConfirmOpen, setSaveConfirmOpen] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
   const recipe: Recipe = useAppSelector((state) => selectRecipeBySlug(state, params.recipeSlug ?? ''));
@@ -102,11 +104,14 @@ export default function EditRecipePage() {
       newTag,
     };
 
+    let recipeSlug = '';
     try {
       if (params.recipeSlug) {
-        await dispatch(editRecipe({updatedRecipe: newRecipeData, recipeId: recipe.id})).unwrap();
+        const editResponse = await dispatch(editRecipe({updatedRecipe: newRecipeData, recipeId: recipe.id})).unwrap();
+        recipeSlug = editResponse.slug;
       } else {
-        await dispatch(addRecipe(newRecipeData)).unwrap();
+        const addResponse = await dispatch(addRecipe(newRecipeData)).unwrap();
+        recipeSlug = addResponse.slug;
       }
       // re-fetching the tags in case there were new ones created
       await dispatch(fetchTags()).unwrap();
@@ -114,7 +119,7 @@ export default function EditRecipePage() {
       // TODO handle error response
       console.error(e);
     } finally {
-      navigate('/');
+      navigate(`/${recipeSlug}`);
     }
   };
 
@@ -139,9 +144,17 @@ export default function EditRecipePage() {
         leadingAction={{action: handleClickBack, icon: <ArrowBackIcon/>, label: 'Vissza'}}
         title={params.recipeSlug ? 'Recept szerkesztése' : 'Új recept'}
         trailingActions={[
-          {icon: <SaveIcon/>, action: handleSubmitRecipe, label: 'Mentés'},
+          {icon: <SaveIcon/>, action: () => setSaveConfirmOpen(true), label: 'Mentés'},
         ]}
         hiddenActions={[]}
+      />
+      <ConfirmModal
+        open={saveConfirmOpen}
+        title={'Mentés'}
+        desription={'Biztosan mented a receptet?'}
+        handleClose={() => setSaveConfirmOpen(false)}
+        handleConfirm={handleSubmitRecipe}
+        confirmText={'Mentés'}
       />
       <Container maxWidth="sm">
         <form onSubmit={handleSubmitRecipe}>

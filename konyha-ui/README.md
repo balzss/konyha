@@ -19,7 +19,7 @@ A `konyha` recept manager frontendje.
 - [x] material ui -> carbon design -> material (carbon nem az igazi)
 - [x] topbar for edit/add/details: vissza, oldal cime, action
 - [x] topbar hozzáadása EditRecipePage-re
-- [ ] edit/delete confirm modal
+- [x] edit/delete confirm modal
 - [ ] RecipesPage átnevezés -> MainPage vagy vmi hasonló
 - [ ] színek rendezése
 - [ ] személyes oldal
