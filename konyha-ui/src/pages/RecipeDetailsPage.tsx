@@ -4,7 +4,6 @@ import {
   Box,
   Container,
   Typography,
-  Button,
   Checkbox,
   Radio,
   RadioGroup,
@@ -14,6 +13,11 @@ import {
   Chip,
   Stack,
 } from '@mui/material';
+import {
+  Close as CloseIcon,
+  Edit as EditIcon,
+} from '@mui/icons-material'
+import TopBar from '../components/TopBar';
 import { fetchRecipes, selectRecipeBySlug } from '../store/recipeSlice';
 import { fetchTags, selectTagsByIds } from '../store/tagSlice';
 import { useAppSelector, useAppDispatch } from '../hooks';
@@ -83,6 +87,7 @@ export default function RecipeDetails() {
   };
 
   const handleClickEdit = () => {
+    if (!recipe.slug) return;
     navigate(`/${recipe.slug}/edit`);
   };
 
@@ -92,16 +97,20 @@ export default function RecipeDetails() {
         bgcolor: 'background.paper',
         color: 'text.primary',
         minHeight: '100%',
-        pt: 3,
+        paddingTop: '80px',
       }}
     >
+      <TopBar
+        leadingAction={{action: handleClickBack, icon: <CloseIcon/>, label: 'Vissza'}}
+        title={recipe?.name}
+        trailingActions={[
+          {icon: <EditIcon/>, action: handleClickEdit, label: 'Szerkesztés'},
+        ]}
+        hiddenActions={[
+          {icon: <EditIcon/>, action: () => {}, label: 'Recept törlése'},
+        ]}
+      />
       <Container maxWidth="sm">
-        <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: '1rem'}}>
-          <Typography variant="h5" component="div">{recipe?.name}</Typography>
-          <Button onClick={handleClickEdit} variant="outlined">
-            Szerkesztés
-          </Button>
-        </div>
         { recipe?.description && (
           <Typography variant="body1" component="div">
             { recipe.description }
@@ -114,11 +123,6 @@ export default function RecipeDetails() {
             <Chip key={tag.id} label={`${tag.name}`} size="small" onClick={() => console.log(`Tag ID: ${tag.id}`)} />
           ))}
         </Stack>
-        <div style={{display: 'flex', justifyContent: 'flex-end', margin: '1rem 0'}}>
-          <Button onClick={handleClickBack}>
-            Vissza
-          </Button>
-        </div>
       </Container>
     </Box>
   );

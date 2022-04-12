@@ -7,15 +7,17 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
-  Button,
-  Typography,
   Box,
   TextField,
   Container,
   Select,
-  Stack,
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
+import {
+  ArrowBack as ArrowBackIcon,
+  Save as SaveIcon,
+} from '@mui/icons-material'
+import TopBar from '../components/TopBar';
 
 import { fetchRecipes, selectRecipeBySlug, addRecipe, editRecipe, removeRecipe } from '../store/recipeSlice';
 import { fetchTags, selectAllTags } from '../store/tagSlice';
@@ -40,13 +42,13 @@ export default function EditRecipePage() {
   const params = useParams();
   const navigate = useNavigate();
 
-  const [recipeName, setRecipeName] = useState<string>('add test');
+  const [recipeName, setRecipeName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
-  const [ingredients, setIngredients] = useState<string>('1111');
-  const [instructions, setInstructions] = useState<string>('2222');
+  const [ingredients, setIngredients] = useState<string>('');
+  const [instructions, setInstructions] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [newTag, setNewTag] = useState<string>('newtag1');
-  const [missingFields, setMissingFields] = useState<boolean>(true);
+  const [newTag, setNewTag] = useState<string>('');
+  const [missingFields, setMissingFields] = useState<boolean>(true); // TODO use for save button
 
   const dispatch = useAppDispatch();
   const recipe: Recipe = useAppSelector((state) => selectRecipeBySlug(state, params.recipeSlug ?? ''));
@@ -117,7 +119,7 @@ export default function EditRecipePage() {
   };
 
   const handleClickBack = (_e: React.SyntheticEvent) => {
-    navigate('/');
+    navigate(params.recipeSlug ? `/${params.recipeSlug}` : '/');
   };
 
   const handleDeleteRecipe = async (_e: React.SyntheticEvent) => {
@@ -139,22 +141,19 @@ export default function EditRecipePage() {
         bgcolor: 'background.paper',
         color: 'text.primary',
         minHeight: '100%',
-        pt: 3,
+        paddingTop: '80px',
       }}
     >
+      <TopBar
+        leadingAction={{action: handleClickBack, icon: <ArrowBackIcon/>, label: 'Vissza'}}
+        title={params.recipeSlug ? 'Recept szerkesztése' : 'Új recept'}
+        trailingActions={[
+          {icon: <SaveIcon/>, action: handleSubmitRecipe, label: 'Mentés'},
+        ]}
+        hiddenActions={[]}
+      />
       <Container maxWidth="sm">
         <form onSubmit={handleSubmitRecipe}>
-            <Typography variant="h5" component="div"> 
-              {params.recipeId ? 'Recept szerkesztése' : 'Új recept'}
-            </Typography>
-          <Stack direction="row-reverse" spacing={1}>
-            <Button onClick={handleSubmitRecipe} variant="outlined" type="submit" disabled={missingFields}>
-              Mentés
-            </Button>
-            <Button onClick={handleDeleteRecipe} color="error">
-              Törlés
-            </Button>
-          </Stack>
           <TextField 
             label="Recept neve"
             variant="outlined"
@@ -223,11 +222,6 @@ export default function EditRecipePage() {
             value={newTag}
             onChange={({target}) => setNewTag(target.value)}
           />
-          <div style={{display: 'flex', justifyContent: 'flex-end', margin: '1rem 0'}}>
-            <Button onClick={handleClickBack}>
-              Vissza
-            </Button>
-          </div>
         </form>
       </Container>
     </Box>
