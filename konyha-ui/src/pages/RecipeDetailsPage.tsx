@@ -19,7 +19,7 @@ import {
   Delete as DeleteIcon,
 } from '@mui/icons-material'
 import TopBar from '../components/TopBar';
-import { fetchRecipes, selectRecipeBySlug } from '../store/recipeSlice';
+import { fetchRecipes, selectRecipeBySlug, removeRecipe } from '../store/recipeSlice';
 import { fetchTags, selectTagsByIds } from '../store/tagSlice';
 import { useAppSelector, useAppDispatch } from '../hooks';
 import { Recipe, Tag } from '../utils/types';
@@ -92,6 +92,19 @@ export default function RecipeDetails() {
     navigate(`/${recipe.slug}/edit`);
   };
 
+  const handleDeleteRecipe = async (_e: React.SyntheticEvent) => {
+    if (!recipe.id) return;
+    // TODO ask for confirmation
+    try {
+        await dispatch(removeRecipe(recipe.id)).unwrap();
+    } catch (e) {
+      // TODO handle error response
+      console.error(e);
+    } finally {
+      navigate('/');
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -108,7 +121,7 @@ export default function RecipeDetails() {
           {icon: <EditIcon/>, action: handleClickEdit, label: 'Szerkesztés'},
         ]}
         hiddenActions={[
-          {icon: <DeleteIcon fontSize="small"/>, action: () => {}, label: 'Recept törlése'},
+          {icon: <DeleteIcon fontSize="small"/>, action: handleDeleteRecipe, label: 'Recept törlése'},
         ]}
       />
       <Container maxWidth="sm">

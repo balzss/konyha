@@ -30,6 +30,11 @@ function transformRecipeRequest(recipeRequest: RecipeRequest): Recipe {
   };
 }
 
+function formatTags(rawTags: string | undefined): string[] {
+  if (!rawTags) return [];
+  return rawTags.split(',').map((tag) => tag.trim()).filter((tag) => tag);
+}
+
 function slugify(input: string): string {
   return input
     .normalize('NFKD')
@@ -48,7 +53,7 @@ export const getRecipes = async (): Promise<Recipe[]> => {
 };
 
 export const saveNewRecipe = async (rawRecipe: RawRecipe): Promise<Recipe> => {
-  const formattedNewTags = rawRecipe.newTag?.split(',').map((tag) => tag.trim());
+  const formattedNewTags = rawRecipe.newTag?.split(',').map((tag) => tag.trim()).filter((tag) => tag);
   const newTagIds = await createNewTags(formattedNewTags);
   const data = transformRawRecipe(rawRecipe, newTagIds);
 
@@ -63,7 +68,7 @@ export const saveNewRecipe = async (rawRecipe: RawRecipe): Promise<Recipe> => {
 
 export const updateRecipe = async (rawRecipe: RawRecipe, recipeId: string): Promise<Recipe> => {
   // TODO remove unused tags like when deleting
-  const formattedNewTags = rawRecipe.newTag?.split(',').map((tag) => tag.trim());
+  const formattedNewTags = formatTags(rawRecipe.newTag);
   const newTagIds = await createNewTags(formattedNewTags);
   const data = transformRawRecipe(rawRecipe, newTagIds);
   return await fetch(`${API_HOST}/api/recipes/${recipeId}?populate=tags`, {

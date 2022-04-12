@@ -94,8 +94,8 @@ export default function TopBar({
             }}
             sx={{zIndex: 2000}}
           >
-            { hiddenActions.map(({icon, label}) => (
-              <MenuItem onClick={handleCloseMenu}>
+            { hiddenActions.map(({icon, label, action}) => (
+              <MenuItem onClick={action}>
                 <ListItemIcon>
                   {icon}
                 </ListItemIcon>

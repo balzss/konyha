@@ -19,7 +19,7 @@ import {
 } from '@mui/icons-material'
 import TopBar from '../components/TopBar';
 
-import { fetchRecipes, selectRecipeBySlug, addRecipe, editRecipe, removeRecipe } from '../store/recipeSlice';
+import { fetchRecipes, selectRecipeBySlug, addRecipe, editRecipe } from '../store/recipeSlice';
 import { fetchTags, selectAllTags } from '../store/tagSlice';
 import { useAppSelector, useAppDispatch } from '../hooks';
 import { Recipe, Tag } from '../utils/types';
@@ -86,6 +86,10 @@ export default function EditRecipePage() {
     return tags.find((tag) => tag.name === tagName)?.name;
   };
 
+  const getTagIdByName = (tagName: string): string | undefined => {
+    return tags.find((tag) => tag.name === tagName)?.id;
+  };
+
   const handleSubmitRecipe = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
@@ -94,7 +98,7 @@ export default function EditRecipePage() {
       description,
       ingredients,
       instructions,
-      tags: selectedTags.map(getTagByName) as string[],
+      tags: selectedTags.map(getTagIdByName) as string[],
       newTag,
     };
 
@@ -120,19 +124,6 @@ export default function EditRecipePage() {
 
   const handleClickBack = (_e: React.SyntheticEvent) => {
     navigate(params.recipeSlug ? `/${params.recipeSlug}` : '/');
-  };
-
-  const handleDeleteRecipe = async (_e: React.SyntheticEvent) => {
-    if (!params.recipeId) return;
-    // TODO ask for confirmation
-    try {
-        await dispatch(removeRecipe(params.recipeId)).unwrap();
-    } catch (e) {
-      // TODO handle error response
-      console.error(e);
-    } finally {
-      navigate('/');
-    }
   };
 
   return (
