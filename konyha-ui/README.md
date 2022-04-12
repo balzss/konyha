@@ -16,25 +16,39 @@ A `konyha` recept manager frontendje.
 - [x] recept törlés
 - [x] címkék törlése ha nincsenek használatban
 - [x] recept slug
-- [ ] material ui -> carbon design -> material (carbon nem az igazi)
-- [ ] url, host és deploy folyamat
+- [x] material ui -> carbon design -> material (carbon nem az igazi)
+- [-] ui cleanup
+  - [x] topbar for edit/add/details: vissza, oldal cime, action
+  - [x] topbar hozzáadása EditRecipePage-re
+  - [ ] színek rendezése
+  - [ ] recept oldal: új recept FAB
+  - [ ] TextField -> InputBase, divider csíkok
+- [ ] RecipesPage átnevezés -> MainPage vagy vmi hasonló
+- [ ] személyes oldal
+  - [ ] light/dark switch
+- [ ] deploy to digitalocean app platform
+- [ ] pwa dolgok: színek, ikon, manifest, serviceWorker, stb
 - [ ] LICENSE
 
 ### Beta release:
 
-- [ ] címke/recept filter
-- [ ] szemetes és töröltek visszaállítása
+- [ ] recept oldalak
+  - [ ] címke/recept filter
+- [ ] személyes oldal
+  - [ ] szemetes és töröltek visszaállítása
+  - [ ] i18n (angol és magyar)
+  - [ ] userspaces, login/register
+  - [ ] import/export data
 - [ ] bevásárló lista oldal
   - [ ] elemek hozzáadása kézzel
   - [ ] elemek hozzáadása a recept oldalról
 - [ ] időzítő oldal
   - [ ] időzítő linkelés recept instrukciókból
-- [ ] i18n (angol és magyar)
-- [ ] userspaces, login/register
-- [ ] user settings: dark mode, import/export, nyelv, etc.
-- [ ] offline működés
+- [ ] offline működés (redux-persist?)
+- [ ] change page transitions (open card, edit recipe, etc)
 - [ ] project page, ami bemutatja az oldal célját, működését, használatát, stb
 
 ### Post beta
 
 - [ ] portion calculator
+- [ ] presentation mode
