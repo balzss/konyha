@@ -16,6 +16,7 @@ import {
 import {
   Close as CloseIcon,
   Edit as EditIcon,
+  Delete as DeleteIcon,
 } from '@mui/icons-material'
 import TopBar from '../components/TopBar';
 import { fetchRecipes, selectRecipeBySlug } from '../store/recipeSlice';
@@ -107,7 +108,7 @@ export default function RecipeDetails() {
           {icon: <EditIcon/>, action: handleClickEdit, label: 'Szerkesztés'},
         ]}
         hiddenActions={[
-          {icon: <EditIcon/>, action: () => {}, label: 'Recept törlése'},
+          {icon: <DeleteIcon fontSize="small"/>, action: () => {}, label: 'Recept törlése'},
         ]}
       />
       <Container maxWidth="sm">

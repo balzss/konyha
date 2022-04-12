@@ -1,8 +1,11 @@
+import { useState } from 'react';
 import {
   Paper,
   IconButton,
+  Menu,
+  MenuItem,
+  ListItemIcon,
 } from '@mui/material';
-
 import {
   MoreVert as MoreVertIcon,
 } from '@mui/icons-material';
@@ -26,9 +29,18 @@ export default function TopBar({
   trailingActions,
   hiddenActions,
 }: TopBarProps) {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseMenu = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <Paper
-      elevation={0} 
+      elevation={0}
       sx={{
         bgcolor: '#1C1B1F',
         color: '#E6E1E5',
@@ -60,9 +72,38 @@ export default function TopBar({
         </IconButton>
       ))}
       { hiddenActions && hiddenActions.length > 0 && (
-        <IconButton>
-          <MoreVertIcon />
-        </IconButton>
+        <>
+          <IconButton onClick={handleOpenMenu}>
+            <MoreVertIcon />
+          </IconButton>
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleCloseMenu}
+            MenuListProps={{
+              'aria-labelledby': 'basic-button',
+            }}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'left',
+            }}
+            sx={{zIndex: 2000}}
+          >
+            { hiddenActions.map(({icon, label}) => (
+              <MenuItem onClick={handleCloseMenu}>
+                <ListItemIcon>
+                  {icon}
+                </ListItemIcon>
+                {label}
+              </MenuItem>
+            )) }
+          </Menu>
+        </>
       ) }
     </Paper>
   );

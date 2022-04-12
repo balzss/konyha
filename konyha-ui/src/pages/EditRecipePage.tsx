@@ -158,7 +158,6 @@ export default function EditRecipePage() {
             label="Recept neve"
             variant="outlined"
             margin="normal"
-            autoFocus={!params.recipeId}
             required
             sx={{width: '100%'}}
             value={recipeName}
@@ -215,7 +214,7 @@ export default function EditRecipePage() {
             </Select>
           </FormControl>
           <TextField 
-            label="Új címke"
+            label="Új címkék"
             variant="outlined"
             margin="normal"
             sx={{width: '100%'}}

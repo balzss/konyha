@@ -32,11 +32,13 @@ A `konyha` recept manager frontendje.
 
 ### Beta release:
 
+- [ ] start using feature branches
+- [ ] i18n (angol és magyar)
 - [ ] recept oldalak
   - [ ] címke/recept filter
 - [ ] személyes oldal
   - [ ] szemetes és töröltek visszaállítása
-  - [ ] i18n (angol és magyar)
+  - [ ] nyelv választó
   - [ ] userspaces, login/register
   - [ ] import/export data
 - [ ] bevásárló lista oldal
