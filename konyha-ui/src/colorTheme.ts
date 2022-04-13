@@ -21,5 +21,28 @@ export function getCarbonColorTheme(mode: 'dark' | 'light') {
         }
       ),
     },
+    components: {
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            borderRadius: '20px',
+          },
+        }
+      },
+      MuiCard: {
+        styleOverrides: {
+          root: {
+            borderRadius: '8px',
+          },
+        }
+      },
+      MuiChip: {
+        styleOverrides: {
+          root: {
+            borderRadius: '8px',
+          },
+        }
+      }
+    }
   });
 }

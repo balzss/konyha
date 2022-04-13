@@ -18,7 +18,7 @@ export default function RecipeCard({
 }: RecipeCardProps) {
   const tags: Tag[] = useAppSelector((state) => selectTagsByIds(state, recipe.tags));
   return (
-    <Card variant="outlined" sx={{bgcolor: 'background.default', borderRadius: '28px'}}>
+    <Card variant="outlined" sx={{bgcolor: 'background.default'}}>
       <CardActionArea onClick={() => onClick(recipe.slug)}>
         <CardContent>
           <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
@@ -27,9 +27,9 @@ export default function RecipeCard({
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
+      <CardActions sx={{px: 2, pb: 2}}>
         {tags.map((tag) => (
-          <Chip key={tag.id} label={`${tag.name}`} size="small" onClick={() => console.log(`Tag ID: ${tag.id}`)} />
+          <Chip key={tag.id} label={`${tag.name}`} size="small" onClick={() => console.log(`Tag ID: ${tag.id}`)}/>
         ))}
       </CardActions>
     </Card>

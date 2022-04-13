@@ -25,14 +25,14 @@ A `konyha` recept manager frontendje.
 - [x] light/dark switch
 - [x] színek rendezése
 - [ ] error kezelés
-- [ ] asztali nézet javítás
 - [ ] címke/recept filter
-- [ ] deploy digitalocean app platformra
 - [ ] pwa dolgok: színek, ikon, manifest, serviceWorker, stb
 - [ ] LICENSE
+- [ ] deploy digitalocean app platformra
 
 ### Beta release:
 
+- [ ] asztali nézet javítás
 - [ ] tesztek
 - [ ] start using feature branches
 - [ ] i18n (angol és magyar)
