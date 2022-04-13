@@ -44,6 +44,10 @@ export default function UserPage() {
           }
           label="Sötét mód"
         />
+        <Typography variant="h5" component="h1" sx={{mt: 6, pb: 2}}>
+          Credits:
+        </Typography>
+        <a href="https://www.flaticon.com/free-icons/recipe-book" title="recipe book icons">Recipe book icons created by nawicon - Flaticon</a>
       </Container>
     </Box>
   );
