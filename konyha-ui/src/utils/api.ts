@@ -13,7 +13,6 @@ function transformRawRecipe(rawRecipe: RawRecipe, newTagIds: string[]): Omit<Rec
     name,
     slug,
     description,
-    image: '',
     ingredients,
     instructions,
     tags: [...rawRecipe.tags || [], ...newTagIds],

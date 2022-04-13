@@ -7,7 +7,7 @@ import {
   Typography,
 } from '@mui/material';
 
-export default function RecipeDetails() {
+export default function UserPage() {
   const [darkMode, setDarkMode] = useState<boolean>(false);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export default function RecipeDetails() {
   return (
     <Box
       sx={{
-        bgcolor: 'background.paper',
+        bgcolor: 'background.default',
         color: 'text.primary',
         minHeight: '100%',
         p: 3,

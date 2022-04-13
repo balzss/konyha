@@ -1,22 +1,20 @@
 import { createTheme } from '@mui/material/styles';
 
-export function getMUI3ColorTheme(mode: 'dark' | 'light') {
+export function getCarbonColorTheme(mode: 'dark' | 'light') {
   return createTheme({
     palette: {
       mode,
       ...(mode === 'dark'
         ? {
           background: {
-            paper: '#1C1B1F',
+            default: '#161616',
+            paper: '#262626',
           },
           text: {
             primary: '#E6E1E5',
           }
         }
         : {
-          background: {
-            paper: '#FFFBFE',
-          },
           text: {
             primary: '#1C1B1F',
           }

@@ -34,7 +34,7 @@ const bottomNavItems = [
   {
     displayName: 'Személyes',
     icon: <AccountCircleIcon />,
-    path: '/me',
+    path: '/user',
     disabled: false,
   },
 ];

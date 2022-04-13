@@ -6,9 +6,9 @@ import {
   MainPage,
   EditRecipePage,
   RecipeDetailsPage,
-  PersonalPage,
+  UserPage,
 } from './pages';
-import { getMUI3ColorTheme } from './colorTheme';
+import { getCarbonColorTheme } from './colorTheme';
 import './App.scss';
 
 function Layout() {
@@ -23,7 +23,7 @@ function Layout() {
 function App() {
   const colorMode = localStorage.getItem('colorMode');
   const mode = colorMode === 'dark' || colorMode === 'light' ? colorMode : 'light';
-  const theme = getMUI3ColorTheme(mode);
+  const theme = getCarbonColorTheme(mode);
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline enableColorScheme />
@@ -31,7 +31,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<MainPage />}/>
-            <Route path="/me" element={<PersonalPage />} />
+            <Route path="/user" element={<UserPage />} />
             <Route path="*" element={<MainPage />} />
           </Route>
           <Route path="/:recipeSlug" element={<RecipeDetailsPage />} />

@@ -23,7 +23,8 @@ A `konyha` recept manager frontendje.
 - [x] RecipesPage átnevezés -> MainPage vagy vmi hasonló
 - [x] személyes oldal
 - [x] light/dark switch
-- [ ] színek rendezése
+- [x] színek rendezése
+- [ ] error kezelés
 - [ ] asztali nézet javítás
 - [ ] címke/recept filter
 - [ ] deploy digitalocean app platformra

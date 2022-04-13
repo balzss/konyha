@@ -9,7 +9,6 @@ export type Recipe = {
   id: string;
   name: string;
   slug: string;
-  image: string;
   ingredients: string[];
   instructions: string[];
   tags: string[],

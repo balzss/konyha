@@ -41,7 +41,7 @@ export default function MainPage() {
   return (
     <Box
       sx={{
-        bgcolor: 'background.paper',
+        bgcolor: 'background.default',
         color: 'text.primary',
         minHeight: '100%',
         pt: 3,
