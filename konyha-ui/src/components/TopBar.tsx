@@ -42,8 +42,10 @@ export default function TopBar({
     <Paper
       elevation={0}
       sx={{
-        bgcolor: '#1C1B1F',
-        color: '#E6E1E5',
+        // bgcolor: '#1C1B1F',
+        // color: '#E6E1E5',
+        bgcolor: 'background.paper',
+        color: 'text.primary',
         position: 'fixed',
         top: 0,
         left: 0,

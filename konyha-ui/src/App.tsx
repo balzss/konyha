@@ -2,17 +2,13 @@ import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import BottomNav from './components/BottomNav';
-import RecipesPage from './pages/RecipesPage';
-import EditRecipePage from './pages/EditRecipePage';
-import RecipeDetailsPage from './pages/RecipeDetailsPage';
-
+import {
+  MainPage,
+  EditRecipePage,
+  RecipeDetailsPage,
+  PersonalPage,
+} from './pages';
 import './App.scss';
-
-const theme = createTheme({
-  palette: {
-    mode: 'dark',
-  },
-});
 
 function Layout() {
   return (
@@ -24,14 +20,34 @@ function Layout() {
 }
 
 function App() {
+  const colorMode = localStorage.getItem('colorMode');
+  const mode = colorMode === 'dark' || colorMode === 'light' ? colorMode : 'light';
+  const theme = createTheme({
+    palette: {
+      mode,
+      ...(mode === 'dark'
+        ? {
+          background: {
+            paper: '#1C1B1F',
+          }
+        }
+        : {
+          background: {
+            paper: '#FFFBFE',
+          }
+        }
+      ),
+    },
+  });
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline enableColorScheme />
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout />}>
-            <Route index element={<RecipesPage />}/>
-            <Route path="*" element={<RecipesPage />} />
+            <Route index element={<MainPage />}/>
+            <Route path="/me" element={<PersonalPage />} />
+            <Route path="*" element={<MainPage />} />
           </Route>
           <Route path="/:recipeSlug" element={<RecipeDetailsPage />} />
           <Route path="/:recipeSlug/edit" element={<EditRecipePage />} />

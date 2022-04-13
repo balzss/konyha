@@ -20,11 +20,12 @@ A `konyha` recept manager frontendje.
 - [x] topbar for edit/add/details: vissza, oldal cime, action
 - [x] topbar hozzáadása EditRecipePage-re
 - [x] edit/delete confirm modal
-- [ ] RecipesPage átnevezés -> MainPage vagy vmi hasonló
+- [x] RecipesPage átnevezés -> MainPage vagy vmi hasonló
+- [x] személyes oldal
+- [x] light/dark switch
 - [ ] színek rendezése
-- [ ] személyes oldal
-- [ ] light/dark switch
 - [ ] asztali nézet javítás
+- [ ] címke/recept filter
 - [ ] deploy digitalocean app platformra
 - [ ] pwa dolgok: színek, ikon, manifest, serviceWorker, stb
 - [ ] LICENSE
@@ -37,7 +38,6 @@ A `konyha` recept manager frontendje.
 - [ ] univerzális bottom nav
 - [ ] recept oldalak
   - [ ] új recept FAB
-  - [ ] címke/recept filter
   - [ ] TextField -> InputBase, divider csíkok
 - [ ] személyes oldal
   - [ ] szemetes és töröltek visszaállítása
@@ -49,6 +49,7 @@ A `konyha` recept manager frontendje.
   - [ ] elemek hozzáadása a recept oldalról
 - [ ] időzítő oldal
   - [ ] időzítő linkelés recept instrukciókból
+- [ ] 404 page
 - [ ] offline működés (redux-persist?)
 - [ ] change page transitions (open card, edit recipe, etc)
 - [ ] project page, ami bemutatja az oldal célját, működését, használatát, stb

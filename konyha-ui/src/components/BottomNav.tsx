@@ -34,8 +34,8 @@ const bottomNavItems = [
   {
     displayName: 'Személyes',
     icon: <AccountCircleIcon />,
-    path: '/',
-    disabled: true,
+    path: '/me',
+    disabled: false,
   },
 ];
 
@@ -57,6 +57,7 @@ export default function BottomBar() {
         bottom: 0,
         width: '100%',
         zIndex: 1000,
+        bgcolor: 'background.paper',
       }}
     >
       {bottomNavItems.map(({displayName, icon, disabled}) => (

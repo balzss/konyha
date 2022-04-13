@@ -13,7 +13,7 @@ import { Recipe } from '../utils/types'
 import { selectAllRecipes, fetchRecipes } from '../store/recipeSlice';
 import { fetchTags } from '../store/tagSlice';
 
-export default function RecipesPage() {
+export default function MainPage() {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const recipes: Recipe[] = useAppSelector(selectAllRecipes);
