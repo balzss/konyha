@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Outlet } from "react-router-dom";
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import BottomNav from './components/BottomNav';
 import {
@@ -8,6 +8,7 @@ import {
   RecipeDetailsPage,
   PersonalPage,
 } from './pages';
+import { getMUI3ColorTheme } from './colorTheme';
 import './App.scss';
 
 function Layout() {
@@ -22,23 +23,7 @@ function Layout() {
 function App() {
   const colorMode = localStorage.getItem('colorMode');
   const mode = colorMode === 'dark' || colorMode === 'light' ? colorMode : 'light';
-  const theme = createTheme({
-    palette: {
-      mode,
-      ...(mode === 'dark'
-        ? {
-          background: {
-            paper: '#1C1B1F',
-          }
-        }
-        : {
-          background: {
-            paper: '#FFFBFE',
-          }
-        }
-      ),
-    },
-  });
+  const theme = getMUI3ColorTheme(mode);
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline enableColorScheme />
