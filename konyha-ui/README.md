@@ -24,9 +24,9 @@ A `konyha` recept manager frontendje.
 - [x] személyes oldal
 - [x] light/dark switch
 - [x] színek rendezése
+- [x] pwa dolgok: színek, ikon, manifest, serviceWorker, stb
 - [ ] error kezelés
 - [ ] címke/recept filter
-- [ ] pwa dolgok: színek, ikon, manifest, serviceWorker, stb
 - [ ] LICENSE
 - [ ] deploy digitalocean app platformra
 

@@ -27,11 +27,13 @@ export default function RecipeCard({
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions sx={{px: 2, pb: 2}}>
-        {tags.map((tag) => (
-          <Chip key={tag.id} label={`${tag.name}`} size="small" onClick={() => console.log(`Tag ID: ${tag.id}`)}/>
-        ))}
-      </CardActions>
+      { tags && tags.length > 0 && (
+        <CardActions sx={{px: 2, pb: 2}}>
+          {tags.map((tag) => (
+            <Chip key={tag.id} label={`${tag.name}`} size="small" onClick={() => console.log(`Tag ID: ${tag.id}`)}/>
+          ))}
+        </CardActions>
+      )}
     </Card>
   );
 }
