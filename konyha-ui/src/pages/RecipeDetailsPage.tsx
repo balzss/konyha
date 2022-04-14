@@ -28,7 +28,7 @@ import { Recipe, Tag } from '../utils/types';
 function RecipeIngredients({ingredients}: {ingredients: string[]}) {
   return (
     <div>
-      <FormControl sx={{my: 2}}>
+      <FormControl sx={{mt: 1, mb: 2}}>
         <FormLabel id="demo-radio-buttons-group-label"><b>Hozzávalók</b></FormLabel>
         <RadioGroup
           aria-labelledby="demo-radio-buttons-group-label"
@@ -47,7 +47,7 @@ function RecipeIngredients({ingredients}: {ingredients: string[]}) {
 function RecipeInstructions({instructions}: {instructions: string[]}) {
   return (
     <div>
-      <FormControl sx={{my: 2}}>
+      <FormControl sx={{mt: 1, mb: 3}}>
         <FormLabel id="demo-radio-buttons-group-label"><b>Elkészítés</b></FormLabel>
         <RadioGroup
           aria-labelledby="demo-radio-buttons-group-label"
@@ -113,7 +113,7 @@ export default function RecipeDetails() {
         bgcolor: 'background.default',
         color: 'text.primary',
         minHeight: '100%',
-        paddingTop: '80px',
+        paddingTop: '64px',
       }}
     >
       <TopBar
@@ -136,7 +136,7 @@ export default function RecipeDetails() {
       />
       <Container maxWidth="md">
         { recipe?.description && (
-          <Typography variant="body1" component="div">
+          <Typography variant="body1" component="div" sx={{my: 1}}>
             { recipe.description }
           </Typography>
         )}
