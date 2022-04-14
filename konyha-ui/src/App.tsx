@@ -7,6 +7,8 @@ import {
   EditRecipePage,
   RecipeDetailsPage,
   UserPage,
+  LoginPage,
+  SignUpPage,
 } from './pages';
 import { getCarbonColorTheme } from './colorTheme';
 import './App.scss';
@@ -24,6 +26,8 @@ function App() {
   const colorMode = localStorage.getItem('colorMode');
   const mode = colorMode === 'dark' || colorMode === 'light' ? colorMode : 'light';
   const theme = getCarbonColorTheme(mode);
+
+  const user = undefined;
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline enableColorScheme />
@@ -37,6 +41,8 @@ function App() {
           <Route path="/:recipeSlug" element={<RecipeDetailsPage />} />
           <Route path="/:recipeSlug/edit" element={<EditRecipePage />} />
           <Route path="/add" element={<EditRecipePage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignUpPage />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
