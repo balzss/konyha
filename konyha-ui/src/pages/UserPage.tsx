@@ -1,20 +1,15 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Switch,
   List,
   ListItem,
-  ListItemAvatar,
-  Avatar,
   ListItemText,
   ListItemButton,
-  Divider,
 } from '@mui/material';
-import {
-  AlternateEmail as AlternateEmailIcon,
-  DarkMode as DarkModeIcon,
-} from '@mui/icons-material';
 
 export default function UserPage() {
+  const navigate = useNavigate();
   const [darkMode, setDarkMode] = useState<boolean>(false);
 
   useEffect(() => {
@@ -25,6 +20,10 @@ export default function UserPage() {
   useEffect(() => {
     localStorage.setItem('colorMode', darkMode ? 'dark' : 'light');
   }, [darkMode]);
+
+  const handleSignOut = () => {
+    navigate('/login');
+  };
 
   return (
     <List
@@ -50,7 +49,7 @@ export default function UserPage() {
         </ListItemButton>
       </ListItem>
       <ListItem disablePadding>
-        <ListItemButton >
+        <ListItemButton onClick={handleSignOut}>
           <ListItemText primary="Kijelentkezés" />
         </ListItemButton>
       </ListItem>
