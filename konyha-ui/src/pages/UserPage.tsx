@@ -1,11 +1,18 @@
 import { useState, useEffect } from 'react';
 import {
-  Box,
-  Container,
-  FormControlLabel,
   Switch,
-  Typography,
+  List,
+  ListItem,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+  ListItemButton,
+  Divider,
 } from '@mui/material';
+import {
+  AlternateEmail as AlternateEmailIcon,
+  DarkMode as DarkModeIcon,
+} from '@mui/icons-material';
 
 export default function UserPage() {
   const [darkMode, setDarkMode] = useState<boolean>(false);
@@ -15,40 +22,38 @@ export default function UserPage() {
     setDarkMode(colorMode === 'dark');
   }, []);
 
-  const handleColorModeChange = ({target}: {target: {checked: boolean}}) => {
-    setDarkMode(target.checked);
-    localStorage.setItem('colorMode', target.checked ? 'dark' : 'light');
-  };
+  useEffect(() => {
+    localStorage.setItem('colorMode', darkMode ? 'dark' : 'light');
+  }, [darkMode]);
 
   return (
-    <Box
-      sx={{
-        bgcolor: 'background.default',
-        color: 'text.primary',
-        minHeight: '100%',
-        p: 3,
-      }}
+    <List
+      sx={{ width: '100%', maxWidth: 480, bgcolor: 'background.default', margin: 'auto'}}
     >
-      <Container>
-        <Typography variant="h5" component="h1" sx={{pb: 2}}>
-          Beállítások
-        </Typography>
-        <FormControlLabel
-          control={
-            <Switch
-              checked={darkMode}
-              onChange={handleColorModeChange}
-              name="darkMode"
-              inputProps={{ 'aria-label': 'controlled' }}
-            />
-          }
-          label="Sötét mód"
+      <ListItem>
+        <ListItemText primary="Email" secondary="test1@email.com" />
+      </ListItem>
+      <ListItem>
+        <ListItemText id="switch-list-label-wifi" primary="Sötét mód" />
+        <Switch
+          edge="end"
+          onChange={({target}) => setDarkMode(target.checked)}
+          checked={darkMode}
+          inputProps={{
+            'aria-labelledby': 'switch-list-label-wifi',
+          }}
         />
-        <Typography variant="h5" component="h1" sx={{mt: 6, pb: 2}}>
-          Credits:
-        </Typography>
-        <a href="https://www.flaticon.com/free-icons/recipe-book" title="recipe book icons">Recipe book icons created by nawicon - Flaticon</a>
-      </Container>
-    </Box>
+      </ListItem>
+      <ListItem disablePadding>
+        <ListItemButton >
+          <ListItemText primary="Kreditek" />
+        </ListItemButton>
+      </ListItem>
+      <ListItem disablePadding>
+        <ListItemButton >
+          <ListItemText primary="Kijelentkezés" />
+        </ListItemButton>
+      </ListItem>
+    </List>
   );
 };
