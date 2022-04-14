@@ -10,6 +10,7 @@ import {
   Button,
   TextField,
 } from '@mui/material';
+import BrandHero from '../components/BrandHero';
 import { Link as RouterLink } from 'react-router-dom';
 
 export default function LoginPage() {
@@ -21,18 +22,11 @@ export default function LoginPage() {
         bgcolor: 'background.default',
         color: 'text.primary',
         minHeight: '100%',
-        pt: 6,
+        pt: 4,
       }}
     >
       <Container maxWidth="sm">
-        <Link to="/" underline="none" component={RouterLink as any} sx={{color: 'inherit'}}>
-          <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', paddingInline: '16px'}}>
-            <img src="/logo128.png" alt="" />
-            <Typography variant="h4" component="div" sx={{minWidth: '300px', textAlign: 'center'}}>
-              Konyha Recept Manager
-            </Typography>
-          </div>
-        </Link>
+        <BrandHero/>
         <Card variant="outlined" sx={{bgcolor: 'background.paper', mt: 4}}>
           <CardContent>
             <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
@@ -57,7 +51,7 @@ export default function LoginPage() {
               type="password"
               onChange={({target}) => setPassword(target.value)}
             />
-            <Link variant="body2" to="/" underline="hover" component={RouterLink as any} sx={{textAlign: 'center'}}>Elfelejtettem a jelszavam</Link>
+            <Link variant="body2" to="/" underline="hover" component={RouterLink as any} sx={{textAlign: 'center'}}>Elfelejtett jelszó?</Link>
           </CardContent>
           <CardActions sx={{px: 2, pb: 2, justifyContent: 'flex-end'}}>
             <Button variant="outlined">Bejelentkezés</Button>

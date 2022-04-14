@@ -10,6 +10,7 @@ import {
   Button,
   TextField,
 } from '@mui/material';
+import BrandHero from '../components/BrandHero';
 import { Link as RouterLink } from 'react-router-dom';
 
 export default function SignUpPage() {
@@ -21,11 +22,12 @@ export default function SignUpPage() {
         bgcolor: 'background.default',
         color: 'text.primary',
         minHeight: '100%',
-        pt: 12,
+        pt: 4,
       }}
     >
       <Container maxWidth="sm">
-        <Card variant="outlined" sx={{bgcolor: 'background.paper'}}>
+        <BrandHero/>
+        <Card variant="outlined" sx={{bgcolor: 'background.paper', mt: 4}}>
           <CardContent>
             <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
               Regisztráció
