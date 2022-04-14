@@ -5,6 +5,7 @@ import {
   Menu,
   MenuItem,
   ListItemIcon,
+  Container,
 } from '@mui/material';
 import {
   MoreVert as MoreVertIcon,
@@ -42,14 +43,15 @@ export default function TopBar({
     <Paper
       elevation={0}
       sx={{
-        // bgcolor: '#1C1B1F',
-        // color: '#E6E1E5',
-        bgcolor: 'background.paper',
+        bgcolor: 'background.default',
         color: 'text.primary',
         position: 'fixed',
         top: 0,
         left: 0,
+        right: 0,
         width: '100%',
+        maxWidth: '900px',
+        margin: 'auto',
         zIndex: 1999,
         height: '64px',
         display: 'flex',
@@ -64,7 +66,15 @@ export default function TopBar({
         </IconButton>
       )}
       <span 
-        style={{paddingLeft: '8px', marginRight: 'auto', fontSize: '22px', lineHeight: '28px'}}
+        style={{ 
+          paddingInline: '8px',
+          marginRight: 'auto',
+          fontSize: '22px',
+          lineHeight: '28px',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+        }}
       >
         {title}
       </span>

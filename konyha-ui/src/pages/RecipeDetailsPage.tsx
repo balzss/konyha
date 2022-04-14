@@ -14,7 +14,7 @@ import {
   Stack,
 } from '@mui/material';
 import {
-  Close as CloseIcon,
+  ArrowBack as ArrowBackIcon,
   Edit as EditIcon,
   Delete as DeleteIcon,
 } from '@mui/icons-material'
@@ -117,7 +117,7 @@ export default function RecipeDetails() {
       }}
     >
       <TopBar
-        leadingAction={{action: handleClickBack, icon: <CloseIcon/>, label: 'Vissza'}}
+        leadingAction={{action: handleClickBack, icon: <ArrowBackIcon/>, label: 'Vissza'}}
         title={recipe?.name}
         trailingActions={[
           {icon: <EditIcon/>, action: handleClickEdit, label: 'Szerkesztés'},
@@ -134,7 +134,7 @@ export default function RecipeDetails() {
         handleConfirm={handleDeleteRecipe}
         confirmText={'Törlés'}
       />
-      <Container maxWidth="sm">
+      <Container maxWidth="md">
         { recipe?.description && (
           <Typography variant="body1" component="div">
             { recipe.description }

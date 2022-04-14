@@ -21,9 +21,8 @@ export default function RecipeCard({
     <Card variant="outlined" sx={{bgcolor: 'background.default'}}>
       <CardActionArea onClick={() => onClick(recipe.slug)}>
         <CardContent>
-          <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+          <Typography variant="h5" component="div">
             {recipe.name}
-            <ArrowForwardRoundedIcon />
           </Typography>
         </CardContent>
       </CardActionArea>

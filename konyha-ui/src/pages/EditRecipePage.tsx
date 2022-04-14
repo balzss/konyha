@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 import {
-  ArrowBack as ArrowBackIcon,
+  Close as CloseIcon,
   Save as SaveIcon,
 } from '@mui/icons-material'
 import TopBar from '../components/TopBar';
@@ -141,7 +141,7 @@ export default function EditRecipePage() {
       }}
     >
       <TopBar
-        leadingAction={{action: handleClickBack, icon: <ArrowBackIcon/>, label: 'Vissza'}}
+        leadingAction={{action: handleClickBack, icon: <CloseIcon/>, label: 'Vissza'}}
         title={params.recipeSlug ? 'Recept szerkesztése' : 'Új recept'}
         trailingActions={[
           {icon: <SaveIcon/>, action: () => setSaveConfirmOpen(true), label: 'Mentés'},

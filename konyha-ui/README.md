@@ -26,26 +26,23 @@ A `konyha` recept manager frontendje.
 - [x] színek rendezése
 - [x] pwa dolgok: színek, ikon, manifest, serviceWorker, stb
 - [x] dummy login és signup oldalak
-- [ ] error kezelés
+- [ ] basic keresés
 - [ ] címke/recept filter
+- [ ] error kezelés
 - [ ] LICENSE
 - [ ] deploy digitalocean app platformra
 
 ### Beta release:
 
-- [ ] asztali nézet javítás
-- [ ] tesztek
-- [ ] start using feature branches
+- [ ] feature branch szabály beállítása githubon
+- [ ] tesztek és CI bevezetése
+- [ ] asztali nézet
 - [ ] i18n (angol és magyar)
-- [ ] univerzális bottom nav
-- [ ] recept oldalak
-  - [ ] új recept FAB
-  - [ ] TextField -> InputBase, divider csíkok
+- [ ] TextField -> InputBase, divider csíkok
 - [ ] személyes oldal
-  - [ ] szemetes és töröltek visszaállítása
+  - [ ] szemetes és töröltek visszaállítása?
   - [ ] nyelv választó
-  - [ ] userspaces, login/register
-  - [ ] import/export data
+  - [ ] import/export
 - [ ] bevásárló lista oldal
   - [ ] elemek hozzáadása kézzel
   - [ ] elemek hozzáadása a recept oldalról

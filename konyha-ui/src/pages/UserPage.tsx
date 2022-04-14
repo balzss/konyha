@@ -28,7 +28,7 @@ export default function UserPage() {
 
   return (
     <List
-      sx={{ width: '100%', maxWidth: 480, bgcolor: 'background.default', margin: 'auto'}}
+      sx={{ width: '100%', maxWidth: 480, bgcolor: 'background.default', margin: 'auto', p: 1}}
     >
       <ListItem>
         <ListItemText primary="Email" secondary="test1@email.com" />

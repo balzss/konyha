@@ -7,6 +7,12 @@ import {
   Grid,
   Box
 } from '@mui/material';
+import {
+  Add as AddIcon,
+  Search as SearchIcon,
+  FilterList as FilterListIcon,
+} from '@mui/icons-material';
+import TopBar from '../components/TopBar';
 import RecipeCard from '../components/RecipeCard';
 import { useAppDispatch, useAppSelector } from '../hooks'
 import { Recipe } from '../utils/types'
@@ -44,17 +50,19 @@ export default function MainPage() {
         bgcolor: 'background.default',
         color: 'text.primary',
         minHeight: '100%',
-        pt: 3,
-        pb: 8,
+        py: 8,
       }}
     >
-      <Container maxWidth="md">
-        <div style={{display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem'}}> 
-          <Button onClick={handleClickAdd}>
-            Új recept
-          </Button>
-        </div>
-        <Grid container spacing={2}>
+      <TopBar
+        leadingAction={{action: () => {}, icon: <FilterListIcon/>, label: 'Menü'}}
+        title="Összes recept"
+        trailingActions={[
+          {icon: <SearchIcon/>, action: () => {}, label: 'Keresés'},
+          {icon: <AddIcon/>, action: handleClickAdd, label: 'Új recept'},
+        ]}
+      />
+      <Container maxWidth="md" sx={{px: 2}} disableGutters>
+        <Grid container spacing={1}>
           {error && (
             <Grid item xs={12} sm={6} md={4} lg={3}>
               <Alert severity="error">{error}</Alert>
