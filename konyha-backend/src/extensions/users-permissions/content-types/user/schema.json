@@ -67,6 +67,9 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::recipe.recipe"
+    },
+    "preferences": {
+      "type": "json"
     }
   }
 }
