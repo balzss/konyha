@@ -26,6 +26,7 @@ A `konyha` recept manager frontendje.
 - [x] színek rendezése
 - [x] pwa dolgok: színek, ikon, manifest, serviceWorker, stb
 - [x] dummy login és signup oldalak
+- [ ] jwt token mentése
 - [ ] basic keresés
 - [ ] címke/recept filter
 - [ ] error kezelés

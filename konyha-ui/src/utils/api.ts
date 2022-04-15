@@ -1,4 +1,4 @@
-import { RawRecipe, RecipeRequest, Recipe, Tag } from './types';
+import { RawRecipe, RecipeRequest, Recipe, Tag, LoginData, LoginResponse } from './types';
 
 const API_HOST = 'http://192.168.1.76:1337';
 
@@ -112,7 +112,7 @@ const removeTagIfUnused = async (tagId: string): Promise<any> => {
   // TODO error handling
   const recipesWithTag = await fetch(`${API_HOST}/api/tags/${tagId}?populate=recipes`)
     .then((r) => r.json())
-    .then(({data}) => { 
+    .then(({data}) => {
       return data.attributes.recipes?.data;
     });
 
@@ -132,4 +132,14 @@ export const getTags = async (): Promise<Tag[]> => {
     .then(({data}) => {
       return data.map(({attributes, id}: {attributes: {name: string}, id: string}) => ({name: attributes.name, id}));
     });
+};
+
+export const loginUser = async (loginData: LoginData): Promise<LoginResponse>  => {
+  return await fetch(`${API_HOST}/api/auth/local`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(loginData),
+  }).then((r) => r.json()).then(r => r);
 };

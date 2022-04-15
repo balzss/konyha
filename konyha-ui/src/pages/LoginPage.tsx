@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Container,
   Box,
@@ -12,10 +13,18 @@ import {
 } from '@mui/material';
 import BrandHero from '../components/BrandHero';
 import { Link as RouterLink } from 'react-router-dom';
+import { loginUser } from '../utils/api';
 
 export default function LoginPage() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+
+  const handleLogin = () => {
+    loginUser({identifier: email, password});
+    navigate('/');
+  };
+
   return (
     <Box
       sx={{
@@ -54,7 +63,7 @@ export default function LoginPage() {
             <Link variant="body2" to="/" underline="hover" component={RouterLink as any} sx={{textAlign: 'center'}}>Elfelejtett jelszó?</Link>
           </CardContent>
           <CardActions sx={{px: 2, pb: 2, justifyContent: 'flex-end'}}>
-            <Button variant="outlined">Bejelentkezés</Button>
+            <Button variant="outlined" onClick={handleLogin}>Bejelentkezés</Button>
           </CardActions>
         </Card>
         <Typography variant="body2" component="div" sx={{mt: 1, textAlign: 'center'}}>

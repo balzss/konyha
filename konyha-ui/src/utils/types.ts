@@ -47,3 +47,25 @@ export type TagState = {
   status: string;
   error: string;
 };
+
+export type User = {
+  id: string;
+  email: string;
+}
+
+export type UserState = {
+  user: User | undefined;
+  loggedIn: boolean;
+  status: string;
+  error: string;
+}
+
+export type LoginData = {
+  identifier: string;
+  password: string;
+}
+
+export type LoginResponse = {
+  jwt: string;
+  user: User;
+}

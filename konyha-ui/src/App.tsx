@@ -26,8 +26,6 @@ function App() {
   const colorMode = localStorage.getItem('colorMode');
   const mode = colorMode === 'dark' || colorMode === 'light' ? colorMode : 'light';
   const theme = getCarbonColorTheme(mode);
-
-  const user = undefined;
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline enableColorScheme />
