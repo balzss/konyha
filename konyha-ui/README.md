@@ -1,4 +1,4 @@
-A `konyha` recept manager frontendje.
+A Konyha Recept Manager frontendje.
 
 ## TODO
 
@@ -26,6 +26,9 @@ A `konyha` recept manager frontendje.
 - [x] színek rendezése
 - [x] pwa dolgok: színek, ikon, manifest, serviceWorker, stb
 - [x] dummy login és signup oldalak
+- [ ] dark mode mentése user preference-ként (default to system preference)
+- [ ] recept mentés owner-rel együtt
+- [ ] csak a userhez tartozó receptek elkérése
 - [ ] jwt token mentése
 - [ ] basic keresés
 - [ ] címke/recept filter

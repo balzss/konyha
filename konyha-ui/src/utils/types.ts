@@ -54,7 +54,7 @@ export type User = {
 }
 
 export type UserState = {
-  user: User | undefined;
+  user: User;
   loggedIn: boolean;
   status: string;
   error: string;

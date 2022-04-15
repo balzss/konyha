@@ -7,7 +7,7 @@ import {
   ListItemText,
   ListItemButton,
 } from '@mui/material';
-import { selectUser, fetchUser } from '../store/userSlice';
+import { selectUser, fetchUser, logoutUser } from '../store/userSlice';
 import { useAppSelector, useAppDispatch } from '../hooks';
 import { User } from '../utils/types';
 
@@ -36,6 +36,7 @@ export default function UserPage() {
   }, [userStatus, dispatch])
 
   const handleSignOut = () => {
+    dispatch(logoutUser());
     localStorage.setItem('userId', '');
     navigate('/login');
   };
