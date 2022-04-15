@@ -1,4 +1,4 @@
-import { RawRecipe, RecipeRequest, Recipe, Tag, LoginData, LoginResponse } from './types';
+import { RawRecipe, RecipeRequest, Recipe, Tag, LoginData, User } from './types';
 
 const API_HOST = 'http://192.168.1.76:1337';
 
@@ -134,12 +134,21 @@ export const getTags = async (): Promise<Tag[]> => {
     });
 };
 
-export const loginUser = async (loginData: LoginData): Promise<LoginResponse>  => {
+export const loginUser = async (loginData: LoginData): Promise<User>  => {
   return await fetch(`${API_HOST}/api/auth/local`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(loginData),
-  }).then((r) => r.json()).then(r => r);
+  }).then((r) => r.json()).then((r) => { 
+    console.log({jwt: r.jwt});
+    localStorage.setItem('userId', r.user.id);
+    return r.user;
+  });
+};
+
+export const getUser = async (userId: string): Promise<User>  => {
+  return await fetch(`${API_HOST}/api/users/${userId}`)
+    .then((r) => r.json()).then((r) =>  r);
 };

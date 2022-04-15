@@ -13,15 +13,18 @@ import {
 } from '@mui/material';
 import BrandHero from '../components/BrandHero';
 import { Link as RouterLink } from 'react-router-dom';
-import { loginUser } from '../utils/api';
+import { sendLogin } from '../store/userSlice';
+import { useAppDispatch } from '../hooks';
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
   const handleLogin = () => {
-    loginUser({identifier: email, password});
+    dispatch(sendLogin({identifier: email, password}));
     navigate('/');
   };
 
@@ -42,9 +45,10 @@ export default function LoginPage() {
               Bejelentkezés
             </Typography>
             <TextField
-              label="Felhasználónév"
+              label="Email"
               variant="outlined"
               margin="normal"
+              type="email"
               required
               fullWidth
               value={email}

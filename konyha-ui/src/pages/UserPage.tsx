@@ -7,9 +7,16 @@ import {
   ListItemText,
   ListItemButton,
 } from '@mui/material';
+import { selectUser, fetchUser } from '../store/userSlice';
+import { useAppSelector, useAppDispatch } from '../hooks';
+import { User } from '../utils/types';
 
 export default function UserPage() {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const user: User | undefined = useAppSelector(selectUser);
+  const userStatus = useAppSelector((state) => state.user.status);
+
   const [darkMode, setDarkMode] = useState<boolean>(false);
 
   useEffect(() => {
@@ -21,7 +28,15 @@ export default function UserPage() {
     localStorage.setItem('colorMode', darkMode ? 'dark' : 'light');
   }, [darkMode]);
 
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    if (userStatus === 'idle' && userId) {
+      dispatch(fetchUser(userId));
+    }
+  }, [userStatus, dispatch])
+
   const handleSignOut = () => {
+    localStorage.setItem('userId', '');
     navigate('/login');
   };
 
@@ -30,7 +45,7 @@ export default function UserPage() {
       sx={{ width: '100%', maxWidth: 480, bgcolor: 'background.default', margin: 'auto', p: 1}}
     >
       <ListItem>
-        <ListItemText primary="Email" secondary="test1@email.com" />
+        <ListItemText primary="Email" secondary={user?.email || 'n/a'}/>
       </ListItem>
       <ListItem>
         <ListItemText id="switch-list-label-wifi" primary="Sötét mód" />

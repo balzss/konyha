@@ -1,11 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-// import { getUser } from '../utils/api';
-import { User, UserState } from '../utils/types';
+import { loginUser, getUser } from '../utils/api';
+import { User, UserState, LoginData } from '../utils/types';
 
-export const fetchUser = createAsyncThunk('user/fetchUser', async () => {
-  // return await getUser();
-  return {id: 'a', email: 'b'};
-})
+export const sendLogin = createAsyncThunk('user/sendLogin', async (loginData: LoginData) => {
+  return await loginUser(loginData);
+});
+
+export const fetchUser = createAsyncThunk('user/fetchUser', async (userId: string) => {
+  return await getUser(userId);
+});
 
 const initialState: UserState = {
   user: undefined,
@@ -20,12 +23,23 @@ export const userSlice = createSlice({
   reducers: {},
   extraReducers(builder) {
     builder
+      .addCase(sendLogin.pending, (state, _action) => {
+        state.status = 'loading';
+      })
+      .addCase(sendLogin.fulfilled, (state, action) => {
+        state.status = 'succeeded';
+        state.user = action.payload;
+      })
+      .addCase(sendLogin.rejected, (state, action) => {
+        state.status = 'failed';
+        state.error = action.error.message || '';
+      })
       .addCase(fetchUser.pending, (state, _action) => {
         state.status = 'loading';
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.status = 'succeeded';
-        state.user = action.payload ?? undefined;
+        state.user = action.payload;
       })
       .addCase(fetchUser.rejected, (state, action) => {
         state.status = 'failed';
@@ -34,6 +48,6 @@ export const userSlice = createSlice({
   }
 });
 
-export const selectUser = (state: {user: UserState}): User | undefined | void => state.user.user;
+export const selectUser = (state: {user: UserState}): User | undefined => state.user.user;
 
 export default userSlice.reducer;
