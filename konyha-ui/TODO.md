@@ -24,7 +24,12 @@
 - [x] színek rendezése
 - [x] pwa dolgok: színek, ikon, manifest, serviceWorker, stb
 - [x] dummy login és signup oldalak
+- [x] LICENSE
 - [ ] migráció next.js-re
+  - [ ] remove old dependencies (`react-scripts`, `react-router-dom`)
+  - [ ] install next.js (with ts?)
+  - [ ] update npm run scripts
+  - [ ] update pages/routes
 - [ ] jwt token proper használat
 - [ ] dark mode mentése user preference-ként (default to system preference)
 - [ ] recept mentés owner-rel együtt
@@ -32,7 +37,6 @@
 - [ ] basic keresés
 - [ ] címke/recept filter
 - [ ] error kezelés
-- [ ] LICENSE
 - [ ] deploy digitalocean app platformra
 
 ## Beta release:

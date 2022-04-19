@@ -20,4 +20,4 @@ npm start
 
 ## [TODO](./TODO.md)
 
-## [LICENSE](./LICENSE)
+## [LICENSE](../LICENSE)
