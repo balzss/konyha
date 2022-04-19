@@ -10,7 +10,7 @@ import {
   LoginPage,
   SignUpPage,
 } from './pages';
-import { getCarbonColorTheme } from './colorTheme';
+import { getCustomTheme } from './theme';
 import './App.scss';
 
 function Layout() {
@@ -25,7 +25,7 @@ function Layout() {
 function App() {
   const colorMode = localStorage.getItem('colorMode');
   const mode = colorMode === 'dark' || colorMode === 'light' ? colorMode : 'light';
-  const theme = getCarbonColorTheme(mode);
+  const theme = getCustomTheme(mode);
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline enableColorScheme />

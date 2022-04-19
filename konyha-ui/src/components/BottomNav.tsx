@@ -58,8 +58,6 @@ export default function BottomBar() {
         width: '100%',
         zIndex: 1000,
         bgcolor: 'background.default',
-        borderTop: '1px solid',
-        borderTopColor: 'divider',
       }}
     >
       {bottomNavItems.map(({displayName, icon, disabled}) => (

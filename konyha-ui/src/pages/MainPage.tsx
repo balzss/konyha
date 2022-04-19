@@ -9,7 +9,7 @@ import {
 import {
   Add as AddIcon,
   Search as SearchIcon,
-  FilterList as FilterListIcon,
+  FilterAlt as FilterAltIcon,
 } from '@mui/icons-material';
 import TopBar from '../components/TopBar';
 import RecipeCard from '../components/RecipeCard';
@@ -53,7 +53,7 @@ export default function MainPage() {
       }}
     >
       <TopBar
-        leadingAction={{action: () => {}, icon: <FilterListIcon/>, label: 'Menü'}}
+        leadingAction={{action: () => {}, icon: <FilterAltIcon/>, label: 'Menü'}}
         title="Összes recept"
         trailingActions={[
           {icon: <SearchIcon/>, action: () => {}, label: 'Keresés'},
