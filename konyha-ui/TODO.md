@@ -25,8 +25,9 @@
 - [x] pwa dolgok: színek, ikon, manifest, serviceWorker, stb
 - [x] dummy login és signup oldalak
 - [x] LICENSE
+- [x] backend migráció keystone-ra
+- [ ] graphql bekötése frontendbe
 - [ ] frontend migráció next.js-re
-- [ ] backend migráció supabase-re (vagy másra?)
 - [ ] jwt token NEM PROPER használat (mentés local storage-be)
 - [ ] dark mode mentése user preference-ként (default to system preference)
 - [ ] recept mentés owner-rel együtt
