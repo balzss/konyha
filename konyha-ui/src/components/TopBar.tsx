@@ -79,7 +79,7 @@ export default function TopBar({
         {title}
       </span>
       { trailingActions && trailingActions.map(({action, label, icon}) => (
-        <IconButton onClick={action} aria-label={label}>
+        <IconButton onClick={action} aria-label={label} key={label}>
           {icon}
         </IconButton>
       ))}

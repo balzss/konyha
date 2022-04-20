@@ -142,8 +142,8 @@ export const loginUser = async (loginData: LoginData): Promise<User>  => {
     },
     body: JSON.stringify(loginData),
   }).then((r) => r.json()).then((r) => { 
-    console.log({jwt: r.jwt});
     localStorage.setItem('userId', r.user.id);
+    localStorage.setItem('badPracticeTokenStorage', r.jwt);
     return r.user;
   });
 };

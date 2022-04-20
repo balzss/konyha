@@ -25,16 +25,13 @@
 - [x] pwa dolgok: színek, ikon, manifest, serviceWorker, stb
 - [x] dummy login és signup oldalak
 - [x] LICENSE
-- [ ] migráció next.js-re
-  - [ ] remove old dependencies (`react-scripts`, `react-router-dom`)
-  - [ ] install next.js (with ts?)
-  - [ ] update npm run scripts
-  - [ ] update pages/routes
-- [ ] jwt token proper használat
+- [ ] frontend migráció next.js-re
+- [ ] backend migráció supabase-re (vagy másra?)
+- [ ] jwt token NEM PROPER használat (mentés local storage-be)
 - [ ] dark mode mentése user preference-ként (default to system preference)
 - [ ] recept mentés owner-rel együtt
 - [ ] csak a userhez tartozó receptek elkérése
-- [ ] basic keresés
+- [ ] basic keresés -> SearchPage
 - [ ] címke/recept filter
 - [ ] error kezelés
 - [ ] deploy digitalocean app platformra
@@ -43,7 +40,7 @@
 
 - [ ] feature branch szabály beállítása githubon
 - [ ] tesztek és CI bevezetése
-- [ ] asztali nézet
+- [ ] asztali nézet (sidebar)
 - [ ] i18n (angol és magyar)
 - [ ] TextField -> InputBase, divider csíkok
 - [ ] személyes oldal
