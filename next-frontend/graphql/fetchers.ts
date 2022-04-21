@@ -1,7 +1,8 @@
 import { gql } from "@apollo/client";
 import client from "./apollo-client";
 
-async function getRecipes() {
+async function recipesFetcher(arg: string) {
+  console.log(arg)
   const { data } = await client.query({
     query: gql`
       query {
@@ -16,5 +17,5 @@ async function getRecipes() {
 }
 
 export {
-  getRecipes,
+  recipesFetcher,
 }

@@ -3,11 +3,11 @@
 ## Alpha release:
 
 - [x] graphql bekötése frontendbe
-- [ ] redux bekötése a frontendre
+- [ ] legjobb offline megoldás megkeresése
 - [ ] ui migráció next.js-re
 - [ ] keystone schema kiegészítés
 - [ ] dark mode mentése user preference-ként (default to system preference)
-- [ ] recept mentés owner-rel együtt
+- [ ] recept mentés authorral együtt
 - [ ] csak a userhez tartozó receptek elkérése
 - [ ] basic keresés -> SearchPage
 - [ ] címke/recept filter
