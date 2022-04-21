@@ -2,13 +2,17 @@ import { gql } from "@apollo/client";
 import client from "./apollo-client";
 
 async function recipesFetcher(arg: string) {
-  console.log(arg)
+  console.log(arg);
   const { data } = await client.query({
     query: gql`
       query {
         recipes {
           id
-          title
+          name
+          tags {
+            id
+            name
+          }
         }
       }
     `,
