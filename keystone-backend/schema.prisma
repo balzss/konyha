@@ -21,7 +21,7 @@ model User {
 
 model Recipe {
   id          String  @id @default(cuid())
-  title       String  @default("")
+  name        String  @default("")
   description String  @default("")
   author      User?   @relation("Recipe_author", fields: [authorId], references: [id])
   authorId    String? @map("author")

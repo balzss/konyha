@@ -65,7 +65,7 @@ export const lists: Lists = {
   // so we have all the info we need for displaying posts.
   Recipe: list({
     fields: {
-      title: text(),
+      name: text(),
       description: text(),
       author: relationship({
         ref: 'User.recipes',
