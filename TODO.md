@@ -1,11 +1,17 @@
 # TODO
 
-## Alpha release:
+## Migráció
 
 - [x] graphql bekötése frontendbe
-- [ ] legjobb offline megoldás megkeresése
-- [ ] ui migráció next.js-re
+- [x] swr hookok
+- [x] komponens migráció next.js-re
+- [ ] pages migráció next.js-re
+- [ ] navigáció
 - [ ] keystone schema kiegészítés
+- [ ] tag és user dataHook
+
+## Alpha release:
+
 - [ ] dark mode mentése user preference-ként (default to system preference)
 - [ ] recept mentés authorral együtt
 - [ ] csak a userhez tartozó receptek elkérése
@@ -17,11 +23,11 @@
 ## Beta release:
 
 - [ ] feature branch szabály beállítása githubon
-- [ ] tesztek és CI bevezetése
+- [ ] lint, tesztek és CI bevezetése
 - [ ] asztali nézet (sidebar)
 - [ ] i18n (angol és magyar)
 - [ ] 404 page
-- [ ] offline működés (redux-persist?)
+- [ ] offline működés
 - [ ] change page transitions (open card, edit recipe, etc)
 - [ ] TextField -> InputBase, divider csíkok
 - [ ] személyes oldal
@@ -32,12 +38,12 @@
 - [ ] bevásárló lista oldal
   - [ ] elemek hozzáadása kézzel
   - [ ] elemek hozzáadása a recept oldalról
-- [ ] időzítő oldal
-  - [ ] időzítő linkelés recept instrukciókból
 - [ ] project page, ami bemutatja az oldal célját, működését, használatát, stb
 - [ ] public repo
 
 ## Post beta
 
+- [ ] időzítő oldal
+  - [ ] időzítő linkelés recept instrukciókból
 - [ ] portion calculator
 - [ ] presentation mode
