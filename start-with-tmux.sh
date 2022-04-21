@@ -1,4 +1,4 @@
 #!/bin/sh
-tmux send-keys 'cd ./keystone-backend && npm run dev' C-m \; \
+tmux send-keys 'cd ./keystone-backend && yarn dev' C-m \; \
   split-window -v \; \
-  send-keys 'cd ./konyha-ui && npm start' C-m \; 
+  send-keys 'cd ./next-frontend && yarn dev' C-m \; 
