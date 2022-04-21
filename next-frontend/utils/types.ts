@@ -11,7 +11,7 @@ export type Recipe = {
   slug: string;
   ingredients: string[];
   instructions: string[];
-  tags: string[],
+  tags: Tag[],
   description?: string;
 };
 
