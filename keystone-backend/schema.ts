@@ -23,6 +23,7 @@ import {
   text,
   relationship,
   password,
+  json,
 } from '@keystone-6/core/fields';
 
 // We are using Typescript, and we want our types experience to be as strict as it can be.
@@ -54,19 +55,33 @@ export const lists: Lists = {
       // Make sure you read the docs to understand how they work: https://keystonejs.com/docs/guides/relationships#understanding-relationships
       recipes: relationship({ ref: 'Recipe.author', many: true }),
     },
-    // Here we can configure the Admin UI. We want to show a user's name and posts in the Admin UI
     ui: {
       listView: {
         initialColumns: ['name', 'recipes'],
       },
     },
   }),
-  // Our second list is the Posts list. We've got a few more fields here
-  // so we have all the info we need for displaying posts.
   Recipe: list({
     fields: {
-      name: text(),
+      name: text({ validation: { isRequired: true } }),
+      slug: text({
+        isIndexed: 'unique',
+        hooks: {
+          resolveInput: ({ operation, resolvedData, inputData }) => {
+            if (operation === 'create' && !inputData.slug) {
+              return inputData.name
+                ?.trim()
+                .toLowerCase()
+                .replace(/[^\w ]+/g, '')
+                .replace(/ +/g, '-');
+            }
+            return resolvedData.slug;
+          },
+        },
+      }),
       description: text(),
+      ingredients: json(),
+      instructions: json(),
       author: relationship({
         ref: 'User.recipes',
         ui: {
@@ -92,11 +107,7 @@ export const lists: Lists = {
       }),
     },
   }),
-  // Our final list is the tag list. This field is just a name and a relationship to posts
   Tag: list({
-    ui: {
-      isHidden: false,
-    },
     fields: {
       name: text(),
       recipes: relationship({ ref: 'Recipe.tags', many: true }),

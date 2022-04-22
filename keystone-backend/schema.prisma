@@ -20,12 +20,15 @@ model User {
 }
 
 model Recipe {
-  id          String  @id @default(cuid())
-  name        String  @default("")
-  description String  @default("")
-  author      User?   @relation("Recipe_author", fields: [authorId], references: [id])
-  authorId    String? @map("author")
-  tags        Tag[]   @relation("Recipe_tags")
+  id           String  @id @default(cuid())
+  name         String  @default("")
+  slug         String  @unique @default("")
+  description  String  @default("")
+  ingredients  String?
+  instructions String?
+  author       User?   @relation("Recipe_author", fields: [authorId], references: [id])
+  authorId     String? @map("author")
+  tags         Tag[]   @relation("Recipe_tags")
 
   @@index([authorId])
 }

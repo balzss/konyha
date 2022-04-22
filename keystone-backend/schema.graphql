@@ -124,7 +124,10 @@ input RecipeRelateToManyForCreateInput {
 type Recipe {
   id: ID!
   name: String
+  slug: String
   description: String
+  ingredients: JSON
+  instructions: JSON
   author: User
   tags(
     where: TagWhereInput! = {}
@@ -137,6 +140,7 @@ type Recipe {
 
 input RecipeWhereUniqueInput {
   id: ID
+  slug: String
 }
 
 input RecipeWhereInput {
@@ -145,6 +149,7 @@ input RecipeWhereInput {
   NOT: [RecipeWhereInput!]
   id: IDFilter
   name: StringFilter
+  slug: StringFilter
   description: StringFilter
   author: UserWhereInput
   tags: TagManyRelationFilter
@@ -159,12 +164,16 @@ input TagManyRelationFilter {
 input RecipeOrderByInput {
   id: OrderDirection
   name: OrderDirection
+  slug: OrderDirection
   description: OrderDirection
 }
 
 input RecipeUpdateInput {
   name: String
+  slug: String
   description: String
+  ingredients: JSON
+  instructions: JSON
   author: UserRelateToOneForUpdateInput
   tags: TagRelateToManyForUpdateInput
 }
@@ -189,7 +198,10 @@ input RecipeUpdateArgs {
 
 input RecipeCreateInput {
   name: String
+  slug: String
   description: String
+  ingredients: JSON
+  instructions: JSON
   author: UserRelateToOneForCreateInput
   tags: TagRelateToManyForCreateInput
 }
