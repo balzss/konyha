@@ -4,7 +4,6 @@ import { useRecipes } from '../dataHooks';
 
 const Test: NextPage = () => {
   const { data } = useRecipes();
-  console.log(data);
 
   return (
     <div>

@@ -1,4 +1,5 @@
 import type { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import {
   Alert,
   Container,
@@ -16,14 +17,15 @@ import BottomNav from '../components/BottomNav';
 import { useRecipes } from '../dataHooks';
 
 const MainPage: NextPage = () => {
+  const router = useRouter();
   const { recipes, error } = useRecipes();
 
   const handleClickAdd = (_event: React.SyntheticEvent) => {
-    // navigate('/add');
+    router.push('/add');
   };
 
   const handleClickRecipe = (recipeSlug: string) => {
-    // navigate(`/${recipeSlug}`);
+    router.push(`/${recipeSlug}`);
   };
 
   return (

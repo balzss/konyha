@@ -2,7 +2,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Chip, CardActionArea, CardActions } from '@mui/material';
-import { Recipe, Tag } from '../utils/types';
+import { Recipe } from '../utils/types';
 
 type RecipeCardProps = {
   recipe: Recipe;
@@ -13,7 +13,7 @@ export default function RecipeCard({
   recipe,
   onClick,
 }: RecipeCardProps) {
-  const tags: Tag[] = recipe.tags;
+  const { tags } = recipe;
   return (
     <Card variant="outlined" sx={{bgcolor: 'background.default'}}>
       <CardActionArea onClick={() => onClick(recipe.slug)}>
