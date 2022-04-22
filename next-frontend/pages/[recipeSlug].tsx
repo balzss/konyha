@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   Box,
   Container,
@@ -21,7 +21,7 @@ import {
 } from '@mui/icons-material'
 import TopBar from '../components/TopBar';
 import ConfirmModal from '../components/ConfirmModal';
-import { useSingleRecipe } from '../dataHooks';
+import { useSingleRecipe, useDeleteRecipe } from '../dataHooks';
 
 function RecipeIngredients({ingredients}: {ingredients: string[]}) {
   return (
@@ -65,6 +65,7 @@ const RecipeDetailsPage: NextPage = () => {
   const router = useRouter();
   const { recipeSlug } = router.query;
   const { data: recipe } = useSingleRecipe(recipeSlug as string);
+  const { mutate: deleteRecipe } = useDeleteRecipe();
   const tags = recipe?.tags;
 
   const [errorConfirmOpen, setErrorConfirmOpen] = useState<boolean>(false);
@@ -79,16 +80,13 @@ const RecipeDetailsPage: NextPage = () => {
   };
 
   const handleDeleteRecipe = async (_e: React.SyntheticEvent) => {
-    // if (!recipe.id) return;
-    // // TODO ask for confirmation
-    // try {
-    //     await dispatch(removeRecipe(recipe.id)).unwrap();
-    // } catch (e) {
-    //   // TODO handle error response
-    //   console.error(e);
-    // } finally {
-    //   navigate('/');
-    // }
+    if (!recipeSlug) return;
+    deleteRecipe(recipeSlug as string, {
+      onSettled: (data, error) => {
+        console.log({data, error});
+        router.push('/');
+      }
+    });
   };
 
   return (

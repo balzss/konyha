@@ -22,7 +22,7 @@ export type RawRecipe = {
   ingredients: string;
   instructions: string;
   tags?: string[] | undefined;
-  newTag?: string | undefined;
+  newTags?: string | undefined;
 };
 
 // for redux

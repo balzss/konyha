@@ -20,8 +20,7 @@ import {
 } from '@mui/icons-material'
 import TopBar from '../components/TopBar';
 import ConfirmModal from '../components/ConfirmModal';
-import { Recipe, Tag } from '../utils/types';
-import { useSingleRecipe, useTags } from '../dataHooks';
+import { useSingleRecipe, useTags, useCreateRecipe, useUpdateRecipe } from '../dataHooks';
 
 type RequiredFields = {
   recipeName: string;
@@ -39,8 +38,10 @@ function getMissingFields({recipeName, ingredients, instructions}: RequiredField
 
 const EditRecipePage: NextPage = () => {
   const router = useRouter();
-  const { recipeSlug } = router.query;
-  const { data: recipe } = useSingleRecipe(recipeSlug as string);
+  const { mutate: createRecipe } = useCreateRecipe();
+  const { mutate: updateRecipe } = useUpdateRecipe();
+  const recipeSlug = router.query.recipeSlug as string;
+  const { data: recipe } = useSingleRecipe(recipeSlug);
   const { data: tags } = useTags();
 
   const [recipeName, setRecipeName] = useState<string>('');
@@ -48,7 +49,7 @@ const EditRecipePage: NextPage = () => {
   const [ingredients, setIngredients] = useState<string>('');
   const [instructions, setInstructions] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const [newTag, setNewTag] = useState<string>('');
+  const [newTags, setNewTags] = useState<string>('');
   const [missingFields, setMissingFields] = useState<boolean>(true); // TODO use for save button
   const [saveConfirmOpen, setSaveConfirmOpen] = useState<boolean>(false);
 
@@ -85,27 +86,28 @@ const EditRecipePage: NextPage = () => {
       ingredients,
       instructions,
       tags: selectedTags.map(getTagIdByName) as string[],
-      newTag,
+      newTags,
     };
-    console.log({newRecipeData})
 
-    // let recipeSlug = '';
-    // try {
-    //   if (params.recipeSlug) {
-    //     const editResponse = await dispatch(editRecipe({updatedRecipe: newRecipeData, recipeId: recipe.id})).unwrap();
-    //     recipeSlug = editResponse.slug;
-    //   } else {
-    //     const addResponse = await dispatch(addRecipe(newRecipeData)).unwrap();
-    //     recipeSlug = addResponse.slug;
-    //   }
-    //   // re-fetching the tags in case there were new ones created
-    //   await dispatch(fetchTags()).unwrap();
-    // } catch (e) {
-    //   // TODO handle error response
-    //   console.error(e);
-    // } finally {
-    // router.push('/');
-    // }
+    if (recipeSlug) {
+      updateRecipe({recipeData: newRecipeData, recipeSlug}, {
+        onSettled: (data, error) => {
+          console.log({data, error});
+          if (data.slug) {
+            router.push(`/${data.slug}`);
+          }
+        },
+      });
+    } else {
+      createRecipe(newRecipeData, {
+        onSettled: (data, error) => {
+          console.log({data, error});
+          if (data.slug) {
+            router.push(`/${data.slug}`);
+          }
+        },
+      });
+    }
   };
 
   const handleTagChange = (event: SelectChangeEvent<typeof selectedTags>) => {
@@ -143,7 +145,7 @@ const EditRecipePage: NextPage = () => {
       />
       <Container maxWidth="sm">
         <form onSubmit={handleSubmitRecipe}>
-          <TextField 
+          <TextField
             label="Recept neve"
             variant="outlined"
             margin="normal"
@@ -202,13 +204,13 @@ const EditRecipePage: NextPage = () => {
               ))}
             </Select>
           </FormControl>
-          <TextField 
+          <TextField
             label="Új címkék"
             variant="outlined"
             margin="normal"
             sx={{width: '100%'}}
-            value={newTag}
-            onChange={({target}) => setNewTag(target.value)}
+            value={newTags}
+            onChange={({target}) => setNewTags(target.value)}
           />
         </form>
       </Container>

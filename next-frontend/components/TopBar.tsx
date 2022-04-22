@@ -65,8 +65,8 @@ export default function TopBar({
           {leadingAction.icon}
         </IconButton>
       )}
-      <span 
-        style={{ 
+      <span
+        style={{
           paddingInline: '8px',
           marginRight: 'auto',
           fontSize: '22px',

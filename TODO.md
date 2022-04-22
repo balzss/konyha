@@ -5,10 +5,10 @@
 - [x] graphql bekötése frontendbe
 - [x] swr hookok
 - [x] komponens migráció next.js-re
-- [ ] pages migráció next.js-re
-- [ ] navigáció
-- [ ] keystone schema kiegészítés
-- [ ] tag és user dataHook
+- [x] keystone schema kiegészítés
+- [x] pages migráció next.js-re
+- [x] navigáció
+- [ ] mutation-ok migralasa (delete es update)
 
 ## Alpha release:
 
