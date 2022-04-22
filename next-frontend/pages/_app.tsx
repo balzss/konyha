@@ -1,8 +1,14 @@
 import '../styles/globals.css';
 import type { AppProps } from 'next/app';
+import {
+  QueryClient,
+  QueryClientProvider,
+} from 'react-query';
 import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import { getCustomTheme } from '../utils/theme';
+
+const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
   const colorMode = 'dark';
@@ -10,11 +16,13 @@ function MyApp({ Component, pageProps }: AppProps) {
   const theme = getCustomTheme(mode);
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline enableColorScheme />
-      <Component {...pageProps} />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider theme={theme}>
+        <CssBaseline enableColorScheme />
+        <Component {...pageProps} />
+      </ThemeProvider>
+    </QueryClientProvider>
   );
-}
+};
 
-export default MyApp
+export default MyApp;

@@ -1,50 +1,70 @@
-import useSWR from 'swr';
-import { recipesFetcher, tagFetcher, singleRecipeFetcher } from './fetchers';
 import { Recipe, Tag } from '../utils/types';
+import { useQuery } from 'react-query';
+import { request, gql } from "graphql-request";
 
-function useRecipes(): {
-  recipes: Recipe[];
-  loading: boolean;
-  error: any;
-  mutate: Function;
-} {
-  const { data, error, mutate } = useSWR('/recipes', recipesFetcher);
-  return {
-    recipes: data?.recipes,
-    loading: !error && !data,
-    error,
-    mutate,
-  };
+const GRAPHQL_ENDPOINT = 'http://localhost:8000/api/graphql';
+
+function useRecipes() {
+  return useQuery<Recipe[], Error>('recipes', async () => {
+    const { recipes } = await request(
+      GRAPHQL_ENDPOINT,
+      gql`
+        query {
+          recipes {
+            id
+            name
+            slug
+            description
+            tags {
+              id
+              name
+            }
+          }
+        }
+      `
+    );
+    return recipes;
+  });
 }
 
-function useSingleRecipe(recipeSlug: string): {
-  recipe: Recipe;
-  loading: boolean;
-  error: any;
-  mutate: Function;
-} {
-  const { data, error, mutate } = useSWR('/single-recipe', () => singleRecipeFetcher(recipeSlug));
-  return {
-    recipe: data?.recipes[0],
-    loading: !error && !data,
-    error,
-    mutate,
-  };
+function useSingleRecipe(recipeSlug: string) {
+  return useQuery<Recipe, Error>(['recipe', recipeSlug], async () => {
+    const { recipes } = await request(
+      GRAPHQL_ENDPOINT,
+      gql`
+        query {
+          recipes(where: {slug: {equals: "${recipeSlug}"}}) {
+            id
+            name
+            slug
+            description
+            tags {
+              id
+              name
+            }
+          }
+        }
+      `
+    );
+    return recipes[0];
+  }, {enabled: !!recipeSlug});
 }
 
-function useTags(): {
-  tags: Tag[];
-  loading: boolean;
-  error: any;
-  mutate: Function;
-} {
-  const { data, error, mutate } = useSWR('/tags', tagFetcher);
-  return {
-    tags: data?.tags,
-    loading: !error && !data,
-    error,
-    mutate,
-  };
+function useTags() {
+  return useQuery<Tag[], Error>('tags', async () => {
+    const { tags } = await request(
+      GRAPHQL_ENDPOINT,
+      gql`
+        query {
+          tags {
+            id
+            name
+        }
+        }
+      `
+    );
+    return tags;
+  });
 }
 
 export {

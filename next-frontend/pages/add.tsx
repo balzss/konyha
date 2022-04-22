@@ -21,6 +21,7 @@ import {
 import TopBar from '../components/TopBar';
 import ConfirmModal from '../components/ConfirmModal';
 import { Recipe, Tag } from '../utils/types';
+import { useSingleRecipe, useTags } from '../dataHooks';
 
 type RequiredFields = {
   recipeName: string;
@@ -30,15 +31,17 @@ type RequiredFields = {
 
 function getMissingFields({recipeName, ingredients, instructions}: RequiredFields) {
   return [
-    ...recipeName.trim() ? [] : ['recipeName'],
-    ...ingredients.trim() ? [] : ['ingredients'],
-    ...instructions.trim() ? [] : ['instructions'],
+    ...recipeName?.trim() ? [] : ['recipeName'],
+    ...ingredients?.trim() ? [] : ['ingredients'],
+    ...instructions?.trim() ? [] : ['instructions'],
   ];
 }
 
 const EditRecipePage: NextPage = () => {
   const router = useRouter();
   const { recipeSlug } = router.query;
+  const { data: recipe } = useSingleRecipe(recipeSlug as string);
+  const { data: tags } = useTags();
 
   const [recipeName, setRecipeName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -49,13 +52,11 @@ const EditRecipePage: NextPage = () => {
   const [missingFields, setMissingFields] = useState<boolean>(true); // TODO use for save button
   const [saveConfirmOpen, setSaveConfirmOpen] = useState<boolean>(false);
 
-  const recipe: Recipe = {name: 'a'};
-  const tags: Tag[] = [];
   useEffect(() => {
-    if (recipe && tags.length) {
+    if (recipe && tags && tags.length) {
       setRecipeName(recipe.name);
-      setIngredients(recipe.ingredients.join('\n'));
-      setInstructions(recipe.instructions.join('\n'));
+      setIngredients(recipe.ingredients?.join('\n'));
+      setInstructions(recipe.instructions?.join('\n'));
       setSelectedTags(recipe.tags.map((tagId) => tags.find(tag => tag.id === tagId.id)?.name) as string[]);
       if (recipe.description) {
         setDescription(recipe.description);
@@ -68,11 +69,11 @@ const EditRecipePage: NextPage = () => {
   }, [recipeName, ingredients, instructions]);
 
   const getTagByName = (tagName: string) => {
-    return tags.find((tag) => tag.name === tagName)?.name;
+    return tags?.find((tag) => tag.name === tagName)?.name;
   };
 
   const getTagIdByName = (tagName: string): string | undefined => {
-    return tags.find((tag) => tag.name === tagName)?.id;
+    return tags?.find((tag) => tag.name === tagName)?.id;
   };
 
   const handleSubmitRecipe = async (e: React.SyntheticEvent) => {
@@ -193,7 +194,7 @@ const EditRecipePage: NextPage = () => {
               input={<OutlinedInput label="Mentett címkék" />}
               renderValue={(selected) => selected.join(', ')}
             >
-              {tags.map(({name}) => (
+              {tags && tags.length > 0 && tags.map(({name}) => (
                 <MenuItem key={name} value={name}>
                   <Checkbox checked={selectedTags.indexOf(name) > -1} />
                   <ListItemText primary={name} />

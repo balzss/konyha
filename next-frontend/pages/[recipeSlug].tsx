@@ -64,7 +64,7 @@ function RecipeInstructions({instructions}: {instructions: string[]}) {
 const RecipeDetailsPage: NextPage = () => {
   const router = useRouter();
   const { recipeSlug } = router.query;
-  const { recipe } = useSingleRecipe(recipeSlug as string ?? '');
+  const { data: recipe } = useSingleRecipe(recipeSlug as string);
   const tags = recipe?.tags;
 
   const [errorConfirmOpen, setErrorConfirmOpen] = useState<boolean>(false);
@@ -74,8 +74,8 @@ const RecipeDetailsPage: NextPage = () => {
   };
 
   const handleClickEdit = () => {
-    if (recipeSlug) return;
-    router.push(`/${recipeSlug}/edit`);
+    if (!recipeSlug) return;
+    router.push(`/edit/${recipeSlug}`);
   };
 
   const handleDeleteRecipe = async (_e: React.SyntheticEvent) => {

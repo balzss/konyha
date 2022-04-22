@@ -18,7 +18,7 @@ import { useRecipes } from '../dataHooks';
 
 const MainPage: NextPage = () => {
   const router = useRouter();
-  const { recipes, error } = useRecipes();
+  const { data: recipes, error } = useRecipes();
 
   const handleClickAdd = (_event: React.SyntheticEvent) => {
     router.push('/add');
@@ -49,7 +49,7 @@ const MainPage: NextPage = () => {
         <Grid container spacing={1}>
           {error && (
             <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Alert severity="error">{error}</Alert>
+              <Alert severity="error">{error.message}</Alert>
             </Grid>
           )}
           {recipes && recipes.map((recipe) => (
