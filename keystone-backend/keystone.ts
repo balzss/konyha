@@ -20,7 +20,7 @@ export default withAuth(
     server: {
       port: 8000,
       cors: {
-        origin: 'http://localhost:3000',
+        origin: 'http://192.168.1.76:3000',
       },
     },
     // the db sets the database provider - we're using sqlite for the fastest startup experience

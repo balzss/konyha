@@ -2,7 +2,27 @@ import { Recipe, Tag, RawRecipe } from '../utils/types';
 import { useQuery, useQueryClient, useMutation } from 'react-query';
 import { request, gql } from 'graphql-request';
 
-const GRAPHQL_ENDPOINT = 'http://localhost:8000/api/graphql';
+const GRAPHQL_ENDPOINT = 'http://192.168.1.76:8000/api/graphql';
+
+function formatFields(rawFields: {description?: string | undefined, ingredients: string, instructions: string}) {
+  const description = rawFields.description?.trim() ?? '';
+  const ingredients = rawFields.ingredients?.split('\n').map((ingredient) => `"${ingredient.trim()}"`).join(',') ?? '';
+  const instructions = rawFields.instructions?.split('\n').map((instruction) => `"${instruction.trim()}"`).join(',') ?? '';
+  return {
+    description,
+    ingredients,
+    instructions
+  };
+}
+
+function formatTags(tags: string) {
+  return tags
+    .split(',')
+    .map((tag) => tag.trim())
+    .filter((tag) => tag)
+    .map((tag) => `{name: "${tag}"}`)
+    .join(', ');
+}
 
 function useRecipes() {
   return useQuery<Recipe[], Error>('recipes', async () => {
@@ -14,6 +34,8 @@ function useRecipes() {
             id
             name
             slug
+            ingredients
+            instructions
             description
             tags {
               id
@@ -38,6 +60,8 @@ function useSingleRecipe(recipeSlug: string) {
             name
             slug
             description
+            ingredients
+            instructions
             tags {
               id
               name
@@ -53,17 +77,14 @@ function useSingleRecipe(recipeSlug: string) {
 function useCreateRecipe() {
   const queryClient = useQueryClient();
   return useMutation(async (recipeData: RawRecipe) => {
-    const formattedNewTags =
-      recipeData.newTags
-        ?.split(',')
-        .map((tag) => tag.trim())
-        .filter((tag) => tag)
-        .map((tag) => `{name: "${tag}"}`)
-        .join(', ');
+    const formattedNewTags = formatTags(recipeData.newTags ?? '');
     const formattedExistingTags = recipeData.tags?.map((tag) => `{id: "${tag}"}`);
+    const { description, ingredients, instructions } = formatFields(recipeData);
     const recipeDataString = `{
       name: "${recipeData.recipeName}",
-      description: "${recipeData.description}",
+      description: "${description}",
+      ingredients: [${ingredients}],
+      instructions: [${instructions}],
       tags: {
         create: [${formattedNewTags}],
         connect: [${formattedExistingTags}]
@@ -91,23 +112,19 @@ function useCreateRecipe() {
 function useUpdateRecipe() {
   const queryClient = useQueryClient();
   return useMutation(async ({recipeData, recipeSlug}: {recipeData: RawRecipe, recipeSlug: string}) => {
-    const formattedNewTags =
-      recipeData.newTags
-        ?.split(',')
-        .map((tag) => tag.trim())
-        .filter((tag) => tag)
-        .map((tag) => `{name: "${tag}"}`)
-        .join(', ');
+    const formattedNewTags = formatTags(recipeData.newTags ?? '');
     const formattedExistingTags = recipeData.tags?.map((tag) => `{id: "${tag}"}`);
+    const { description, ingredients, instructions } = formatFields(recipeData);
     const recipeDataString = `{
       name: "${recipeData.recipeName}",
-      description: "${recipeData.description}",
+      description: "${description}",
+      ingredients: [${ingredients}],
+      instructions: [${instructions}],
       tags: {
         create: [${formattedNewTags}],
-        connect: [${formattedExistingTags}]
+        set: [${formattedExistingTags}]
       }
     }`;
-    // TODO disconnect tags that arent used anymore
     const { updateRecipe } = await request(
       GRAPHQL_ENDPOINT,
       gql`
@@ -150,7 +167,8 @@ function useDeleteRecipe() {
 }
 
 function useTags() {
-  return useQuery<Tag[], Error>('tags', async () => {
+  const { mutate: deleteTags } = useDeleteTags();
+  return useQuery<Array<Tag  & { recipesCount: number }>, Error>('tags', async () => {
     const { tags } = await request(
       GRAPHQL_ENDPOINT,
       gql`
@@ -158,11 +176,40 @@ function useTags() {
           tags {
             id
             name
+            recipesCount
           }
         }
       `
     );
     return tags;
+  }, {
+    onSuccess: (tags) => {
+      const deleteCandidates = tags.filter((tag) => !tag.recipesCount);
+      if (deleteCandidates.length) {
+        deleteTags(deleteCandidates.map((tag) => `{id: "${tag.id}"}`));
+      }
+    },
+  });
+}
+
+function useDeleteTags() {
+  const queryClient = useQueryClient();
+  return useMutation(async (tagIds: string[]) => {
+    const response = await request(
+      GRAPHQL_ENDPOINT,
+      gql`
+        mutation {
+          deleteTags(where: [${tagIds.join(',')}]) {
+            id
+          }
+        }
+      `,
+    );
+    return response;
+  }, {
+    onSuccess: () => {
+      queryClient.invalidateQueries('tags');
+    },
   });
 }
 

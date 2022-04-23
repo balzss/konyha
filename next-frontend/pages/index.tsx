@@ -1,4 +1,4 @@
-import type { NextPage } from 'next';
+import type { ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import {
   Alert,
@@ -11,14 +11,16 @@ import {
   Search as SearchIcon,
   FilterAlt as FilterAltIcon,
 } from '@mui/icons-material';
+import Layout from '../components/Layout'
 import TopBar from '../components/TopBar';
 import RecipeCard from '../components/RecipeCard';
 import BottomNav from '../components/BottomNav';
-import { useRecipes } from '../dataHooks';
+import { useRecipes, useTags } from '../dataHooks';
 
-const MainPage: NextPage = () => {
+export default function MainPage() {
   const router = useRouter();
   const { data: recipes, error } = useRecipes();
+  useTags(); // load tags here so it won't need to be requested later
 
   const handleClickAdd = (_event: React.SyntheticEvent) => {
     router.push('/add');
@@ -64,4 +66,10 @@ const MainPage: NextPage = () => {
   );
 }
 
-export default MainPage;
+MainPage.getLayout = (page: ReactElement) => {
+  return (
+    <Layout>
+      {page}
+    </Layout>
+  );
+};
