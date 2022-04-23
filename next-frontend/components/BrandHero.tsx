@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import {
   Link,
   Typography,
@@ -6,9 +7,9 @@ import NextLink from 'next/link';
 
 export default function BrandHero() {
   return (
-    <Link to="/" underline="none" component={NextLink as any} sx={{color: 'inherit'}}>
+    <Link href="/" underline="none" component={NextLink as any} sx={{color: 'inherit'}}>
       <div style={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', paddingInline: '16px'}}>
-        <img src="/logo128.png" alt="" style={{width: '80px'}}/>
+        <Image src="/logo128.png" alt="logo" width="80" height="80"/>
         <Typography variant="h4" component="div" sx={{minWidth: '300px', textAlign: 'center'}}>
           Konyha Recept Manager
         </Typography>
