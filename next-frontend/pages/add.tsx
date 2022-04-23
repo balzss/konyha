@@ -22,25 +22,11 @@ import TopBar from '../components/TopBar';
 import ConfirmModal from '../components/ConfirmModal';
 import { useSingleRecipe, useTags, useCreateRecipe, useUpdateRecipe } from '../dataHooks';
 
-type RequiredFields = {
-  recipeName: string;
-  ingredients: string;
-  instructions: string;
-};
-
-function getMissingFields({recipeName, ingredients, instructions}: RequiredFields) {
-  return [
-    ...recipeName?.trim() ? [] : ['recipeName'],
-    ...ingredients?.trim() ? [] : ['ingredients'],
-    ...instructions?.trim() ? [] : ['instructions'],
-  ];
-}
-
 const EditRecipePage: NextPage = () => {
   const router = useRouter();
+  const recipeSlug = router.query.recipeSlug as string;
   const { mutate: createRecipe } = useCreateRecipe();
   const { mutate: updateRecipe } = useUpdateRecipe();
-  const recipeSlug = router.query.recipeSlug as string;
   const { data: recipe } = useSingleRecipe(recipeSlug);
   const { data: tags } = useTags();
 
@@ -50,7 +36,6 @@ const EditRecipePage: NextPage = () => {
   const [instructions, setInstructions] = useState<string>('');
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [newTags, setNewTags] = useState<string>('');
-  const [missingFields, setMissingFields] = useState<boolean>(true); // TODO use for save button
   const [saveConfirmOpen, setSaveConfirmOpen] = useState<boolean>(false);
 
   useEffect(() => {
@@ -58,20 +43,12 @@ const EditRecipePage: NextPage = () => {
       setRecipeName(recipe.name);
       setIngredients(recipe.ingredients?.join('\n'));
       setInstructions(recipe.instructions?.join('\n'));
-      setSelectedTags(recipe.tags.map((tagId) => tags.find(tag => tag.id === tagId.id)?.name) as string[]);
+      setSelectedTags(recipe.tags.map((tag) => tag.name));
       if (recipe.description) {
         setDescription(recipe.description);
       }
     }
   }, [recipe, tags]);
-
-  useEffect(() => {
-    setMissingFields(!!getMissingFields({recipeName, ingredients, instructions}).length);
-  }, [recipeName, ingredients, instructions]);
-
-  const getTagByName = (tagName: string) => {
-    return tags?.find((tag) => tag.name === tagName)?.name;
-  };
 
   const getTagIdByName = (tagName: string): string | undefined => {
     return tags?.find((tag) => tag.name === tagName)?.id;
@@ -191,7 +168,7 @@ const EditRecipePage: NextPage = () => {
             <Select
               labelId="tag-select-label"
               multiple
-              value={selectedTags.map((selectedTag) => getTagByName(selectedTag) as string)}
+              value={selectedTags}
               onChange={handleTagChange}
               input={<OutlinedInput label="Mentett címkék" />}
               renderValue={(selected) => selected.join(', ')}
