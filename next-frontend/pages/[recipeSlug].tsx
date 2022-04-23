@@ -63,8 +63,8 @@ function RecipeInstructions({instructions}: {instructions: string[]}) {
 
 const RecipeDetailsPage: NextPage = () => {
   const router = useRouter();
-  const { recipeSlug } = router.query;
-  const { data: recipe } = useSingleRecipe(recipeSlug as string);
+  const recipeSlug = router.query.recipeSlug as string;
+  const { data: recipe, error: recipeError } = useSingleRecipe(recipeSlug);
   const { mutate: deleteRecipe } = useDeleteRecipe();
   const tags = recipe?.tags;
 
@@ -81,7 +81,7 @@ const RecipeDetailsPage: NextPage = () => {
 
   const handleDeleteRecipe = async (_e: React.SyntheticEvent) => {
     if (!recipeSlug) return;
-    deleteRecipe(recipeSlug as string, {
+    deleteRecipe(recipeSlug, {
       onSettled: (data, error) => {
         console.log({data, error});
         router.push('/');

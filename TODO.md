@@ -8,7 +8,7 @@
 - [x] keystone schema kiegészítés
 - [x] pages migráció next.js-re
 - [x] navigáció
-- [ ] mutation-ok migralasa (delete es update)
+- [x] mutation-ok migralasa (delete es update)
 
 ## Alpha release:
 
