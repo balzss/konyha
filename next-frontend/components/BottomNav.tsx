@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import {
   BottomNavigation,
   BottomNavigationAction,
@@ -8,7 +9,6 @@ import {
   MenuBook as MenuBookIcon,
   LocalGroceryStore as LocalGroceryStoreIcon,
   AccountCircle as AccountCircleIcon,
-  Timer as TimerIcon,
 } from '@mui/icons-material';
 
 const bottomNavItems = [
@@ -33,24 +33,22 @@ const bottomNavItems = [
   {
     displayName: 'Személyes',
     icon: <AccountCircleIcon />,
-    path: '/user',
+    path: '/profile',
     disabled: false,
   },
 ];
 
 export default function BottomBar() {
-  // const navigate = useNavigate();
-  // const { pathname } = useLocation();
-  const pathname = '/';
-  const [currentPage, setCurrentPage] = useState<number>(bottomNavItems.map((item) => item.path).indexOf(pathname));
+  const router = useRouter();
+  const [currentPage, setCurrentPage] = useState<number>(bottomNavItems.map((item) => item.path).indexOf(router.pathname));
 
   return (
     <BottomNavigation
       showLabels
       value={currentPage}
       onChange={(_event, newValue: number) => {
-        // navigate(bottomNavItems[newValue].path);
         setCurrentPage(newValue);
+        router.push(bottomNavItems[newValue].path);
       }}
       sx={{
         position: 'fixed',
