@@ -1,7 +1,12 @@
 // for get request
 export type RecipeRequest = {
-  attributes: Omit<Recipe, 'tags'> & { tags: { data: TagRequest[] } };
   id: string;
+  name: string;
+  slug: string;
+  ingredients: string;
+  instructions: string;
+  tags: {tag: Tag}[],
+  description?: string;
 }
 
 // for displaying

@@ -80,8 +80,8 @@ const RecipeDetailsPage: NextPage = () => {
   };
 
   const handleDeleteRecipe = async (_e: React.SyntheticEvent) => {
-    if (!recipeSlug) return;
-    deleteRecipe(recipeSlug, {
+    if (!recipe?.id) return;
+    deleteRecipe(recipe.id, {
       onSettled: (data, error) => {
         console.log({data, error});
         router.push('/');

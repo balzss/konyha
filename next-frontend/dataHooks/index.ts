@@ -1,8 +1,16 @@
-import { Recipe, Tag, RawRecipe } from '../utils/types';
+import { Recipe, Tag, RawRecipe, RecipeRequest } from '../utils/types';
 import { useQuery, useQueryClient, useMutation } from 'react-query';
 import { request, gql } from 'graphql-request';
+import {
+  GET_RECIPES,
+  GET_SINGLE_RECIPE,
+  GET_TAGS,
+} from './queries';
+import {
+  DELETE_RECIPE,
+} from './mutations';
 
-const GRAPHQL_ENDPOINT = 'http://192.168.1.76:8000/api/graphql';
+const GRAPHQL_ENDPOINT = 'http://192.168.1.76:8000/v1/graphql';
 
 function formatFields(rawFields: {description?: string | undefined, ingredients: string, instructions: string}) {
   const description = rawFields.description?.trim() ?? '';
@@ -24,28 +32,22 @@ function formatTags(tags: string) {
     .join(', ');
 }
 
+function normaliseRecipeRequest(recipe: RecipeRequest) {
+  return {
+    ...recipe,
+    ingredients: recipe.ingredients.split(','),
+    instructions: recipe.instructions.split(','),
+    tags: recipe.tags.map((tagObject) => tagObject.tag),
+  };
+}
+
 function useRecipes() {
   return useQuery<Recipe[], Error>('recipes', async () => {
     const { recipes } = await request(
       GRAPHQL_ENDPOINT,
-      gql`
-        query {
-          recipes {
-            id
-            name
-            slug
-            ingredients
-            instructions
-            description
-            tags {
-              id
-              name
-            }
-          }
-        }
-      `
+      GET_RECIPES,
     );
-    return recipes;
+    return recipes.map(normaliseRecipeRequest);
   });
 }
 
@@ -53,24 +55,10 @@ function useSingleRecipe(recipeSlug: string) {
   return useQuery<Recipe, Error>(['recipes', recipeSlug], async () => {
     const { recipes } = await request(
       GRAPHQL_ENDPOINT,
-      gql`
-        query {
-          recipes(where: {slug: {equals: "${recipeSlug}"}}) {
-            id
-            name
-            slug
-            description
-            ingredients
-            instructions
-            tags {
-              id
-              name
-            }
-          }
-        }
-      `
+      GET_SINGLE_RECIPE,
+      { recipeSlug },
     );
-    return recipes[0];
+    return normaliseRecipeRequest(recipes[0]);
   }, {enabled: !!recipeSlug});
 }
 
@@ -146,17 +134,11 @@ function useUpdateRecipe() {
 
 function useDeleteRecipe() {
   const queryClient = useQueryClient();
-  return useMutation(async (recipeSlug: string) => {
+  return useMutation(async (recipeId: string) => {
     const response = await request(
       GRAPHQL_ENDPOINT,
-      gql`
-        mutation {
-          deleteRecipe(where: {slug: "${recipeSlug}"}) {
-            id
-            slug
-          }
-        }
-      `,
+      DELETE_RECIPE,
+      { recipeId }
     );
     return response;
   }, {
@@ -171,22 +153,15 @@ function useTags() {
   return useQuery<Array<Tag  & { recipesCount: number }>, Error>('tags', async () => {
     const { tags } = await request(
       GRAPHQL_ENDPOINT,
-      gql`
-        query {
-          tags {
-            id
-            name
-            recipesCount
-          }
-        }
-      `
+      GET_TAGS,
     );
     return tags;
   }, {
     onSuccess: (tags) => {
       const deleteCandidates = tags.filter((tag) => !tag.recipesCount);
       if (deleteCandidates.length) {
-        deleteTags(deleteCandidates.map((tag) => `{id: "${tag.id}"}`));
+        console.log(deleteCandidates)
+        // deleteTags(deleteCandidates.map((tag) => `{id: "${tag.id}"}`));
       }
     },
   });
