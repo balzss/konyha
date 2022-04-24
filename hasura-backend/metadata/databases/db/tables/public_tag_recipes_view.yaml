@@ -1,0 +1,3 @@
+table:
+  schema: public
+  name: tag_recipes_view

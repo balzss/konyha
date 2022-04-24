@@ -1,17 +1,13 @@
 table:
   schema: public
-  name: recipes
-object_relationships:
-  - name: author
-    using:
-      foreign_key_constraint_on: user_id
+  name: tags
 array_relationships:
-  - name: tags
+  - name: recipes
     using:
       manual_configuration:
         remote_table:
           schema: public
-          name: recipe_tags_view
+          name: tag_recipes_view
         insertion_order: null
         column_mapping:
-          id: recipe_id
+          id: tag_id
