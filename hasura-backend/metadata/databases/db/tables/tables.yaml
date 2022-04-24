@@ -1,6 +1,4 @@
 - "!include public_recipe_tag.yaml"
-- "!include public_recipe_tags_view.yaml"
 - "!include public_recipes.yaml"
-- "!include public_tag_recipes_view.yaml"
 - "!include public_tags.yaml"
 - "!include public_users.yaml"

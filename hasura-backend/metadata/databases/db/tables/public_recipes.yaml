@@ -8,10 +8,8 @@ object_relationships:
 array_relationships:
   - name: tags
     using:
-      manual_configuration:
-        remote_table:
+      foreign_key_constraint_on:
+        column: recipe_id
+        table:
           schema: public
-          name: recipe_tags_view
-        insertion_order: null
-        column_mapping:
-          id: recipe_id
+          name: recipe_tag

@@ -4,10 +4,8 @@ table:
 array_relationships:
   - name: recipes
     using:
-      manual_configuration:
-        remote_table:
+      foreign_key_constraint_on:
+        column: tag_id
+        table:
           schema: public
-          name: tag_recipes_view
-        insertion_order: null
-        column_mapping:
-          id: tag_id
+          name: recipe_tag
