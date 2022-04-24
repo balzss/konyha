@@ -17,7 +17,7 @@ export default function RecipeCard({
   return (
     <Card variant="outlined" sx={{bgcolor: 'background.default'}}>
       <CardActionArea onClick={() => onClick(recipe.slug)}>
-        <CardContent>
+        <CardContent sx={{pb: tags.length ? 1 : 2}}>
           <Typography variant="h5" component="div">
             {recipe.name}
           </Typography>
