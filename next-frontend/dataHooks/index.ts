@@ -8,14 +8,23 @@ import {
 } from './queries';
 import {
   DELETE_RECIPE,
+  CREATE_RECIPE,
 } from './mutations';
 
 const GRAPHQL_ENDPOINT = 'http://192.168.1.76:8000/v1/graphql';
 
+function slugify(input: string): string {
+  return input
+    ?.trim()
+    .toLowerCase()
+    .replace(/[^\w ]+/g, '')
+    .replace(/ +/g, '-');
+}
+
 function formatFields(rawFields: {description?: string | undefined, ingredients: string, instructions: string}) {
   const description = rawFields.description?.trim() ?? '';
-  const ingredients = rawFields.ingredients?.split('\n').map((ingredient) => `"${ingredient.trim()}"`).join(',') ?? '';
-  const instructions = rawFields.instructions?.split('\n').map((instruction) => `"${instruction.trim()}"`).join(',') ?? '';
+  const ingredients = rawFields.ingredients?.split('\n').map((ingredient) => ingredient.trim()).join(',') ?? '';
+  const instructions = rawFields.instructions?.split('\n').map((instruction) => instruction.trim()).join(',') ?? '';
   return {
     description,
     ingredients,
@@ -28,8 +37,7 @@ function formatTags(tags: string) {
     .split(',')
     .map((tag) => tag.trim())
     .filter((tag) => tag)
-    .map((tag) => `{name: "${tag}"}`)
-    .join(', ');
+    .map((tagName) => ({name: tagName}));
 }
 
 function normaliseRecipeRequest(recipe: RecipeRequest) {
@@ -66,30 +74,26 @@ function useCreateRecipe() {
   const queryClient = useQueryClient();
   return useMutation(async (recipeData: RawRecipe) => {
     const formattedNewTags = formatTags(recipeData.newTags ?? '');
-    const formattedExistingTags = recipeData.tags?.map((tag) => `{id: "${tag}"}`);
+    const formattedExistingTags = recipeData.tags?.map((tagId) => ({id: tagId})) ?? [];
+    const tagsData = formattedNewTags.map((tagInner) => ({tag: {data: tagInner}}));
     const { description, ingredients, instructions } = formatFields(recipeData);
-    const recipeDataString = `{
-      name: "${recipeData.recipeName}",
-      description: "${description}",
-      ingredients: [${ingredients}],
-      instructions: [${instructions}],
-      tags: {
-        create: [${formattedNewTags}],
-        connect: [${formattedExistingTags}]
-      }
-    }`;
-    const { createRecipe } = await request(
+    const { insert_recipes_one } = await request(
       GRAPHQL_ENDPOINT,
-      gql`
-        mutation {
-          createRecipe(data: ${recipeDataString}) {
-            id
-            slug
+      CREATE_RECIPE,
+      {
+        recipeData: {
+          name: recipeData.recipeName,
+          slug: slugify(recipeData.recipeName),
+          description,
+          ingredients,
+          instructions,
+          tags: {
+            data: tagsData,
           }
         }
-      `,
+      },
     );
-    return createRecipe;
+    return insert_recipes_one;
   }, {
     onSuccess: () => {
       queryClient.invalidateQueries('recipes');
