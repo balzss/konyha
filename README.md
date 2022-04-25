@@ -7,4 +7,4 @@ Személyes recept manager, ami engedi, hogy:
 
 A project elindítható a [start-with-tmux.sh](start-with-tmux.sh) scripttel
 vagy a [hasura-backend](hasura-backend) és a [next-frontend](next-frontend) mappákban
-külön-külön az `yarn dev` parancs futtatásával.
+külön-külön a `yarn dev` parancs futtatásával.
