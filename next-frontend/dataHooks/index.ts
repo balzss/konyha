@@ -8,6 +8,7 @@ import {
 } from './queries';
 import {
   DELETE_RECIPE,
+  UPDATE_RECIPE,
   CREATE_RECIPE,
 } from './mutations';
 
@@ -49,6 +50,25 @@ function normaliseRecipeRequest(recipe: RecipeRequest) {
   };
 }
 
+function formatRecipeForMutation(recipeData: RawRecipe, withoutTags = false) {
+  const formattedNewTags = formatTags(recipeData.newTags ?? '');
+  const formattedExistingTags = recipeData.tags?.map((tagId) => ({id: tagId})) ?? [];
+  const tagsData = formattedNewTags.map((tagInner) => ({tag: {data: tagInner}}));
+  const { description, ingredients, instructions } = formatFields(recipeData);
+  return  {
+    name: recipeData.recipeName,
+    slug: slugify(recipeData.recipeName),
+    description,
+    ingredients,
+    instructions,
+    ...(!withoutTags && {
+      tags: {
+        data: tagsData,
+      }
+    }),
+  };
+}
+
 function useRecipes() {
   return useQuery<Recipe[], Error>('recipes', async () => {
     const { recipes } = await request(
@@ -73,25 +93,10 @@ function useSingleRecipe(recipeSlug: string) {
 function useCreateRecipe() {
   const queryClient = useQueryClient();
   return useMutation(async (recipeData: RawRecipe) => {
-    const formattedNewTags = formatTags(recipeData.newTags ?? '');
-    const formattedExistingTags = recipeData.tags?.map((tagId) => ({id: tagId})) ?? [];
-    const tagsData = formattedNewTags.map((tagInner) => ({tag: {data: tagInner}}));
-    const { description, ingredients, instructions } = formatFields(recipeData);
     const { insert_recipes_one } = await request(
       GRAPHQL_ENDPOINT,
       CREATE_RECIPE,
-      {
-        recipeData: {
-          name: recipeData.recipeName,
-          slug: slugify(recipeData.recipeName),
-          description,
-          ingredients,
-          instructions,
-          tags: {
-            data: tagsData,
-          }
-        }
-      },
+      { recipeData: formatRecipeForMutation(recipeData) },
     );
     return insert_recipes_one;
   }, {
@@ -103,32 +108,16 @@ function useCreateRecipe() {
 
 function useUpdateRecipe() {
   const queryClient = useQueryClient();
-  return useMutation(async ({recipeData, recipeSlug}: {recipeData: RawRecipe, recipeSlug: string}) => {
-    const formattedNewTags = formatTags(recipeData.newTags ?? '');
-    const formattedExistingTags = recipeData.tags?.map((tag) => `{id: "${tag}"}`);
-    const { description, ingredients, instructions } = formatFields(recipeData);
-    const recipeDataString = `{
-      name: "${recipeData.recipeName}",
-      description: "${description}",
-      ingredients: [${ingredients}],
-      instructions: [${instructions}],
-      tags: {
-        create: [${formattedNewTags}],
-        set: [${formattedExistingTags}]
-      }
-    }`;
-    const { updateRecipe } = await request(
+  return useMutation(async ({recipeData, recipeId}: {recipeData: RawRecipe, recipeId: string}) => {
+    const { update_recipes_by_pk } = await request(
       GRAPHQL_ENDPOINT,
-      gql`
-        mutation {
-          updateRecipe(where: {slug: "${recipeSlug}"}, data: ${recipeDataString}) {
-            id
-            slug
-          }
-        }
-      `,
+      UPDATE_RECIPE,
+      {
+        recipeId,
+        recipeData: formatRecipeForMutation(recipeData, true),
+      },
     );
-    return updateRecipe;
+    return update_recipes_by_pk;
   }, {
     onSuccess: () => {
       queryClient.invalidateQueries('recipes');

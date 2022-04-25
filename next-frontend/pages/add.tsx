@@ -66,8 +66,8 @@ const EditRecipePage: NextPage = () => {
       newTags,
     };
 
-    if (recipeSlug) {
-      updateRecipe({recipeData: newRecipeData, recipeSlug}, {
+    if (recipe?.id) {
+      updateRecipe({recipeData: newRecipeData, recipeId: recipe.id}, {
         onSettled: (data, error) => {
           console.log({data, error});
           if (data.slug) {
