@@ -1,24 +1,16 @@
-# TODO
-
-## Migráció
-
-- [x] graphql bekötése frontendbe
-- [x] swr hookok
-- [x] komponens migráció next.js-re
-- [x] keystone schema kiegészítés
-- [x] pages migráció next.js-re
-- [x] navigáció
-- [x] mutation-ok migralasa (delete es update)
+# Roadmap
 
 ## Alpha release:
 
-- [ ] dark mode mentése user preference-ként (default to system preference)
-- [ ] recept mentés authorral együtt
 - [ ] csak a userhez tartozó receptek elkérése
+- [ ] recept mentés authorral együtt
+- [ ] auth beállitása, session kezelés
+- [ ] dark mode mentése user preference-ként (default to system preference)
 - [ ] basic keresés -> SearchPage
 - [ ] címke/recept filter
 - [ ] error kezelés
-- [ ] deploy digitalocean app platformra
+- [ ] basic import/export
+- [ ] deploy (digitalocean app platformra?)
 
 ## Beta release:
 
@@ -33,7 +25,6 @@
 - [ ] személyes oldal
   - [ ] szemetes és töröltek visszaállítása?
   - [ ] nyelv választó
-  - [ ] import/export
   - [ ] connect to git repo
 - [ ] bevásárló lista oldal
   - [ ] elemek hozzáadása kézzel
