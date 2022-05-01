@@ -22,16 +22,16 @@ export default NextAuth({
     encode: async (encodeParams) => {
       const {token, secret} = encodeParams;
       const jwtClaims = {
-        "sub": token?.sub?.toString() ,
-        "name": token?.name ,
-        "email": token?.email,
-        "iat": Date.now() / 1000,
-        "exp": Math.floor(Date.now() / 1000) + (24*60*60),
-        "https://hasura.io/jwt/claims": {
-          "x-hasura-allowed-roles": ["user"],
-          "x-hasura-default-role": "user",
-          "x-hasura-role": "user",
-          "x-hasura-user-id": token?.id,
+        'sub': token?.sub?.toString() ,
+        'name': token?.name ,
+        'email': token?.email,
+        'iat': Date.now() / 1000,
+        'exp': Math.floor(Date.now() / 1000) + (24*60*60),
+        'https://hasura.io/jwt/claims': {
+          'x-hasura-allowed-roles': ['user'],
+          'x-hasura-default-role': 'user',
+          'x-hasura-role': 'user',
+          'x-hasura-user-id': token?.id,
         }
       };
       const encodedToken = jwt.sign(jwtClaims, secret, { algorithm: 'HS256'});
@@ -56,8 +56,11 @@ export default NextAuth({
     },
     async jwt(jwtParams) { 
       const { token, user } = jwtParams;
+      // featch/create user here so id is known
       if (user) { // if user is signed in
         token.id = user?.id.toString();
+      } else {
+        token.id = '1141c679-c91a-4785-89c4-3c919d819cc4';
       }
       return Promise.resolve(token);
     }

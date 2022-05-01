@@ -3,8 +3,11 @@
 ## Alpha release:
 
 - [x] link style fixálása
-- [ ] auth beállitása, session kezelés
-- [ ] csak a userhez tartozó receptek elkérése
+- [x] auth beállitása, session kezelés
+- [x] csak a userhez tartozó receptek elkérése
+- [ ] github bejelentkezés (user létrehozás, id elkérés)
+- [ ] auth header beállítás csak egyszer
+- [ ] dataHook cleanup
 - [ ] recept mentés authorral együtt
 - [ ] dark mode mentése user preference-ként (default to system preference)
 - [ ] basic keresés -> SearchPage

@@ -1,6 +1,7 @@
-import { Recipe, Tag, RawRecipe, RecipeRequest } from '../utils/types';
+import type { Recipe, Tag, RawRecipe, RecipeRequest } from '../utils/types';
 import { useQuery, useQueryClient, useMutation } from 'react-query';
-import { request, gql } from 'graphql-request';
+import { useSession } from 'next-auth/react';
+import { request, GraphQLClient, gql } from 'graphql-request';
 import {
   GET_RECIPES,
   GET_SINGLE_RECIPE,
@@ -13,6 +14,7 @@ import {
 } from './mutations';
 
 const GRAPHQL_ENDPOINT = 'http://192.168.1.76:8000/v1/graphql';
+const client = new GraphQLClient(GRAPHQL_ENDPOINT);
 
 function slugify(input: string): string {
   return input
@@ -70,11 +72,10 @@ function formatRecipeForMutation(recipeData: RawRecipe, withoutTags = false) {
 }
 
 function useRecipes() {
+  const { data: sessionData } = useSession();
+  client.setHeader('Authorization', `Bearer ${sessionData?.token}`);
   return useQuery<Recipe[], Error>('recipes', async () => {
-    const { recipes } = await request(
-      GRAPHQL_ENDPOINT,
-      GET_RECIPES,
-    );
+    const { recipes } = await client.request(GET_RECIPES);
     return recipes.map(normaliseRecipeRequest);
   });
 }
@@ -143,11 +144,10 @@ function useDeleteRecipe() {
 
 function useTags() {
   const { mutate: deleteTags } = useDeleteTags();
+  const { data: sessionData } = useSession();
+  client.setHeader('Authorization', `Bearer ${sessionData?.token}`);
   return useQuery<Array<Tag  & { recipesCount: number }>, Error>('tags', async () => {
-    const { tags } = await request(
-      GRAPHQL_ENDPOINT,
-      GET_TAGS,
-    );
+    const { tags } = await client.request(GET_TAGS);
     return tags;
   }, {
     onSuccess: (tags) => {
