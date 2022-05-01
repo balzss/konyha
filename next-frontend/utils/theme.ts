@@ -24,6 +24,13 @@ export function getCustomTheme(mode: 'dark' | 'light') {
       ),
     },
     components: {
+      MuiFormHelperText: {
+        styleOverrides: {
+          root: {
+            marginLeft: 0, // custom
+          },
+        },
+      },
       MuiButton: {
         styleOverrides: {
           root: {

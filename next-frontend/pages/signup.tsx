@@ -1,9 +1,7 @@
 import { useState } from 'react';
-import NextLink from 'next/link';
 import {
   Container,
   Box,
-  Link,
   Typography,
   Card,
   CardContent,
@@ -12,6 +10,7 @@ import {
   TextField,
 } from '@mui/material';
 import BrandHero from '../components/BrandHero';
+import Link from '../components/Link';
 
 export default function SignUpPage() {
   const [email, setEmail] = useState<string>('');
@@ -47,7 +46,7 @@ export default function SignUpPage() {
         </Card>
         <Typography variant="body2" component="div" sx={{mt: 1, textAlign: 'center'}}>
           <span>Van már fiókod? </span>
-          <Link href="/login" underline="hover" component={NextLink as any}>Jelentkezz be!</Link>
+          <Link href="/login">Jelentkezz be!</Link>
         </Typography>
       </Container>
     </Box>

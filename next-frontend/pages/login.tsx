@@ -4,15 +4,21 @@ import NextLink from 'next/link';
 import {
   Container,
   Box,
-  Link,
   Typography,
   Card,
   CardContent,
   CardActions,
   Button,
   TextField,
+  Stack,
+  IconButton,
 } from '@mui/material';
+import {
+  GitHub as GitHubIcon,
+  Google as GoogleIcon,
+} from '@mui/icons-material';
 import BrandHero from '../components/BrandHero';
+import Link from '../components/Link';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -58,24 +64,28 @@ export default function LoginPage() {
               value={password}
               type="password"
               onChange={({target}) => setPassword(target.value)}
+              helperText={<Link href="/">Elfelejtett jelszó?</Link>}
             />
-            <Link
-              variant="body2"
-              href="/"
-              underline="hover"
-              component={NextLink as any}
-              sx={{textAlign: 'center'}}
-            >
-                Elfelejtett jelszó?
-            </Link>
           </CardContent>
-          <CardActions sx={{px: 2, pb: 2, justifyContent: 'flex-end'}}>
+          <CardActions sx={{px: 2, pb: 2, justifyContent: 'space-between'}}>
+            <Stack direction="row" spacing={1}>
+              <NextLink href="/api/auth/signin" passHref>
+                <IconButton aria-label="github-login">
+                  <GitHubIcon />
+                </IconButton>
+              </NextLink>
+              <NextLink href="/api/auth/signin" passHref>
+                <IconButton aria-label="google-login">
+                  <GoogleIcon />
+                </IconButton>
+              </NextLink>
+            </Stack>
             <Button variant="outlined" onClick={handleLogin}>Bejelentkezés</Button>
           </CardActions>
         </Card>
         <Typography variant="body2" component="div" sx={{mt: 1, textAlign: 'center'}}>
           <span>Nincs még fiókod? </span>
-          <Link href="/signup" underline="hover" component={NextLink as any}>Regisztrálj!</Link>
+          <Link href="/signup">Regisztrálj!</Link>
         </Typography>
       </Container>
     </Box>

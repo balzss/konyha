@@ -2,9 +2,10 @@
 
 ## Alpha release:
 
+- [x] link style fixálása
+- [ ] auth beállitása, session kezelés
 - [ ] csak a userhez tartozó receptek elkérése
 - [ ] recept mentés authorral együtt
-- [ ] auth beállitása, session kezelés
 - [ ] dark mode mentése user preference-ként (default to system preference)
 - [ ] basic keresés -> SearchPage
 - [ ] címke/recept filter
