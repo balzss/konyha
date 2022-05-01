@@ -1,5 +1,6 @@
 import type { ReactElement } from 'react';
 import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import {
   Alert,
   Container,
@@ -18,6 +19,8 @@ import BottomNav from '../components/BottomNav';
 import { useRecipes, useTags } from '../dataHooks';
 
 export default function MainPage() {
+  const { data: sessionData } = useSession();
+  console.log({sessionData});
   const router = useRouter();
   const { data: recipes, error } = useRecipes();
   useTags(); // load tags here so it won't need to be requested later

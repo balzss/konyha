@@ -1,6 +1,7 @@
 import type { ReactElement, ReactNode } from 'react';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
+import { SessionProvider } from 'next-auth/react';
 import {
   QueryClient,
   QueryClientProvider,
@@ -27,12 +28,14 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const theme = getCustomTheme(mode);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline enableColorScheme />
-        {getLayout(<Component {...pageProps} />)}
-      </ThemeProvider>
-    </QueryClientProvider>
+    <SessionProvider session={pageProps.session} refetchInterval={0}>
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline enableColorScheme />
+          {getLayout(<Component {...pageProps} />)}
+        </ThemeProvider>
+      </QueryClientProvider>
+    </SessionProvider>
   );
 };
 
