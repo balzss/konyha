@@ -9,3 +9,15 @@ array_relationships:
         table:
           schema: public
           name: recipe_tag
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - name
+        - id
+      filter:
+        recipes:
+          recipe:
+            author:
+              id:
+                _eq: X-Hasura-User-Id

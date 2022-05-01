@@ -8,3 +8,15 @@ object_relationships:
   - name: tag
     using:
       foreign_key_constraint_on: tag_id
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - id
+        - recipe_id
+        - tag_id
+      filter:
+        recipe:
+          author:
+            id:
+              _eq: X-Hasura-User-Id
