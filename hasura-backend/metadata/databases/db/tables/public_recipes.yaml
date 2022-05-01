@@ -13,3 +13,17 @@ array_relationships:
         table:
           schema: public
           name: recipe_tag
+select_permissions:
+  - role: user
+    permission:
+      columns:
+        - description
+        - ingredients
+        - instructions
+        - name
+        - slug
+        - id
+        - user_id
+      filter:
+        user_id:
+          _eq: X-Hasura-User-Id
