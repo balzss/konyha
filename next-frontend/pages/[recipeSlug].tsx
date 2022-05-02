@@ -65,7 +65,8 @@ export default function RecipeDetailsPage() {
   const router = useRouter();
   const recipeSlug = router.query.recipeSlug as string;
   const { data: sessionData } = useSession();
-  const { data: recipe, error: recipeError } = useSingleRecipe(recipeSlug, sessionData?.token as string);
+  const sessionToken = sessionData?.token as string;
+  const { data: recipe, error: recipeError } = useSingleRecipe(recipeSlug, sessionToken);
   const { mutate: deleteRecipe } = useDeleteRecipe();
   const tags = recipe?.tags;
 
@@ -82,7 +83,7 @@ export default function RecipeDetailsPage() {
 
   const handleDeleteRecipe = async (_e: React.SyntheticEvent) => {
     if (!recipe?.id) return;
-    deleteRecipe(recipe.id, {
+    deleteRecipe({recipeId: recipe.id, sessionToken }, {
       onSettled: (data, error) => {
         console.log({data, error});
         router.push('/');

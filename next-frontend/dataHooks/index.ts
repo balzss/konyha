@@ -1,6 +1,5 @@
 import type { Recipe, Tag, RawRecipe, RecipeRequest } from '../utils/types';
 import { useQuery, useQueryClient, useMutation } from 'react-query';
-import { useSession } from 'next-auth/react';
 import { request, GraphQLClient, gql } from 'graphql-request';
 import {
   GET_RECIPES,
@@ -69,15 +68,18 @@ function formatRecipeForMutation(recipeData: RawRecipe, withoutTags = false) {
     description,
     ingredients,
     instructions,
-    ...(!withoutTags && {
-      tags: {
-        data: tagsData,
+    tags: {
+      data: tagsData,
+      on_conflict: {
+        constraints: 'tag_name_key',
+        update_columns: []
       }
-    }),
+    }
   };
 }
 
 function useRecipes(sessionToken: string) {
+  console.log(authHeader(sessionToken).Authorization)
   return useQuery<Recipe[], Error>('recipes', async () => {
     const { recipes } = await client.request(GET_RECIPES, {}, authHeader(sessionToken));
     return recipes.map(normaliseRecipeRequest);
@@ -113,14 +115,14 @@ function useCreateRecipe() {
 
 function useUpdateRecipe() {
   const queryClient = useQueryClient();
-  return useMutation(async ({recipeData, recipeId}: {recipeData: RawRecipe, recipeId: string}) => {
-    const { update_recipes_by_pk } = await request(
-      GRAPHQL_ENDPOINT,
+  return useMutation(async ({recipeData, recipeId, sessionToken}: {recipeData: RawRecipe, recipeId: string, sessionToken: string}) => {
+    const { update_recipes_by_pk } = await client.request(
       UPDATE_RECIPE,
       {
         recipeId,
-        recipeData: formatRecipeForMutation(recipeData, true),
+        recipeData: formatRecipeForMutation(recipeData),
       },
+      authHeader(sessionToken),
     );
     return update_recipes_by_pk;
   }, {
@@ -132,11 +134,11 @@ function useUpdateRecipe() {
 
 function useDeleteRecipe() {
   const queryClient = useQueryClient();
-  return useMutation(async (recipeId: string) => {
-    const response = await request(
-      GRAPHQL_ENDPOINT,
+  return useMutation(async ({recipeId, sessionToken}: {recipeId: string; sessionToken: string}) => {
+    const response = await client.request(
       DELETE_RECIPE,
-      { recipeId }
+      { recipeId },
+      authHeader(sessionToken),
     );
     return response;
   }, {

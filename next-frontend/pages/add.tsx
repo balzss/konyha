@@ -1,6 +1,6 @@
-import type { NextPage } from 'next';
-import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import {
   OutlinedInput,
   ListItemText,
@@ -22,13 +22,15 @@ import TopBar from '../components/TopBar';
 import ConfirmModal from '../components/ConfirmModal';
 import { useSingleRecipe, useTags, useCreateRecipe, useUpdateRecipe } from '../dataHooks';
 
-const EditRecipePage: NextPage = () => {
+export default function EditRecipePage() {
   const router = useRouter();
   const recipeSlug = router.query.recipeSlug as string;
+  const { data: sessionData } = useSession();
+  const sessionToken = sessionData?.token as string;
   const { mutate: createRecipe } = useCreateRecipe();
   const { mutate: updateRecipe } = useUpdateRecipe();
-  const { data: recipe } = useSingleRecipe(recipeSlug);
-  const { data: tags } = useTags();
+  const { data: recipe } = useSingleRecipe(recipeSlug, sessionToken);
+  const { data: tags } = useTags(sessionToken);
 
   const [recipeName, setRecipeName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -67,7 +69,7 @@ const EditRecipePage: NextPage = () => {
     };
 
     if (recipe?.id) {
-      updateRecipe({recipeData: newRecipeData, recipeId: recipe.id}, {
+      updateRecipe({recipeData: newRecipeData, recipeId: recipe.id, sessionToken}, {
         onSettled: (data, error) => {
           console.log({data, error});
           if (data.slug) {
@@ -125,7 +127,7 @@ const EditRecipePage: NextPage = () => {
           <TextField
             label="Recept neve"
             variant="outlined"
-            margin="normal"
+            margin="dense"
             required
             sx={{width: '100%'}}
             value={recipeName}
@@ -134,7 +136,7 @@ const EditRecipePage: NextPage = () => {
           <TextField
             label="Leírás"
             variant="outlined"
-            margin="normal"
+            margin="dense"
             multiline
             minRows={2}
             sx={{width: '100%'}}
@@ -144,7 +146,7 @@ const EditRecipePage: NextPage = () => {
           <TextField
             label="Hozzávalók"
             variant="outlined"
-            margin="normal"
+            margin="dense"
             required
             multiline
             minRows={4}
@@ -155,7 +157,7 @@ const EditRecipePage: NextPage = () => {
           <TextField
             label="Elkészítés"
             variant="outlined"
-            margin="normal"
+            margin="dense"
             required
             multiline
             minRows={4}
@@ -163,7 +165,7 @@ const EditRecipePage: NextPage = () => {
             value={instructions}
             onChange={({target}) => setInstructions(target.value)}
           />
-          <FormControl margin="normal" sx={{ width: "100%" }}>
+          <FormControl margin="dense" sx={{ width: "100%" }}>
             <InputLabel id="tag-select-label">Mentett címkék</InputLabel>
             <Select
               labelId="tag-select-label"
@@ -184,7 +186,7 @@ const EditRecipePage: NextPage = () => {
           <TextField
             label="Új címkék"
             variant="outlined"
-            margin="normal"
+            margin="dense"
             sx={{width: '100%'}}
             value={newTags}
             onChange={({target}) => setNewTags(target.value)}
@@ -194,5 +196,3 @@ const EditRecipePage: NextPage = () => {
     </Box>
   );
 };
-
-export default EditRecipePage;

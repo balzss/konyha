@@ -1,6 +1,7 @@
 import type { ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import { useSession } from 'next-auth/react';
+import { useRecipes, useTags } from '../dataHooks';
 import {
   Alert,
   Container,
@@ -12,17 +13,19 @@ import {
   Search as SearchIcon,
   Tune as TuneIcon,
 } from '@mui/icons-material';
-import Layout from '../components/Layout'
-import TopBar from '../components/TopBar';
-import RecipeCard from '../components/RecipeCard';
-import BottomNav from '../components/BottomNav';
-import { useRecipes, useTags } from '../dataHooks';
+import {
+  BottomNav,
+  Layout,
+  TopBar,
+  RecipeCard,
+} from '../components';
 
 export default function MainPage() {
   const router = useRouter();
   const { data: sessionData } = useSession();
-  const { data: recipes, error } = useRecipes(sessionData?.token as string);
-  useTags(sessionData?.token as string); // load tags here so it won't need to be requested later
+  const sessionToken = sessionData?.token as string;
+  const { data: recipes, error } = useRecipes(sessionToken);
+  useTags(sessionToken); // load tags here so it won't need to be requested later
 
   const handleClickAdd = (_event: React.SyntheticEvent) => {
     router.push('/add');

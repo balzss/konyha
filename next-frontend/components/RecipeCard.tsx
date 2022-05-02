@@ -15,7 +15,7 @@ export default function RecipeCard({
 }: RecipeCardProps) {
   const { tags } = recipe;
   return (
-    <Card variant="outlined" sx={{bgcolor: 'background.default'}}>
+    <Card variant="outlined" sx={{bgcolor: 'background.default', height: '100%'}}>
       <CardActionArea onClick={() => onClick(recipe.slug)}>
         <CardContent>
           <Typography variant="h5" component="div">
