@@ -16,6 +16,12 @@ import {
 const GRAPHQL_ENDPOINT = 'http://192.168.1.76:8000/v1/graphql';
 const client = new GraphQLClient(GRAPHQL_ENDPOINT);
 
+function authHeader(token: string) {
+  return {
+    'Authorization': `Bearer ${token}`
+  };
+}
+
 function slugify(input: string): string {
   return input
     ?.trim()
@@ -71,24 +77,22 @@ function formatRecipeForMutation(recipeData: RawRecipe, withoutTags = false) {
   };
 }
 
-function useRecipes() {
-  const { data: sessionData } = useSession();
-  client.setHeader('Authorization', `Bearer ${sessionData?.token}`);
+function useRecipes(sessionToken: string) {
   return useQuery<Recipe[], Error>('recipes', async () => {
-    const { recipes } = await client.request(GET_RECIPES);
+    const { recipes } = await client.request(GET_RECIPES, {}, authHeader(sessionToken));
     return recipes.map(normaliseRecipeRequest);
-  });
+  }, {enabled: !!sessionToken});
 }
 
-function useSingleRecipe(recipeSlug: string) {
+function useSingleRecipe(recipeSlug: string, sessionToken: string) {
   return useQuery<Recipe, Error>(['recipes', recipeSlug], async () => {
-    const { recipes } = await request(
-      GRAPHQL_ENDPOINT,
+    const { recipes } = await client.request(
       GET_SINGLE_RECIPE,
       { recipeSlug },
+      authHeader(sessionToken),
     );
     return normaliseRecipeRequest(recipes[0]);
-  }, {enabled: !!recipeSlug});
+  }, {enabled: !!recipeSlug && !!sessionToken});
 }
 
 function useCreateRecipe() {
@@ -142,21 +146,19 @@ function useDeleteRecipe() {
   });
 }
 
-function useTags() {
-  const { mutate: deleteTags } = useDeleteTags();
-  const { data: sessionData } = useSession();
-  client.setHeader('Authorization', `Bearer ${sessionData?.token}`);
+function useTags(sessionToken: string) {
   return useQuery<Array<Tag  & { recipesCount: number }>, Error>('tags', async () => {
-    const { tags } = await client.request(GET_TAGS);
+    const { tags } = await client.request(
+      GET_TAGS,
+      {},
+      authHeader(sessionToken),
+    );
     return tags;
   }, {
-    onSuccess: (tags) => {
-      const deleteCandidates = tags.filter((tag) => !tag.recipesCount);
-      if (deleteCandidates.length) {
-        console.log(deleteCandidates)
-        // deleteTags(deleteCandidates.map((tag) => `{id: "${tag.id}"}`));
-      }
+    onSuccess: (_tags) => {
+      // TODO handle deletable tags here
     },
+    enabled: !!sessionToken,
   });
 }
 

@@ -19,10 +19,10 @@ import BottomNav from '../components/BottomNav';
 import { useRecipes, useTags } from '../dataHooks';
 
 export default function MainPage() {
-  const { data: sessionData } = useSession();
   const router = useRouter();
-  const { data: recipes, error } = useRecipes();
-  useTags(); // load tags here so it won't need to be requested later
+  const { data: sessionData } = useSession();
+  const { data: recipes, error } = useRecipes(sessionData?.token as string);
+  useTags(sessionData?.token as string); // load tags here so it won't need to be requested later
 
   const handleClickAdd = (_event: React.SyntheticEvent) => {
     router.push('/add');

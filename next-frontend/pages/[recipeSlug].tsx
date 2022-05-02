@@ -1,6 +1,6 @@
-import type { NextPage } from 'next';
-import { useRouter } from 'next/router';
 import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useSession } from 'next-auth/react';
 import {
   Box,
   Container,
@@ -61,10 +61,11 @@ function RecipeInstructions({instructions}: {instructions: string[]}) {
   );
 }
 
-const RecipeDetailsPage: NextPage = () => {
+export default function RecipeDetailsPage() {
   const router = useRouter();
   const recipeSlug = router.query.recipeSlug as string;
-  const { data: recipe, error: recipeError } = useSingleRecipe(recipeSlug);
+  const { data: sessionData } = useSession();
+  const { data: recipe, error: recipeError } = useSingleRecipe(recipeSlug, sessionData?.token as string);
   const { mutate: deleteRecipe } = useDeleteRecipe();
   const tags = recipe?.tags;
 
@@ -132,6 +133,4 @@ const RecipeDetailsPage: NextPage = () => {
       </Container>
     </Box>
   );
-};
-
-export default RecipeDetailsPage;
+}

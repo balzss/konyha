@@ -8,6 +8,7 @@
 - [ ] github bejelentkezés (user létrehozás, id elkérés)
 - [ ] auth header beállítás csak egyszer
 - [ ] dataHook cleanup
+- [ ] google login
 - [ ] recept mentés authorral együtt
 - [ ] dark mode mentése user preference-ként (default to system preference)
 - [ ] basic keresés -> SearchPage
@@ -20,6 +21,7 @@
 
 - [ ] feature branch szabály beállítása githubon
 - [ ] lint, tesztek és CI bevezetése
+- [ ] ory kratos user management
 - [ ] asztali nézet (sidebar)
 - [ ] i18n (angol és magyar)
 - [ ] 404 page
