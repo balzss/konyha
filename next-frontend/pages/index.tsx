@@ -10,7 +10,7 @@ import {
 import {
   Add as AddIcon,
   Search as SearchIcon,
-  FilterAlt as FilterAltIcon,
+  Tune as TuneIcon,
 } from '@mui/icons-material';
 import Layout from '../components/Layout'
 import TopBar from '../components/TopBar';
@@ -42,7 +42,7 @@ export default function MainPage() {
       }}
     >
       <TopBar
-        leadingAction={{action: () => {}, icon: <FilterAltIcon/>, label: 'Menü'}}
+        leadingAction={{action: () => {}, icon: <TuneIcon/>, label: 'Menü'}}
         title="Összes recept"
         trailingActions={[
           {icon: <SearchIcon/>, action: () => {}, label: 'Keresés'},
