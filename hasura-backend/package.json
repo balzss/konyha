@@ -3,9 +3,9 @@
   "scripts": {
     "dev": "docker-compose up",
     "build": "docker-compose up --build",
-    "console": "hasura console --console-port 8080 --api-port 8081"
+    "console": "hasura console --skip-update-check --no-browser --console-port 8080 --api-port 8081"
   },
   "devDependencies": {
-    "hasura-cli": "^2.5.0"
+    "hasura-cli": "^2.6.0"
   }
 }

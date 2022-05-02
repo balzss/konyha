@@ -1,6 +1,10 @@
 table:
   schema: public
   name: tags
+object_relationships:
+  - name: owner
+    using:
+      foreign_key_constraint_on: owner_id
 array_relationships:
   - name: recipes
     using:
@@ -9,6 +13,20 @@ array_relationships:
         table:
           schema: public
           name: recipe_tag
+insert_permissions:
+  - role: user
+    permission:
+      check:
+        recipes:
+          recipe:
+            author:
+              id:
+                _eq: X-Hasura-User-Id
+      columns:
+        - name
+        - id
+        - owner_id
+      backend_only: false
 select_permissions:
   - role: user
     permission:

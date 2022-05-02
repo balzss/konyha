@@ -9,6 +9,13 @@ array_relationships:
         table:
           schema: public
           name: recipes
+  - name: tags
+    using:
+      foreign_key_constraint_on:
+        column: owner_id
+        table:
+          schema: public
+          name: tags
 select_permissions:
   - role: user
     permission:
