@@ -40,12 +40,12 @@ function formatFields(rawFields: {description?: string | undefined, ingredients:
   };
 }
 
-function formatTags(tags: string) {
+function formatTags(tags: string, userId: string) {
   return tags
     .split(',')
     .map((tag) => tag.trim())
     .filter((tag) => tag)
-    .map((tagName) => ({name: tagName}));
+    .map((tagName) => ({name: tagName, user_id: userId}));
 }
 
 function normaliseRecipeRequest(recipe: RecipeRequest) {
@@ -57,12 +57,13 @@ function normaliseRecipeRequest(recipe: RecipeRequest) {
   };
 }
 
-function formatRecipeForMutation(recipeData: RawRecipe, withoutTags = false) {
-  const formattedNewTags = formatTags(recipeData.newTags ?? '');
+function formatRecipeForMutation(recipeData: RawRecipe, userId: string = '1141c679-c91a-4785-89c4-3c919d819cc4') {
+  const formattedNewTags = formatTags(recipeData.newTags ?? '', userId);
   const formattedExistingTags = recipeData.tags?.map((tagId) => ({id: tagId})) ?? [];
   const tagsData = formattedNewTags.map((tagInner) => ({tag: {data: tagInner}}));
   const { description, ingredients, instructions } = formatFields(recipeData);
   return  {
+    user_id: userId,
     name: recipeData.recipeName,
     slug: slugify(recipeData.recipeName),
     description,
