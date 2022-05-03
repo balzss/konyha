@@ -4,7 +4,7 @@ table:
 object_relationships:
   - name: owner
     using:
-      foreign_key_constraint_on: owner_id
+      foreign_key_constraint_on: user_id
 array_relationships:
   - name: recipes
     using:
@@ -17,15 +17,13 @@ insert_permissions:
   - role: user
     permission:
       check:
-        recipes:
-          recipe:
-            author:
-              id:
-                _eq: X-Hasura-User-Id
+        owner:
+          id:
+            _eq: X-Hasura-User-Id
       columns:
         - name
         - id
-        - owner_id
+        - user_id
       backend_only: false
 select_permissions:
   - role: user
@@ -33,9 +31,27 @@ select_permissions:
       columns:
         - name
         - id
+        - user_id
       filter:
-        recipes:
-          recipe:
-            author:
-              id:
-                _eq: X-Hasura-User-Id
+        owner:
+          id:
+            _eq: X-Hasura-User-Id
+update_permissions:
+  - role: user
+    permission:
+      columns:
+        - name
+        - id
+        - user_id
+      filter:
+        owner:
+          id:
+            _eq: X-Hasura-User-Id
+      check: null
+delete_permissions:
+  - role: user
+    permission:
+      filter:
+        owner:
+          id:
+            _eq: X-Hasura-User-Id

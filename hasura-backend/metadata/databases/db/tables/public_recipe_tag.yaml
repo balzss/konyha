@@ -12,8 +12,8 @@ insert_permissions:
   - role: user
     permission:
       check:
-        recipe:
-          author:
+        tag:
+          owner:
             id:
               _eq: X-Hasura-User-Id
       columns:
@@ -29,8 +29,8 @@ select_permissions:
         - recipe_id
         - tag_id
       filter:
-        recipe:
-          author:
+        tag:
+          owner:
             id:
               _eq: X-Hasura-User-Id
 update_permissions:
@@ -41,8 +41,8 @@ update_permissions:
         - recipe_id
         - tag_id
       filter:
-        recipe:
-          author:
+        tag:
+          owner:
             id:
               _eq: X-Hasura-User-Id
       check: null
@@ -50,7 +50,7 @@ delete_permissions:
   - role: user
     permission:
       filter:
-        recipe:
-          author:
+        tag:
+          owner:
             id:
               _eq: X-Hasura-User-Id
