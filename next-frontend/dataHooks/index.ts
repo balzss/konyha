@@ -80,7 +80,6 @@ function formatRecipeForMutation(recipeData: RawRecipe, userId: string = '1141c6
 }
 
 function useRecipes(sessionToken: string) {
-  console.log(authHeader(sessionToken).Authorization)
   return useQuery<Recipe[], Error>('recipes', async () => {
     const { recipes } = await client.request(GET_RECIPES, {}, authHeader(sessionToken));
     return recipes.map(normaliseRecipeRequest);
