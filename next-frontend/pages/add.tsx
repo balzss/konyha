@@ -78,7 +78,7 @@ export default function EditRecipePage() {
         },
       });
     } else {
-      createRecipe(newRecipeData, {
+      createRecipe({recipeData: newRecipeData, sessionToken}, {
         onSettled: (data, error) => {
           console.log({data, error});
           if (data.slug) {

@@ -60,7 +60,8 @@ function normaliseRecipeRequest(recipe: RecipeRequest) {
 function formatRecipeForMutation(recipeData: RawRecipe, userId: string = '1141c679-c91a-4785-89c4-3c919d819cc4') {
   const formattedNewTags = formatTags(recipeData.newTags ?? '', userId);
   const formattedExistingTags = recipeData.tags?.map((tagId) => ({id: tagId})) ?? [];
-  const tagsData = formattedNewTags.map((tagInner) => ({tag: {data: tagInner}}));
+  const newTagsData = formattedNewTags.map((tagInner) => ({tag: {data: tagInner}}));
+  const existingTagsData = formattedExistingTags.map((tagInner) => ({tag: {data: tagInner}}));
   const { description, ingredients, instructions } = formatFields(recipeData);
   return  {
     user_id: userId,
@@ -70,11 +71,7 @@ function formatRecipeForMutation(recipeData: RawRecipe, userId: string = '1141c6
     ingredients,
     instructions,
     tags: {
-      data: tagsData,
-      on_conflict: {
-        constraints: 'tag_name_key',
-        update_columns: []
-      }
+      data: [...newTagsData, ...existingTagsData],
     }
   };
 }
@@ -99,11 +96,11 @@ function useSingleRecipe(recipeSlug: string, sessionToken: string) {
 
 function useCreateRecipe() {
   const queryClient = useQueryClient();
-  return useMutation(async (recipeData: RawRecipe) => {
-    const { insert_recipes_one } = await request(
-      GRAPHQL_ENDPOINT,
+  return useMutation(async ({recipeData, sessionToken}: {recipeData: RawRecipe, sessionToken: string}) => {
+    const { insert_recipes_one } = await client.request(
       CREATE_RECIPE,
       { recipeData: formatRecipeForMutation(recipeData) },
+      authHeader(sessionToken),
     );
     return insert_recipes_one;
   }, {
