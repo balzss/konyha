@@ -21,7 +21,7 @@ type AppPropsWithLayout = AppProps & {
 
 const queryClient = new QueryClient();
 
-function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout || ((page) => page);
   const colorMode = 'dark';
   const mode = colorMode === 'dark' || colorMode === 'light' ? colorMode : 'light';
@@ -39,4 +39,4 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   );
 };
 
-export default MyApp;
+export default App;
