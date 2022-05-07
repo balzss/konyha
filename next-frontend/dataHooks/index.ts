@@ -12,7 +12,7 @@ import {
   CREATE_RECIPE,
 } from './mutations';
 
-const GRAPHQL_ENDPOINT = 'http://192.168.1.76:8000/v1/graphql';
+const GRAPHQL_ENDPOINT = '/api/graphql';
 const client = new GraphQLClient(GRAPHQL_ENDPOINT);
 
 function authHeader(token: string) {
@@ -53,7 +53,6 @@ function normaliseRecipeRequest(recipe: RecipeRequest) {
     ...recipe,
     ingredients: recipe.ingredients.split(','),
     instructions: recipe.instructions.split(','),
-    tags: recipe.tags.map((tagObject) => tagObject.tag),
   };
 }
 
@@ -80,7 +79,7 @@ function useRecipes(sessionToken: string) {
   return useQuery<Recipe[], Error>('recipes', async () => {
     const { recipes } = await client.request(GET_RECIPES, {}, authHeader(sessionToken));
     return recipes.map(normaliseRecipeRequest);
-  }, {enabled: !!sessionToken});
+  }, {enabled: true}); // !!sessionToken});
 }
 
 function useSingleRecipe(recipeSlug: string, sessionToken: string) {

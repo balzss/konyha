@@ -10,10 +10,8 @@ query GetRecipes {
     ingredients
     instructions
     tags {
-      tag {
-        id
-        name
-      }
+      id
+      name
     }
   }
 }
