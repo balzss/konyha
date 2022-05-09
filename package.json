@@ -1,0 +1,49 @@
+{
+  "name": "next-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "studio": "prisma studio",
+    "generate": "prisma generate",
+    "migrate": "prisma migrate",
+    "postgres": "docker-compose up",
+    "tmux-dev": "tmux send-keys 'yarn dev' C-m  && tmux split-window -h && tmux send-keys 'yarn postgres' C-m && tmux split-window -v && tmux send-keys 'yarn studio' C-m"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.6.2",
+    "@mui/material": "^5.6.2",
+    "@next-auth/prisma-adapter": "^1.0.3",
+    "@prisma/client": "3.13.0",
+    "apollo-server-micro": "^3.7.0",
+    "graphql": "^15.3.0",
+    "graphql-request": "^4.2.0",
+    "micro": "^9.3.4",
+    "micro-cors": "^0.1.1",
+    "next": "12.1.5",
+    "next-auth": "^4.3.4",
+    "react": "18.0.0",
+    "react-dom": "18.0.0",
+    "react-query": "^3.38.0",
+    "tslib": "^2.4.0"
+  },
+  "devDependencies": {
+    "@types/micro-cors": "^0.1.2",
+    "@types/node": "^17.0.31",
+    "@types/react": "18.0.5",
+    "@types/react-dom": "18.0.1",
+    "eslint": "8.13.0",
+    "eslint-config-next": "12.1.5",
+    "prisma": "^3.13.0",
+    "ts-node": "^10.7.0",
+    "typescript": "^4.6.4"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  }
+}

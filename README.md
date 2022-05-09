@@ -1,10 +1,35 @@
-| :construction: *fontos: alpha verzió, aktív fejlesztés alatt!*
+# Konyha Recipe Manager
 
-Személyes recept manager, ami engedi, hogy:
-- recepteket tárolj, böngéssz és ossz meg (wip),
-- kezeld a bevásárló listád (todo),
-- saját időzítőket használj (todo)
+Self hostable recipe manager written in typescript.
 
-A project elindítható a [start-with-tmux.sh](start-with-tmux.sh) scripttel
-vagy a [hasura-backend](hasura-backend) és a [next-frontend](next-frontend) mappákban
-külön-külön a `yarn dev` parancs futtatásával.
+## Prerequisites
+
+- Docker and Docker Compose
+- Node
+
+## Setting it up:
+
+Install dependencies:
+
+```
+yarn install
+```
+
+- set env vars
+- start db
+- push to db
+- generate graphql
+
+## Running it:
+
+Start the database:
+
+```
+yarn postgres
+```
+
+And start the client:
+
+```
+yarn dev
+```
