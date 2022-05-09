@@ -20,15 +20,16 @@ export const typeDefs = gql`
   type Query {
     recipe(slug: String!): Recipe!
     recipes: [Recipe!]!
+    tags: [Tag]
   }
 `;
 
 export const resolvers = {
   Query: {
     recipe: async (parent, args, context) => {
-      console.log(args)
       const { userId } = context?.session;
       const options = {
+        include: {tags: true},
         where: {
           slug: args?.slug,
           authorId: userId,
@@ -48,6 +49,16 @@ export const resolvers = {
       };
       const recipes = await prisma.recipe.findMany(options);
       return recipes;
+    },
+    tags: async (parent, args, context) => {
+      const { userId } = context?.session;
+      const options = {
+        where: {
+          ownerId: userId,
+        }
+      };
+      const tags = await prisma.tag.findMany(options);
+      return tags;
     }
   }
 };

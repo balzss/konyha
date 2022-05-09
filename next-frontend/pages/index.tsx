@@ -23,7 +23,7 @@ import {
 export default function MainPage() {
   const router = useRouter();
   const { data: recipes, error } = useRecipes();
-  // useTags(sessionToken); // load tags here so it won't need to be requested later
+  useTags(); // load tags here so it won't need to be requested later
 
   const handleClickAdd = (_event: React.SyntheticEvent) => {
     router.push('/add');

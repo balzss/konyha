@@ -143,19 +143,14 @@ function useDeleteRecipe() {
   });
 }
 
-function useTags(sessionToken: string) {
-  return useQuery<Array<Tag  & { recipesCount: number }>, Error>('tags', async () => {
-    const { tags } = await client.request(
-      GET_TAGS,
-      {},
-      authHeader(sessionToken),
-    );
+function useTags() {
+  return useQuery<Array<Tag[]>, Error>('tags', async () => {
+    const { tags } = await client.request(GET_TAGS);
     return tags;
   }, {
     onSuccess: (_tags) => {
-      // TODO handle deletable tags here
+      // TODO handle deletable tags here?
     },
-    enabled: !!sessionToken,
   });
 }
 

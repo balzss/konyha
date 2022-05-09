@@ -29,8 +29,8 @@ export default function EditRecipePage() {
   const sessionToken = sessionData?.token as string;
   const { mutate: createRecipe } = useCreateRecipe();
   const { mutate: updateRecipe } = useUpdateRecipe();
-  const { data: recipe } = useSingleRecipe(recipeSlug, sessionToken);
-  const { data: tags } = useTags(sessionToken);
+  const { data: recipe } = useSingleRecipe(recipeSlug);
+  const { data: tags } = useTags();
 
   const [recipeName, setRecipeName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
