@@ -66,7 +66,7 @@ export default function RecipeDetailsPage() {
   const recipeSlug = router.query.recipeSlug as string;
   const { data: sessionData } = useSession();
   const sessionToken = sessionData?.token as string;
-  const { data: recipe, error: recipeError } = useSingleRecipe(recipeSlug, sessionToken);
+  const { data: recipe, error: recipeError } = useSingleRecipe(recipeSlug);
   const { mutate: deleteRecipe } = useDeleteRecipe();
   const tags = recipe?.tags;
 

@@ -19,7 +19,7 @@ query GetRecipes {
 
 export const GET_SINGLE_RECIPE = gql`
 query GetSingleRecipe ($recipeSlug: String!){
-  recipes(where: {slug: {_eq: $recipeSlug}}) {
+  recipe(slug: $recipeSlug) {
     id
     name
     slug
@@ -27,10 +27,8 @@ query GetSingleRecipe ($recipeSlug: String!){
     ingredients
     instructions
     tags {
-      tag {
-        id
-        name
-      }
+      id
+      name
     }
   }
 }

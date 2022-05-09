@@ -75,22 +75,21 @@ function formatRecipeForMutation(recipeData: RawRecipe, userId: string = '1141c6
   };
 }
 
-function useRecipes(sessionToken: string) {
+function useRecipes() {
   return useQuery<Recipe[], Error>('recipes', async () => {
-    const { recipes } = await client.request(GET_RECIPES, {}, authHeader(sessionToken));
+    const { recipes } = await client.request(GET_RECIPES);
     return recipes.map(normaliseRecipeRequest);
-  }, {enabled: true}); // !!sessionToken});
+  });
 }
 
-function useSingleRecipe(recipeSlug: string, sessionToken: string) {
+function useSingleRecipe(recipeSlug: string) {
   return useQuery<Recipe, Error>(['recipes', recipeSlug], async () => {
-    const { recipes } = await client.request(
+    const { recipe } = await client.request(
       GET_SINGLE_RECIPE,
       { recipeSlug },
-      authHeader(sessionToken),
     );
-    return normaliseRecipeRequest(recipes[0]);
-  }, {enabled: !!recipeSlug && !!sessionToken});
+    return normaliseRecipeRequest(recipe);
+  }, {enabled: !!recipeSlug});
 }
 
 function useCreateRecipe() {

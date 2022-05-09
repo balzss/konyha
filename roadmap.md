@@ -2,12 +2,6 @@
 
 ## Alpha release:
 
-- [x] link style fixálása
-- [x] auth beállitása, session kezelés
-- [x] csak a userhez tartozó receptek elkérése
-- [ ] github bejelentkezés (user létrehozás, id elkérés)
-- [ ] auth header beállítás csak egyszer
-- [ ] dataHook cleanup
 - [ ] google login
 - [ ] recept mentés authorral együtt
 - [ ] dark mode mentése user preference-ként (default to system preference)

@@ -5,7 +5,7 @@ export type RecipeRequest = {
   slug: string;
   ingredients: string;
   instructions: string;
-  tags: {tag: Tag}[],
+  tags: Tag[],
   description?: string;
 }
 
