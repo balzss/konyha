@@ -10,7 +10,8 @@
     "studio": "prisma studio",
     "generate": "prisma generate",
     "migrate": "prisma migrate",
-    "postgres": "docker-compose up"
+    "postgres": "docker-compose up",
+    "tmux-dev": "tmux send-keys 'yarn dev' C-m  && tmux split-window -h && tmux send-keys 'yarn postgres' C-m && tmux split-window -v && tmux send-keys 'yarn studio' C-m"
   },
   "dependencies": {
     "@emotion/react": "^11.9.0",
