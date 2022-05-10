@@ -33,7 +33,7 @@ function RecipeIngredients({ingredients}: {ingredients: string[]}) {
           defaultValue="female"
           name="radio-buttons-group"
         >
-          { ingredients.map((ingredient, index) => (
+          { ingredients.split(',').map((ingredient, index) => (
             <FormControlLabel key={index} value={index} control={<Checkbox size="small" />} label={ingredient} />
           )) }
         </RadioGroup>
@@ -52,7 +52,7 @@ function RecipeInstructions({instructions}: {instructions: string[]}) {
           defaultValue="female"
           name="radio-buttons-group"
         >
-          { instructions.map((instruction, index) => (
+          { instructions.split(',').map((instruction, index) => (
             <FormControlLabel key={index} value={index} control={<Radio size="small" />} label={instruction} sx={{py: 0.5}}/>
           )) }
         </RadioGroup>
@@ -66,7 +66,7 @@ export default function RecipeDetailsPage() {
   const recipeSlug = router.query.recipeSlug as string;
   const { data: sessionData } = useSession();
   const sessionToken = sessionData?.token as string;
-  const { data: recipe, error: recipeError } = useSingleRecipe(recipeSlug);
+  const { data: {recipe} = {}, error: recipeError } = useSingleRecipe(recipeSlug);
   const { mutate: deleteRecipe } = useDeleteRecipe();
   const tags = recipe?.tags;
 

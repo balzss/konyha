@@ -2,6 +2,9 @@
 
 ## Alpha release:
 
+- [ ] mutations rewrite
+- [ ] use generated types
+- [ ] use string array for ingredients and instructions
 - [ ] google login
 - [ ] recept mentés authorral együtt
 - [ ] dark mode mentése user preference-ként (default to system preference)

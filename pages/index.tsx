@@ -1,7 +1,6 @@
 import type { ReactElement } from 'react';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
-import { useRecipes, useTags } from '../dataHooks';
+import { useRecipes } from '../dataHooks';
 import {
   Alert,
   Container,
@@ -22,8 +21,7 @@ import {
 
 export default function MainPage() {
   const router = useRouter();
-  const { data: recipes, error } = useRecipes();
-  useTags(); // load tags here so it won't need to be requested later
+  const { data: {recipes} = {}, error } = useRecipes();
 
   const handleClickAdd = (_event: React.SyntheticEvent) => {
     router.push('/add');
@@ -52,16 +50,18 @@ export default function MainPage() {
       />
       <Container maxWidth="md" sx={{px: 2}} disableGutters>
         <Grid container spacing={1}>
-          {error && (
-            <Grid item xs={12} sm={6} md={4} lg={3}>
-              <Alert severity="error">{error.message}</Alert>
-            </Grid>
-          )}
-          {recipes && recipes.map((recipe) => (
-            <Grid item xs={12} sm={6} md={4} lg={3} key={recipe.id}>
-              <RecipeCard recipe={recipe} onClick={handleClickRecipe}/>
-            </Grid>
-          ))}
+          <>
+            {error && (
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Alert severity="error">{error.message}</Alert>
+              </Grid>
+            )}
+            {recipes && recipes.map((recipe) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={recipe.id}>
+                <RecipeCard recipe={recipe} onClick={handleClickRecipe}/>
+              </Grid>
+            ))}
+          </>
         </Grid>
       </Container>
       <BottomNav/>

@@ -1,16 +1,16 @@
-import type { Recipe, Tag, RawRecipe, RecipeRequest } from '../utils/types';
-import { useQuery, useQueryClient, useMutation } from 'react-query';
+import type { RawRecipe, RecipeRequest } from '../utils/types';
+import { useQueryClient, useMutation } from 'react-query';
 import { request, GraphQLClient, gql } from 'graphql-request';
-import {
-  GET_RECIPES,
-  GET_SINGLE_RECIPE,
-  GET_TAGS,
-} from './queries';
 import {
   DELETE_RECIPE,
   UPDATE_RECIPE,
   CREATE_RECIPE,
 } from './mutations';
+import {
+  useGetRecipesQuery,
+  useGetSingleRecipeQuery,
+  useGetTagsQuery,
+} from '../graphql/generated';
 
 const GRAPHQL_ENDPOINT = '/api/graphql';
 const client = new GraphQLClient(GRAPHQL_ENDPOINT);
@@ -76,20 +76,11 @@ function formatRecipeForMutation(recipeData: RawRecipe, userId: string = '1141c6
 }
 
 function useRecipes() {
-  return useQuery<Recipe[], Error>('recipes', async () => {
-    const { recipes } = await client.request(GET_RECIPES);
-    return recipes.map(normaliseRecipeRequest);
-  });
+  return useGetRecipesQuery(client, {});
 }
 
 function useSingleRecipe(recipeSlug: string) {
-  return useQuery<Recipe, Error>(['recipes', recipeSlug], async () => {
-    const { recipe } = await client.request(
-      GET_SINGLE_RECIPE,
-      { recipeSlug },
-    );
-    return normaliseRecipeRequest(recipe);
-  }, {enabled: !!recipeSlug});
+  return useGetSingleRecipeQuery(client, {recipeSlug}, {enabled: !!recipeSlug});
 }
 
 function useCreateRecipe() {
@@ -144,10 +135,7 @@ function useDeleteRecipe() {
 }
 
 function useTags() {
-  return useQuery<Array<Tag[]>, Error>('tags', async () => {
-    const { tags } = await client.request(GET_TAGS);
-    return tags;
-  }, {
+  return useGetTagsQuery(client, {}, {
     onSuccess: (_tags) => {
       // TODO handle deletable tags here?
     },

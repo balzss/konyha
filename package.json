@@ -8,8 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "studio": "prisma studio",
-    "generate": "prisma generate",
+    "prisma-generate": "prisma generate",
     "migrate": "prisma migrate",
+    "gql-generate": "graphql-codegen --config ./graphql/codegen.yml",
     "postgres": "docker-compose up",
     "tmux-dev": "tmux send-keys 'yarn dev' C-m  && tmux split-window -h && tmux send-keys 'yarn postgres' C-m && tmux split-window -v && tmux send-keys 'yarn studio' C-m"
   },
@@ -33,6 +34,12 @@
     "tslib": "^2.4.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "2.6.2",
+    "@graphql-codegen/introspection": "2.1.1",
+    "@graphql-codegen/typescript": "2.4.11",
+    "@graphql-codegen/typescript-operations": "2.4.0",
+    "@graphql-codegen/typescript-react-query": "^3.5.12",
+    "@graphql-codegen/typescript-resolvers": "2.6.4",
     "@types/micro-cors": "^0.1.2",
     "@types/node": "^17.0.31",
     "@types/react": "18.0.5",

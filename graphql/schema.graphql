@@ -1,6 +1,24 @@
-import { gql } from 'graphql-request';
+type Tag {
+  id: String!
+  name: String!
+}
 
-export const GET_RECIPES = gql`
+type Recipe {
+  id: String!
+  slug: String!
+  name: String!
+  description: String
+  ingredients: String!
+  instructions: String!
+  tags: [Tag]
+}
+
+type Query {
+  recipe(slug: String!): Recipe
+  recipes: [Recipe!]!
+  tags: [Tag]
+}
+
 query GetRecipes {
   recipes {
     id
@@ -15,9 +33,7 @@ query GetRecipes {
     }
   }
 }
-`;
 
-export const GET_SINGLE_RECIPE = gql`
 query GetSingleRecipe ($recipeSlug: String!){
   recipe(slug: $recipeSlug) {
     id
@@ -32,13 +48,10 @@ query GetSingleRecipe ($recipeSlug: String!){
     }
   }
 }
-`;
 
-export const GET_TAGS = gql`
 query GetTags {
   tags {
     id
     name
   }
 }
-`;

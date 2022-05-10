@@ -2,7 +2,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import { Chip, CardActionArea, CardActions } from '@mui/material';
-import { Recipe } from '../utils/types';
+import { Recipe } from '../graphql/generated';
 
 type RecipeCardProps = {
   recipe: Recipe;

@@ -29,8 +29,8 @@ export default function EditRecipePage() {
   const sessionToken = sessionData?.token as string;
   const { mutate: createRecipe } = useCreateRecipe();
   const { mutate: updateRecipe } = useUpdateRecipe();
-  const { data: recipe } = useSingleRecipe(recipeSlug);
-  const { data: tags } = useTags();
+  const { data: {recipe} = {} } = useSingleRecipe(recipeSlug);
+  const { data: {tags} = {} } = useTags();
 
   const [recipeName, setRecipeName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -43,8 +43,8 @@ export default function EditRecipePage() {
   useEffect(() => {
     if (recipe && tags && tags.length) {
       setRecipeName(recipe.name);
-      setIngredients(recipe.ingredients?.join('\n'));
-      setInstructions(recipe.instructions?.join('\n'));
+      setIngredients(recipe.ingredients?.split(',').join('\n'));
+      setInstructions(recipe.instructions?.split(',').join('\n'));
       setSelectedTags(recipe.tags.map((tag) => tag.name));
       if (recipe.description) {
         setDescription(recipe.description);
