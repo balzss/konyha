@@ -2,12 +2,12 @@
 
 Self hostable recipe manager written in typescript.
 
-## Prerequisites
+### Prerequisites
 
 - Docker and Docker Compose
 - Node
 
-## Setting it up:
+### Setting it up:
 
 Install dependencies:
 
@@ -20,7 +20,7 @@ yarn install
 - push to db
 - generate graphql
 
-## Running it:
+### Running it:
 
 Start the database:
 
@@ -33,3 +33,8 @@ And start the client:
 ```
 yarn dev
 ```
+
+### Development:
+
+- updating the database schema
+- updating the graphql schema
