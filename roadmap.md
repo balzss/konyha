@@ -3,7 +3,8 @@
 ## Alpha release:
 
 - [ ] mutations rewrite
-- [ ] use generated types
+- [ ] combine single and multiple recipe request
+- [ ] use generated types everywhere
 - [ ] use string array for ingredients and instructions
 - [ ] google login
 - [ ] recept mentés authorral együtt

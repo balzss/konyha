@@ -61,9 +61,9 @@ model Recipe {
   id            String  @id @default(uuid())
   name          String
   slug          String
-  description   String
-  ingredients   String
-  instructions  String
+  description   String?
+  ingredients   String[]
+  instructions  String[]
   authorId      String
   author        User    @relation(fields: [authorId], references: [id])
   tags          Tag[]

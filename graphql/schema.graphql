@@ -8,34 +8,13 @@ type Recipe {
   slug: String!
   name: String!
   description: String
-  ingredients: String!
-  instructions: String!
-  tags: [Tag]
+  ingredients: [String!]
+  instructions: [String!]
+  tags: [Tag!]
 }
 
-type Query {
-  recipe(slug: String!): Recipe
-  recipes: [Recipe!]!
-  tags: [Tag]
-}
-
-query GetRecipes {
-  recipes {
-    id
-    name
-    slug
-    description
-    ingredients
-    instructions
-    tags {
-      id
-      name
-    }
-  }
-}
-
-query GetSingleRecipe ($recipeSlug: String!){
-  recipe(slug: $recipeSlug) {
+query GetRecipes($where: RecipesWhereInput) {
+  recipes(where: $where) {
     id
     name
     slug
@@ -54,4 +33,39 @@ query GetTags {
     id
     name
   }
+}
+
+mutation DeleteRecipe ($recipeSlug: String!) {
+  deleteRecipe(slug: $recipeSlug)
+}
+
+input RecipesWhereInput {
+  slug: String
+}
+
+input RecipeUpdateInput {
+  name: String!
+  slug: String!
+  description: String
+  ingredients: [String!]
+  instructions: [String!]
+  tagsConnect: [String!]
+  tagsCreate: [String!]
+}
+
+mutation UpdateRecipe ($recipeSlug: String!, $recipeData: RecipeUpdateInput!) {
+  updateRecipe(slug: $recipeSlug, data: $recipeData) {
+    id
+    slug
+  }
+}
+
+type Query {
+  recipes(where: RecipesWhereInput): [Recipe!]!
+  tags: [Tag]
+}
+
+type Mutation {
+  deleteRecipe(slug: String!): Boolean
+  updateRecipe(slug: String!, data: RecipeUpdateInput): Recipe
 }

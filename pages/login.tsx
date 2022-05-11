@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
+import { signIn } from 'next-auth/react';
 import {
   Container,
   Box,
@@ -23,7 +24,6 @@ import Link from '../components/Link';
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
 
   const handleLogin = () => {
     router.push('/');
@@ -55,22 +55,11 @@ export default function LoginPage() {
               value={email}
               onChange={({target}) => setEmail(target.value)}
             />
-            <TextField
-              label="Jelszó"
-              variant="outlined"
-              margin="normal"
-              required
-              fullWidth
-              value={password}
-              type="password"
-              onChange={({target}) => setPassword(target.value)}
-              helperText={<Link href="/">Elfelejtett jelszó?</Link>}
-            />
           </CardContent>
           <CardActions sx={{px: 2, pb: 2, justifyContent: 'space-between'}}>
             <Stack direction="row" spacing={1}>
               <NextLink href="/api/auth/signin" passHref>
-                <IconButton aria-label="github-login">
+                <IconButton aria-label="github-login" onClick={() => signIn('github')}>
                   <GitHubIcon />
                 </IconButton>
               </NextLink>

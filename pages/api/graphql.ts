@@ -11,6 +11,7 @@ const cors = Cors();
 const apolloServer = new ApolloServer({
   resolvers,
   typeDefs,
+  debug: (process.env.NODE_ENV === 'development'),
   context: async function createContext({req}) {
     const session = await getSession({ req });
     return {

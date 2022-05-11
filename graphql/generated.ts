@@ -1,17 +1,13 @@
 import { GraphQLResolveInfo } from 'graphql';
-import { GraphQLClient } from 'graphql-request';
-import { RequestInit } from 'graphql-request/dist/types.dom';
-import { useQuery, UseQueryOptions } from 'react-query';
+import { gql } from '@apollo/client';
+import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
-
-function fetcher<TData, TVariables>(client: GraphQLClient, query: string, variables?: TVariables, headers?: RequestInit['headers']) {
-  return async (): Promise<TData> => client.request<TData, TVariables>(query, variables, headers);
-}
+const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -21,27 +17,57 @@ export type Scalars = {
   Float: number;
 };
 
+export type Mutation = {
+  __typename?: 'Mutation';
+  deleteRecipe?: Maybe<Scalars['Boolean']>;
+  updateRecipe?: Maybe<Recipe>;
+};
+
+
+export type MutationDeleteRecipeArgs = {
+  slug: Scalars['String'];
+};
+
+
+export type MutationUpdateRecipeArgs = {
+  data?: InputMaybe<RecipeUpdateInput>;
+  slug: Scalars['String'];
+};
+
 export type Query = {
   __typename?: 'Query';
-  recipe?: Maybe<Recipe>;
   recipes: Array<Recipe>;
   tags?: Maybe<Array<Maybe<Tag>>>;
 };
 
 
-export type QueryRecipeArgs = {
-  slug: Scalars['String'];
+export type QueryRecipesArgs = {
+  where?: InputMaybe<RecipesWhereInput>;
 };
 
 export type Recipe = {
   __typename?: 'Recipe';
   description?: Maybe<Scalars['String']>;
   id: Scalars['String'];
-  ingredients: Scalars['String'];
-  instructions: Scalars['String'];
+  ingredients?: Maybe<Array<Scalars['String']>>;
+  instructions?: Maybe<Array<Scalars['String']>>;
   name: Scalars['String'];
   slug: Scalars['String'];
-  tags?: Maybe<Array<Maybe<Tag>>>;
+  tags?: Maybe<Array<Tag>>;
+};
+
+export type RecipeUpdateInput = {
+  description?: InputMaybe<Scalars['String']>;
+  ingredients?: InputMaybe<Array<Scalars['String']>>;
+  instructions?: InputMaybe<Array<Scalars['String']>>;
+  name: Scalars['String'];
+  slug: Scalars['String'];
+  tagsConnect?: InputMaybe<Array<Scalars['String']>>;
+  tagsCreate?: InputMaybe<Array<Scalars['String']>>;
+};
+
+export type RecipesWhereInput = {
+  slug?: InputMaybe<Scalars['String']>;
 };
 
 export type Tag = {
@@ -50,22 +76,32 @@ export type Tag = {
   name: Scalars['String'];
 };
 
-export type GetRecipesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetRecipesQuery = { __typename?: 'Query', recipes: Array<{ __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients: string, instructions: string, tags?: Array<{ __typename?: 'Tag', id: string, name: string } | null> | null }> };
-
-export type GetSingleRecipeQueryVariables = Exact<{
-  recipeSlug: Scalars['String'];
+export type GetRecipesQueryVariables = Exact<{
+  where?: InputMaybe<RecipesWhereInput>;
 }>;
 
 
-export type GetSingleRecipeQuery = { __typename?: 'Query', recipe?: { __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients: string, instructions: string, tags?: Array<{ __typename?: 'Tag', id: string, name: string } | null> | null } | null };
+export type GetRecipesQuery = { __typename?: 'Query', recipes: Array<{ __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, tags?: Array<{ __typename?: 'Tag', id: string, name: string }> | null }> };
 
 export type GetTagsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetTagsQuery = { __typename?: 'Query', tags?: Array<{ __typename?: 'Tag', id: string, name: string } | null> | null };
+
+export type DeleteRecipeMutationVariables = Exact<{
+  recipeSlug: Scalars['String'];
+}>;
+
+
+export type DeleteRecipeMutation = { __typename?: 'Mutation', deleteRecipe?: boolean | null };
+
+export type UpdateRecipeMutationVariables = Exact<{
+  recipeSlug: Scalars['String'];
+  recipeData: RecipeUpdateInput;
+}>;
+
+
+export type UpdateRecipeMutation = { __typename?: 'Mutation', updateRecipe?: { __typename?: 'Recipe', id: string, slug: string } | null };
 
 
 
@@ -137,8 +173,11 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   Recipe: ResolverTypeWrapper<Recipe>;
+  RecipeUpdateInput: RecipeUpdateInput;
+  RecipesWhereInput: RecipesWhereInput;
   String: ResolverTypeWrapper<Scalars['String']>;
   Tag: ResolverTypeWrapper<Tag>;
 };
@@ -146,26 +185,33 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
+  Mutation: {};
   Query: {};
   Recipe: Recipe;
+  RecipeUpdateInput: RecipeUpdateInput;
+  RecipesWhereInput: RecipesWhereInput;
   String: Scalars['String'];
   Tag: Tag;
 };
 
+export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
+  deleteRecipe?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteRecipeArgs, 'slug'>>;
+  updateRecipe?: Resolver<Maybe<ResolversTypes['Recipe']>, ParentType, ContextType, RequireFields<MutationUpdateRecipeArgs, 'slug'>>;
+};
+
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
-  recipe?: Resolver<Maybe<ResolversTypes['Recipe']>, ParentType, ContextType, RequireFields<QueryRecipeArgs, 'slug'>>;
-  recipes?: Resolver<Array<ResolversTypes['Recipe']>, ParentType, ContextType>;
+  recipes?: Resolver<Array<ResolversTypes['Recipe']>, ParentType, ContextType, Partial<QueryRecipesArgs>>;
   tags?: Resolver<Maybe<Array<Maybe<ResolversTypes['Tag']>>>, ParentType, ContextType>;
 };
 
 export type RecipeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Recipe'] = ResolversParentTypes['Recipe']> = {
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  ingredients?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  instructions?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  ingredients?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
+  instructions?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  tags?: Resolver<Maybe<Array<Maybe<ResolversTypes['Tag']>>>, ParentType, ContextType>;
+  tags?: Resolver<Maybe<Array<ResolversTypes['Tag']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -176,6 +222,7 @@ export type TagResolvers<ContextType = any, ParentType extends ResolversParentTy
 };
 
 export type Resolvers<ContextType = any> = {
+  Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Recipe?: RecipeResolvers<ContextType>;
   Tag?: TagResolvers<ContextType>;
@@ -183,9 +230,9 @@ export type Resolvers<ContextType = any> = {
 
 
 
-export const GetRecipesDocument = `
-    query GetRecipes {
-  recipes {
+export const GetRecipesDocument = gql`
+    query GetRecipes($where: RecipesWhereInput) {
+  recipes(where: $where) {
     id
     name
     slug
@@ -199,51 +246,35 @@ export const GetRecipesDocument = `
   }
 }
     `;
-export const useGetRecipesQuery = <
-      TData = GetRecipesQuery,
-      TError = unknown
-    >(
-      client: GraphQLClient,
-      variables?: GetRecipesQueryVariables,
-      options?: UseQueryOptions<GetRecipesQuery, TError, TData>,
-      headers?: RequestInit['headers']
-    ) =>
-    useQuery<GetRecipesQuery, TError, TData>(
-      variables === undefined ? ['GetRecipes'] : ['GetRecipes', variables],
-      fetcher<GetRecipesQuery, GetRecipesQueryVariables>(client, GetRecipesDocument, variables, headers),
-      options
-    );
-export const GetSingleRecipeDocument = `
-    query GetSingleRecipe($recipeSlug: String!) {
-  recipe(slug: $recipeSlug) {
-    id
-    name
-    slug
-    description
-    ingredients
-    instructions
-    tags {
-      id
-      name
-    }
-  }
-}
-    `;
-export const useGetSingleRecipeQuery = <
-      TData = GetSingleRecipeQuery,
-      TError = unknown
-    >(
-      client: GraphQLClient,
-      variables: GetSingleRecipeQueryVariables,
-      options?: UseQueryOptions<GetSingleRecipeQuery, TError, TData>,
-      headers?: RequestInit['headers']
-    ) =>
-    useQuery<GetSingleRecipeQuery, TError, TData>(
-      ['GetSingleRecipe', variables],
-      fetcher<GetSingleRecipeQuery, GetSingleRecipeQueryVariables>(client, GetSingleRecipeDocument, variables, headers),
-      options
-    );
-export const GetTagsDocument = `
+
+/**
+ * __useGetRecipesQuery__
+ *
+ * To run a query within a React component, call `useGetRecipesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRecipesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRecipesQuery({
+ *   variables: {
+ *      where: // value for 'where'
+ *   },
+ * });
+ */
+export function useGetRecipesQuery(baseOptions?: Apollo.QueryHookOptions<GetRecipesQuery, GetRecipesQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRecipesQuery, GetRecipesQueryVariables>(GetRecipesDocument, options);
+      }
+export function useGetRecipesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRecipesQuery, GetRecipesQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRecipesQuery, GetRecipesQueryVariables>(GetRecipesDocument, options);
+        }
+export type GetRecipesQueryHookResult = ReturnType<typeof useGetRecipesQuery>;
+export type GetRecipesLazyQueryHookResult = ReturnType<typeof useGetRecipesLazyQuery>;
+export type GetRecipesQueryResult = Apollo.QueryResult<GetRecipesQuery, GetRecipesQueryVariables>;
+export const GetTagsDocument = gql`
     query GetTags {
   tags {
     id
@@ -251,17 +282,96 @@ export const GetTagsDocument = `
   }
 }
     `;
-export const useGetTagsQuery = <
-      TData = GetTagsQuery,
-      TError = unknown
-    >(
-      client: GraphQLClient,
-      variables?: GetTagsQueryVariables,
-      options?: UseQueryOptions<GetTagsQuery, TError, TData>,
-      headers?: RequestInit['headers']
-    ) =>
-    useQuery<GetTagsQuery, TError, TData>(
-      variables === undefined ? ['GetTags'] : ['GetTags', variables],
-      fetcher<GetTagsQuery, GetTagsQueryVariables>(client, GetTagsDocument, variables, headers),
-      options
-    );
+
+/**
+ * __useGetTagsQuery__
+ *
+ * To run a query within a React component, call `useGetTagsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTagsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTagsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetTagsQuery(baseOptions?: Apollo.QueryHookOptions<GetTagsQuery, GetTagsQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTagsQuery, GetTagsQueryVariables>(GetTagsDocument, options);
+      }
+export function useGetTagsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTagsQuery, GetTagsQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTagsQuery, GetTagsQueryVariables>(GetTagsDocument, options);
+        }
+export type GetTagsQueryHookResult = ReturnType<typeof useGetTagsQuery>;
+export type GetTagsLazyQueryHookResult = ReturnType<typeof useGetTagsLazyQuery>;
+export type GetTagsQueryResult = Apollo.QueryResult<GetTagsQuery, GetTagsQueryVariables>;
+export const DeleteRecipeDocument = gql`
+    mutation DeleteRecipe($recipeSlug: String!) {
+  deleteRecipe(slug: $recipeSlug)
+}
+    `;
+export type DeleteRecipeMutationFn = Apollo.MutationFunction<DeleteRecipeMutation, DeleteRecipeMutationVariables>;
+
+/**
+ * __useDeleteRecipeMutation__
+ *
+ * To run a mutation, you first call `useDeleteRecipeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteRecipeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteRecipeMutation, { data, loading, error }] = useDeleteRecipeMutation({
+ *   variables: {
+ *      recipeSlug: // value for 'recipeSlug'
+ *   },
+ * });
+ */
+export function useDeleteRecipeMutation(baseOptions?: Apollo.MutationHookOptions<DeleteRecipeMutation, DeleteRecipeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteRecipeMutation, DeleteRecipeMutationVariables>(DeleteRecipeDocument, options);
+      }
+export type DeleteRecipeMutationHookResult = ReturnType<typeof useDeleteRecipeMutation>;
+export type DeleteRecipeMutationResult = Apollo.MutationResult<DeleteRecipeMutation>;
+export type DeleteRecipeMutationOptions = Apollo.BaseMutationOptions<DeleteRecipeMutation, DeleteRecipeMutationVariables>;
+export const UpdateRecipeDocument = gql`
+    mutation UpdateRecipe($recipeSlug: String!, $recipeData: RecipeUpdateInput!) {
+  updateRecipe(slug: $recipeSlug, data: $recipeData) {
+    id
+    slug
+  }
+}
+    `;
+export type UpdateRecipeMutationFn = Apollo.MutationFunction<UpdateRecipeMutation, UpdateRecipeMutationVariables>;
+
+/**
+ * __useUpdateRecipeMutation__
+ *
+ * To run a mutation, you first call `useUpdateRecipeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateRecipeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateRecipeMutation, { data, loading, error }] = useUpdateRecipeMutation({
+ *   variables: {
+ *      recipeSlug: // value for 'recipeSlug'
+ *      recipeData: // value for 'recipeData'
+ *   },
+ * });
+ */
+export function useUpdateRecipeMutation(baseOptions?: Apollo.MutationHookOptions<UpdateRecipeMutation, UpdateRecipeMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateRecipeMutation, UpdateRecipeMutationVariables>(UpdateRecipeDocument, options);
+      }
+export type UpdateRecipeMutationHookResult = ReturnType<typeof useUpdateRecipeMutation>;
+export type UpdateRecipeMutationResult = Apollo.MutationResult<UpdateRecipeMutation>;
+export type UpdateRecipeMutationOptions = Apollo.BaseMutationOptions<UpdateRecipeMutation, UpdateRecipeMutationVariables>;

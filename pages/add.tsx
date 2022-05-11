@@ -27,10 +27,14 @@ export default function EditRecipePage() {
   const recipeSlug = router.query.recipeSlug as string;
   const { data: sessionData } = useSession();
   const sessionToken = sessionData?.token as string;
-  const { mutate: createRecipe } = useCreateRecipe();
-  const { mutate: updateRecipe } = useUpdateRecipe();
-  const { data: {recipe} = {} } = useSingleRecipe(recipeSlug);
-  const { data: {tags} = {} } = useTags();
+  // const { mutate: createRecipe } = useCreateRecipe();
+  // const { mutate: updateRecipe } = useUpdateRecipe();
+  const createRecipe = () => {}
+  const updateRecipe = () => {}
+  const { data: recipesData } = useSingleRecipe(recipeSlug);
+  const recipe = recipesData?.recipes[0];
+  const { data: tagsData } = useTags();
+  const tags = tagsData?.tags;
 
   const [recipeName, setRecipeName] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -41,11 +45,11 @@ export default function EditRecipePage() {
   const [saveConfirmOpen, setSaveConfirmOpen] = useState<boolean>(false);
 
   useEffect(() => {
-    if (recipe && tags && tags.length) {
+    if (recipe && tags) {
       setRecipeName(recipe.name);
-      setIngredients(recipe.ingredients?.split(',').join('\n'));
-      setInstructions(recipe.instructions?.split(',').join('\n'));
-      setSelectedTags(recipe.tags.map((tag) => tag.name));
+      setIngredients(recipe.ingredients?.join('\n') ?? '');
+      setInstructions(recipe.instructions?.join('\n') ?? '');
+      setSelectedTags(recipe.tags?.map((tag) => tag?.name as string) ?? []);
       if (recipe.description) {
         setDescription(recipe.description);
       }
@@ -53,7 +57,7 @@ export default function EditRecipePage() {
   }, [recipe, tags]);
 
   const getTagIdByName = (tagName: string): string | undefined => {
-    return tags?.find((tag) => tag.name === tagName)?.id;
+    return tags?.find((tag) => tag?.name === tagName)?.id;
   };
 
   const handleSubmitRecipe = async (e: React.SyntheticEvent) => {

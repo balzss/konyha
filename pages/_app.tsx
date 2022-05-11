@@ -3,9 +3,10 @@ import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
 import {
-  QueryClient,
-  QueryClientProvider,
-} from 'react-query';
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache,
+} from "@apollo/client";
 import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import { getCustomTheme } from '../utils/theme';
@@ -19,7 +20,10 @@ type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
 }
 
-const queryClient = new QueryClient();
+const client = new ApolloClient({
+  uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT,
+  cache: new InMemoryCache()
+});
 
 function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout || ((page) => page);
@@ -29,12 +33,12 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <SessionProvider session={pageProps.session} refetchInterval={0}>
-      <QueryClientProvider client={queryClient}>
+      <ApolloProvider client={client}>
         <ThemeProvider theme={theme}>
           <CssBaseline enableColorScheme />
           {getLayout(<Component {...pageProps} />)}
         </ThemeProvider>
-      </QueryClientProvider>
+      </ApolloProvider>
     </SessionProvider>
   );
 };

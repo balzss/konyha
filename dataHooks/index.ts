@@ -1,19 +1,13 @@
 import type { RawRecipe, RecipeRequest } from '../utils/types';
-import { useQueryClient, useMutation } from 'react-query';
-import { request, GraphQLClient, gql } from 'graphql-request';
 import {
-  DELETE_RECIPE,
   UPDATE_RECIPE,
   CREATE_RECIPE,
 } from './mutations';
 import {
   useGetRecipesQuery,
-  useGetSingleRecipeQuery,
   useGetTagsQuery,
+  useDeleteRecipeMutation,
 } from '../graphql/generated';
-
-const GRAPHQL_ENDPOINT = '/api/graphql';
-const client = new GraphQLClient(GRAPHQL_ENDPOINT);
 
 function authHeader(token: string) {
   return {
@@ -48,14 +42,6 @@ function formatTags(tags: string, userId: string) {
     .map((tagName) => ({name: tagName, user_id: userId}));
 }
 
-function normaliseRecipeRequest(recipe: RecipeRequest) {
-  return {
-    ...recipe,
-    ingredients: recipe.ingredients.split(','),
-    instructions: recipe.instructions.split(','),
-  };
-}
-
 function formatRecipeForMutation(recipeData: RawRecipe, userId: string = '1141c679-c91a-4785-89c4-3c919d819cc4') {
   const formattedNewTags = formatTags(recipeData.newTags ?? '', userId);
   const formattedExistingTags = recipeData.tags?.map((tagId) => ({id: tagId})) ?? [];
@@ -76,15 +62,17 @@ function formatRecipeForMutation(recipeData: RawRecipe, userId: string = '1141c6
 }
 
 function useRecipes() {
-  return useGetRecipesQuery(client, {});
+  return useGetRecipesQuery();
 }
 
 function useSingleRecipe(recipeSlug: string) {
-  return useGetSingleRecipeQuery(client, {recipeSlug}, {enabled: !!recipeSlug});
+  const variables = {
+    where: {slug: recipeSlug},
+  };
+  return useGetRecipesQuery({ variables, skip: !recipeSlug });
 }
 
 function useCreateRecipe() {
-  const queryClient = useQueryClient();
   return useMutation(async ({recipeData, sessionToken}: {recipeData: RawRecipe, sessionToken: string}) => {
     const { insert_recipes_one } = await client.request(
       CREATE_RECIPE,
@@ -119,48 +107,11 @@ function useUpdateRecipe() {
 }
 
 function useDeleteRecipe() {
-  const queryClient = useQueryClient();
-  return useMutation(async ({recipeId, sessionToken}: {recipeId: string; sessionToken: string}) => {
-    const response = await client.request(
-      DELETE_RECIPE,
-      { recipeId },
-      authHeader(sessionToken),
-    );
-    return response;
-  }, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('recipes');
-    },
-  });
+  return useDeleteRecipeMutation();
 }
 
 function useTags() {
-  return useGetTagsQuery(client, {}, {
-    onSuccess: (_tags) => {
-      // TODO handle deletable tags here?
-    },
-  });
-}
-
-function useDeleteTags() {
-  const queryClient = useQueryClient();
-  return useMutation(async (tagIds: string[]) => {
-    const response = await request(
-      GRAPHQL_ENDPOINT,
-      gql`
-        mutation {
-          deleteTags(where: [${tagIds.join(',')}]) {
-            id
-          }
-        }
-      `,
-    );
-    return response;
-  }, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('tags');
-    },
-  });
+  return useGetTagsQuery();
 }
 
 export {

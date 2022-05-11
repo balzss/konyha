@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
 import {
+  Alert,
   Box,
   Container,
   Typography,
@@ -33,7 +33,7 @@ function RecipeIngredients({ingredients}: {ingredients: string[]}) {
           defaultValue="female"
           name="radio-buttons-group"
         >
-          { ingredients.split(',').map((ingredient, index) => (
+          { ingredients.map((ingredient, index) => (
             <FormControlLabel key={index} value={index} control={<Checkbox size="small" />} label={ingredient} />
           )) }
         </RadioGroup>
@@ -52,7 +52,7 @@ function RecipeInstructions({instructions}: {instructions: string[]}) {
           defaultValue="female"
           name="radio-buttons-group"
         >
-          { instructions.split(',').map((instruction, index) => (
+          { instructions.map((instruction, index) => (
             <FormControlLabel key={index} value={index} control={<Radio size="small" />} label={instruction} sx={{py: 0.5}}/>
           )) }
         </RadioGroup>
@@ -64,10 +64,9 @@ function RecipeInstructions({instructions}: {instructions: string[]}) {
 export default function RecipeDetailsPage() {
   const router = useRouter();
   const recipeSlug = router.query.recipeSlug as string;
-  const { data: sessionData } = useSession();
-  const sessionToken = sessionData?.token as string;
-  const { data: {recipe} = {}, error: recipeError } = useSingleRecipe(recipeSlug);
-  const { mutate: deleteRecipe } = useDeleteRecipe();
+  const { data: recipesData, error: recipeError } = useSingleRecipe(recipeSlug);
+  const recipe = recipesData?.recipes[0];
+  const [ deleteRecipe, { error: deleteError } ] = useDeleteRecipe();
   const tags = recipe?.tags;
 
   const [errorConfirmOpen, setErrorConfirmOpen] = useState<boolean>(false);
@@ -82,13 +81,11 @@ export default function RecipeDetailsPage() {
   };
 
   const handleDeleteRecipe = async (_e: React.SyntheticEvent) => {
-    if (!recipe?.id) return;
-    deleteRecipe({recipeId: recipe.id, sessionToken }, {
-      onSettled: (data, error) => {
-        console.log({data, error});
-        router.push('/');
-      }
-    });
+    await deleteRecipe({variables: {recipeSlug}});
+    setErrorConfirmOpen(false);
+    if (!deleteError) {
+      router.push('/');
+    }
   };
 
   return (
@@ -124,13 +121,19 @@ export default function RecipeDetailsPage() {
             { recipe.description }
           </Typography>
         )}
-        { recipe?.ingredients && <RecipeIngredients ingredients={recipe.ingredients}/>}
-        { recipe?.instructions && <RecipeInstructions instructions={recipe.instructions}/>}
+        { recipe?.ingredients && <RecipeIngredients ingredients={recipe.ingredients}/> }
+        { recipe?.instructions && <RecipeInstructions instructions={recipe.instructions}/> }
         <Stack direction="row" spacing={1}>
           {tags && tags.length > 0 && tags.map((tag) => (
             <Chip key={tag.id} label={`${tag.name}`} size="small" onClick={() => console.log(`Tag ID: ${tag.id}`)} />
           ))}
         </Stack>
+        {recipeError && (
+          <Alert severity="error">{recipeError.message}</Alert>
+        )}
+        {deleteError && (
+          <Alert severity="error">{deleteError.message}</Alert>
+        )}
       </Container>
     </Box>
   );

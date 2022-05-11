@@ -21,7 +21,8 @@ import {
 
 export default function MainPage() {
   const router = useRouter();
-  const { data: {recipes} = {}, error } = useRecipes();
+  const { data: recipesData, error, loading } = useRecipes();
+  const recipes = recipesData?.recipes;
 
   const handleClickAdd = (_event: React.SyntheticEvent) => {
     router.push('/add');
