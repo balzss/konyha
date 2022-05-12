@@ -18,6 +18,7 @@ import {
   TopBar,
   RecipeCard,
 } from '../components';
+import { propsWithAuth } from '../utils/propsWithAuth';
 
 export default function MainPage() {
   const router = useRouter();
@@ -77,3 +78,5 @@ MainPage.getLayout = (page: ReactElement) => {
     </Layout>
   );
 };
+
+export const getServerSideProps = propsWithAuth;

@@ -1,6 +1,5 @@
-import type { ReactElement } from 'react';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { ReactElement, useState, useEffect } from 'react';
+import { signOut } from 'next-auth/react';
 import {
   Switch,
   List,
@@ -9,9 +8,9 @@ import {
   ListItemButton,
 } from '@mui/material';
 import Layout from '../components/Layout'
+import { propsWithAuth } from '../utils/propsWithAuth';
 
 export default function ProfilePage() {
-  const router = useRouter();
   const user = {
     id: '11',
     email: 'hali@ga.li',
@@ -28,7 +27,7 @@ export default function ProfilePage() {
   }, [darkMode]);
 
   const handleSignOut = () => {
-    router.push('/login');
+    signOut({callbackUrl: '/login'});
   };
 
   return (
@@ -70,3 +69,5 @@ ProfilePage.getLayout = (page: ReactElement) => {
     </Layout>
   );
 };
+
+export const getServerSideProps = propsWithAuth;

@@ -22,6 +22,7 @@ import {
 import TopBar from '../../components/TopBar';
 import ConfirmModal from '../../components/ConfirmModal';
 import { useSingleRecipe, useDeleteRecipe } from '../../dataHooks';
+import { propsWithAuth } from '../utils/propsWithAuth';
 
 function RecipeIngredients({ingredients}: {ingredients: string[]}) {
   return (
@@ -138,3 +139,5 @@ export default function RecipeDetailsPage() {
     </Box>
   );
 }
+
+export const getServerSideProps = propsWithAuth;

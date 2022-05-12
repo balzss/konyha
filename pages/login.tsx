@@ -58,7 +58,7 @@ export default function LoginPage() {
           <CardActions sx={{px: 2, pb: 2, justifyContent: 'space-between'}}>
             <Stack direction="row" spacing={1}>
               <NextLink href="/api/auth/signin" passHref>
-                <IconButton aria-label="github-login" onClick={() => signIn('github')}>
+                <IconButton aria-label="github-login" onClick={() => signIn('github', {callbackUrl: '/'})}>
                   <GitHubIcon />
                 </IconButton>
               </NextLink>
