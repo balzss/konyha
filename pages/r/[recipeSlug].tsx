@@ -19,9 +19,9 @@ import {
   Edit as EditIcon,
   Delete as DeleteIcon,
 } from '@mui/icons-material'
-import TopBar from '../components/TopBar';
-import ConfirmModal from '../components/ConfirmModal';
-import { useSingleRecipe, useDeleteRecipe } from '../dataHooks';
+import TopBar from '../../components/TopBar';
+import ConfirmModal from '../../components/ConfirmModal';
+import { useSingleRecipe, useDeleteRecipe } from '../../dataHooks';
 
 function RecipeIngredients({ingredients}: {ingredients: string[]}) {
   return (

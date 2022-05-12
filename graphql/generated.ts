@@ -20,7 +20,7 @@ export type Scalars = {
 export type Mutation = {
   __typename?: 'Mutation';
   deleteRecipe?: Maybe<Scalars['Boolean']>;
-  updateRecipe?: Maybe<Recipe>;
+  upsertRecipe?: Maybe<Recipe>;
 };
 
 
@@ -29,9 +29,9 @@ export type MutationDeleteRecipeArgs = {
 };
 
 
-export type MutationUpdateRecipeArgs = {
-  data?: InputMaybe<RecipeUpdateInput>;
-  slug: Scalars['String'];
+export type MutationUpsertRecipeArgs = {
+  data: RecipeUpsertInput;
+  id?: InputMaybe<Scalars['String']>;
 };
 
 export type Query = {
@@ -56,7 +56,8 @@ export type Recipe = {
   tags?: Maybe<Array<Tag>>;
 };
 
-export type RecipeUpdateInput = {
+export type RecipeUpsertInput = {
+  authorId: Scalars['String'];
   description?: InputMaybe<Scalars['String']>;
   ingredients?: InputMaybe<Array<Scalars['String']>>;
   instructions?: InputMaybe<Array<Scalars['String']>>;
@@ -95,13 +96,13 @@ export type DeleteRecipeMutationVariables = Exact<{
 
 export type DeleteRecipeMutation = { __typename?: 'Mutation', deleteRecipe?: boolean | null };
 
-export type UpdateRecipeMutationVariables = Exact<{
-  recipeSlug: Scalars['String'];
-  recipeData: RecipeUpdateInput;
+export type UpsertRecipeMutationVariables = Exact<{
+  recipeId?: InputMaybe<Scalars['String']>;
+  recipeData: RecipeUpsertInput;
 }>;
 
 
-export type UpdateRecipeMutation = { __typename?: 'Mutation', updateRecipe?: { __typename?: 'Recipe', id: string, slug: string } | null };
+export type UpsertRecipeMutation = { __typename?: 'Mutation', upsertRecipe?: { __typename?: 'Recipe', id: string, slug: string } | null };
 
 
 
@@ -176,7 +177,7 @@ export type ResolversTypes = {
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   Recipe: ResolverTypeWrapper<Recipe>;
-  RecipeUpdateInput: RecipeUpdateInput;
+  RecipeUpsertInput: RecipeUpsertInput;
   RecipesWhereInput: RecipesWhereInput;
   String: ResolverTypeWrapper<Scalars['String']>;
   Tag: ResolverTypeWrapper<Tag>;
@@ -188,7 +189,7 @@ export type ResolversParentTypes = {
   Mutation: {};
   Query: {};
   Recipe: Recipe;
-  RecipeUpdateInput: RecipeUpdateInput;
+  RecipeUpsertInput: RecipeUpsertInput;
   RecipesWhereInput: RecipesWhereInput;
   String: Scalars['String'];
   Tag: Tag;
@@ -196,7 +197,7 @@ export type ResolversParentTypes = {
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   deleteRecipe?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteRecipeArgs, 'slug'>>;
-  updateRecipe?: Resolver<Maybe<ResolversTypes['Recipe']>, ParentType, ContextType, RequireFields<MutationUpdateRecipeArgs, 'slug'>>;
+  upsertRecipe?: Resolver<Maybe<ResolversTypes['Recipe']>, ParentType, ContextType, RequireFields<MutationUpsertRecipeArgs, 'data'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -340,38 +341,38 @@ export function useDeleteRecipeMutation(baseOptions?: Apollo.MutationHookOptions
 export type DeleteRecipeMutationHookResult = ReturnType<typeof useDeleteRecipeMutation>;
 export type DeleteRecipeMutationResult = Apollo.MutationResult<DeleteRecipeMutation>;
 export type DeleteRecipeMutationOptions = Apollo.BaseMutationOptions<DeleteRecipeMutation, DeleteRecipeMutationVariables>;
-export const UpdateRecipeDocument = gql`
-    mutation UpdateRecipe($recipeSlug: String!, $recipeData: RecipeUpdateInput!) {
-  updateRecipe(slug: $recipeSlug, data: $recipeData) {
+export const UpsertRecipeDocument = gql`
+    mutation UpsertRecipe($recipeId: String, $recipeData: RecipeUpsertInput!) {
+  upsertRecipe(id: $recipeId, data: $recipeData) {
     id
     slug
   }
 }
     `;
-export type UpdateRecipeMutationFn = Apollo.MutationFunction<UpdateRecipeMutation, UpdateRecipeMutationVariables>;
+export type UpsertRecipeMutationFn = Apollo.MutationFunction<UpsertRecipeMutation, UpsertRecipeMutationVariables>;
 
 /**
- * __useUpdateRecipeMutation__
+ * __useUpsertRecipeMutation__
  *
- * To run a mutation, you first call `useUpdateRecipeMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateRecipeMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useUpsertRecipeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpsertRecipeMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [updateRecipeMutation, { data, loading, error }] = useUpdateRecipeMutation({
+ * const [upsertRecipeMutation, { data, loading, error }] = useUpsertRecipeMutation({
  *   variables: {
- *      recipeSlug: // value for 'recipeSlug'
+ *      recipeId: // value for 'recipeId'
  *      recipeData: // value for 'recipeData'
  *   },
  * });
  */
-export function useUpdateRecipeMutation(baseOptions?: Apollo.MutationHookOptions<UpdateRecipeMutation, UpdateRecipeMutationVariables>) {
+export function useUpsertRecipeMutation(baseOptions?: Apollo.MutationHookOptions<UpsertRecipeMutation, UpsertRecipeMutationVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useMutation<UpdateRecipeMutation, UpdateRecipeMutationVariables>(UpdateRecipeDocument, options);
+        return Apollo.useMutation<UpsertRecipeMutation, UpsertRecipeMutationVariables>(UpsertRecipeDocument, options);
       }
-export type UpdateRecipeMutationHookResult = ReturnType<typeof useUpdateRecipeMutation>;
-export type UpdateRecipeMutationResult = Apollo.MutationResult<UpdateRecipeMutation>;
-export type UpdateRecipeMutationOptions = Apollo.BaseMutationOptions<UpdateRecipeMutation, UpdateRecipeMutationVariables>;
+export type UpsertRecipeMutationHookResult = ReturnType<typeof useUpsertRecipeMutation>;
+export type UpsertRecipeMutationResult = Apollo.MutationResult<UpsertRecipeMutation>;
+export type UpsertRecipeMutationOptions = Apollo.BaseMutationOptions<UpsertRecipeMutation, UpsertRecipeMutationVariables>;

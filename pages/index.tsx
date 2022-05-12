@@ -29,7 +29,7 @@ export default function MainPage() {
   };
 
   const handleClickRecipe = (recipeSlug: string) => {
-    router.push(`/${recipeSlug}`);
+    router.push(`/r/${recipeSlug}`);
   };
 
   return (

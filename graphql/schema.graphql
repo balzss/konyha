@@ -43,7 +43,8 @@ input RecipesWhereInput {
   slug: String
 }
 
-input RecipeUpdateInput {
+input RecipeUpsertInput {
+  authorId: String!
   name: String!
   slug: String!
   description: String
@@ -53,8 +54,8 @@ input RecipeUpdateInput {
   tagsCreate: [String!]
 }
 
-mutation UpdateRecipe ($recipeSlug: String!, $recipeData: RecipeUpdateInput!) {
-  updateRecipe(slug: $recipeSlug, data: $recipeData) {
+mutation UpsertRecipe ($recipeId: String, $recipeData: RecipeUpsertInput!) {
+  upsertRecipe(id: $recipeId, data: $recipeData) {
     id
     slug
   }
@@ -67,5 +68,5 @@ type Query {
 
 type Mutation {
   deleteRecipe(slug: String!): Boolean
-  updateRecipe(slug: String!, data: RecipeUpdateInput): Recipe
+  upsertRecipe(id: String, data: RecipeUpsertInput!): Recipe
 }

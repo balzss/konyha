@@ -26,11 +26,9 @@ export default function EditRecipePage() {
   const router = useRouter();
   const recipeSlug = router.query.recipeSlug as string;
   const { data: sessionData } = useSession();
-  const sessionToken = sessionData?.token as string;
   // const { mutate: createRecipe } = useCreateRecipe();
-  // const { mutate: updateRecipe } = useUpdateRecipe();
+  const [ updateRecipe, {error: recipeUpdateError} ] = useUpdateRecipe();
   const createRecipe = () => {}
-  const updateRecipe = () => {}
   const { data: recipesData } = useSingleRecipe(recipeSlug);
   const recipe = recipesData?.recipes[0];
   const { data: tagsData } = useTags();
@@ -64,32 +62,24 @@ export default function EditRecipePage() {
     e.preventDefault();
 
     const newRecipeData = {
-      recipeName,
+      name: recipeName,
       description,
-      ingredients,
-      instructions,
-      tags: selectedTags.map(getTagIdByName) as string[],
-      newTags,
+      ingredients: ingredients.split('\n'),
+      instructions: instructions.split('\n'),
+      // tags: selectedTags.map(getTagIdByName) as string[],
+      // newTags,
     };
 
     if (recipe?.id) {
-      updateRecipe({recipeData: newRecipeData, recipeId: recipe.id, sessionToken}, {
-        onSettled: (data, error) => {
-          console.log({data, error});
-          if (data.slug) {
-            router.push(`/${data.slug}`);
-          }
-        },
-      });
+      const {data: {upsertRecipe: {slug}}} = await updateRecipe(recipe.id, newRecipeData);
+      if (slug) {
+        router.push(`/r/${slug}`);
+      }
     } else {
-      createRecipe({recipeData: newRecipeData, sessionToken}, {
-        onSettled: (data, error) => {
-          console.log({data, error});
-          if (data.slug) {
-            router.push(`/${data.slug}`);
-          }
-        },
-      });
+      // createRecipe({recipeData: newRecipeData, sessionToken}, {
+      //     if (data.slug) {
+      //       router.push(`/r/${data.slug}`);
+      //     }
     }
   };
 

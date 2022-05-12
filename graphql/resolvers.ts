@@ -1,4 +1,7 @@
-import { AuthenticationError } from 'apollo-server-micro';
+import {
+  AuthenticationError,
+  ForbiddenError,
+} from 'apollo-server-micro';
 import type { Resolvers } from './generated';
 
 const resolvers: Resolvers = {
@@ -47,20 +50,27 @@ const resolvers: Resolvers = {
       const deletedRecipe = await prisma.recipe.deleteMany(options);
       return !!deletedRecipe;
     },
-    updateRecipe: async (_, {slug, data}, {prisma, session}) => {
+    upsertRecipe: async (_, {id, data}, {prisma, session}) => {
       if (!session) {
-        throw new AuthenticationError('No session found, please log in!');
+        throw new AuthenticationError('No session found, please log in');
       }
       const { userId } = session;
+      if (data.authorId !== userId) {
+        throw new ForbiddenError('Not authorized for this action');
+      }
       const options = {
         where: {
-          authorId: userId,
-          slug,
+          id,
         },
-        data: {},
+        update: {
+          ...data,
+        },
+        create: {
+          ...data,
+        },
       };
-      const updatedRecipe = await prisma.recipe.update(options);
-      return updatedRecipe;
+      const upsertRecipe = await prisma.recipe.upsert(options);
+      return upsertRecipe;
     },
   }
 };

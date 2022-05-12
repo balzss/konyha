@@ -1,12 +1,14 @@
-import type { RawRecipe, RecipeRequest } from '../utils/types';
+import type { RawRecipe } from '../utils/types';
+import { useSession } from 'next-auth/react';
 import {
-  UPDATE_RECIPE,
   CREATE_RECIPE,
 } from './mutations';
 import {
   useGetRecipesQuery,
   useGetTagsQuery,
   useDeleteRecipeMutation,
+  useUpsertRecipeMutation,
+  RecipeUpsertInput,
 } from '../graphql/generated';
 
 function authHeader(token: string) {
@@ -87,23 +89,21 @@ function useCreateRecipe() {
   });
 }
 
-function useUpdateRecipe() {
-  const queryClient = useQueryClient();
-  return useMutation(async ({recipeData, recipeId, sessionToken}: {recipeData: RawRecipe, recipeId: string, sessionToken: string}) => {
-    const { update_recipes_by_pk } = await client.request(
-      UPDATE_RECIPE,
-      {
-        recipeId,
-        recipeData: formatRecipeForMutation(recipeData),
+function useUpdateRecipe(): [Function, any] {
+  const { data: sessionData } = useSession();
+  const authorId = sessionData?.userId as string;
+  const [mutate, results] = useUpsertRecipeMutation();
+  function updateRecipe (recipeId: string, recipeData: Omit<RecipeUpsertInput, 'slug' | 'authorId'>) {
+    return mutate({variables: {
+      recipeData: {
+        ...recipeData,
+        authorId,
+        slug: slugify(recipeData.name),
       },
-      authHeader(sessionToken),
-    );
-    return update_recipes_by_pk;
-  }, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('recipes');
-    },
-  });
+      recipeId,
+    }});
+  }
+  return [updateRecipe, results];
 }
 
 function useDeleteRecipe() {

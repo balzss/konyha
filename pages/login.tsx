@@ -19,7 +19,6 @@ import {
   Google as GoogleIcon,
 } from '@mui/icons-material';
 import BrandHero from '../components/BrandHero';
-import Link from '../components/Link';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -72,10 +71,6 @@ export default function LoginPage() {
             <Button variant="outlined" onClick={handleLogin}>Bejelentkezés</Button>
           </CardActions>
         </Card>
-        <Typography variant="body2" component="div" sx={{mt: 1, textAlign: 'center'}}>
-          <span>Nincs még fiókod? </span>
-          <Link href="/signup">Regisztrálj!</Link>
-        </Typography>
       </Container>
     </Box>
   );
