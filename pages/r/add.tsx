@@ -20,7 +20,7 @@ import {
 import TopBar from '../../components/TopBar';
 import ConfirmModal from '../../components/ConfirmModal';
 import { useSingleRecipe, useTags, useUpsertRecipe } from '../../dataHooks';
-import { propsWithAuth } from '../utils/propsWithAuth';
+import { propsWithAuth } from '../../utils/propsWithAuth';
 
 function trimSplit(input: string, delimeter: string): string[] {
   return input

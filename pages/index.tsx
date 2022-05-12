@@ -25,6 +25,10 @@ export default function MainPage() {
   const { data: recipesData, error, loading } = useRecipes();
   const recipes = recipesData?.recipes;
 
+  const handleSearchAction = (_event: React.SyntheticEvent) => {
+    router.push('/search');
+  };
+
   const handleClickAdd = (_event: React.SyntheticEvent) => {
     router.push('/r/add');
   };
@@ -46,7 +50,7 @@ export default function MainPage() {
         leadingAction={{action: () => {}, icon: <TuneIcon/>, label: 'Menü'}}
         title="Összes recept"
         trailingActions={[
-          {icon: <SearchIcon/>, action: () => {}, label: 'Keresés'},
+          {icon: <SearchIcon/>, action: handleSearchAction, label: 'Keresés'},
           {icon: <AddIcon/>, action: handleClickAdd, label: 'Új recept'},
         ]}
       />

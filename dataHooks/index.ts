@@ -5,6 +5,7 @@ import {
   useDeleteRecipeMutation,
   useUpsertRecipeMutation,
   RecipeUpsertInput,
+  useUpdateUserPreferencesMutation,
 } from '../graphql/generated';
 
 function slugify(input: string): string {
@@ -58,4 +59,8 @@ export function useDeleteRecipe() {
 
 export function useTags() {
   return useGetTagsQuery();
+}
+
+export function useUpdateUserPreferences() {
+  return useUpdateUserPreferencesMutation();
 }

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useRouter } from 'next/router';
 import {
   BottomNavigation,
@@ -21,7 +20,7 @@ const bottomNavItems = [
   {
     displayName: 'Bevásárlás',
     icon: <LocalGroceryStoreIcon />,
-    path: '/',
+    path: '/groceries',
     disabled: true,
   },
   // {
@@ -40,14 +39,13 @@ const bottomNavItems = [
 
 export default function BottomBar() {
   const router = useRouter();
-  const [currentPage, setCurrentPage] = useState<number>(bottomNavItems.map((item) => item.path).indexOf(router.pathname));
+  const currentPage = bottomNavItems.map((item) => item.path).indexOf(router.pathname);
 
   return (
     <BottomNavigation
       showLabels
       value={currentPage}
       onChange={(_event, newValue: number) => {
-        setCurrentPage(newValue);
         router.push(bottomNavItems[newValue].path);
       }}
       sx={{

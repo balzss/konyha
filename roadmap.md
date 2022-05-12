@@ -3,8 +3,7 @@
 ## Alpha release:
 
 - [ ] google login
-- [ ] dark mode mentése user preference-ként (default to system preference)
-- [ ] basic keresés -> SearchPage
+- [ ] keresés, debounce
 - [ ] címke/recept filter
 - [ ] error kezelés
 - [ ] basic import/export

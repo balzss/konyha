@@ -7,9 +7,8 @@ import {
   ApolloProvider,
   InMemoryCache,
 } from "@apollo/client";
-import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
-import { getCustomTheme } from '../utils/theme';
+import { CustomThemeProvider } from '../components';
 import '../styles/globals.css';
 
 type NextPageWithLayout = NextPage & {
@@ -27,17 +26,14 @@ const client = new ApolloClient({
 
 function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout || ((page) => page);
-  const colorMode = 'dark';
-  const mode = colorMode === 'dark' || colorMode === 'light' ? colorMode : 'light';
-  const theme = getCustomTheme(mode);
 
   return (
     <SessionProvider session={pageProps.session} refetchInterval={0}>
       <ApolloProvider client={client}>
-        <ThemeProvider theme={theme}>
+        <CustomThemeProvider>
           <CssBaseline enableColorScheme />
           {getLayout(<Component {...pageProps} />)}
-        </ThemeProvider>
+        </CustomThemeProvider>
       </ApolloProvider>
     </SessionProvider>
   );

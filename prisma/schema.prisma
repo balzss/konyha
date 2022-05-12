@@ -20,6 +20,7 @@ model User {
   sessions      Session[]
   recipes       Recipe[]
   tags          Tag[]
+  preferences   Json?
 }
 
 model Account {

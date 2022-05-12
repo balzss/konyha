@@ -13,6 +13,10 @@ type Recipe {
   tags: [Tag!]
 }
 
+type UserPreferences {
+  theme: String
+}
+
 query GetRecipes($where: RecipesWhereInput) {
   recipes(where: $where) {
     id
@@ -59,6 +63,16 @@ mutation UpsertRecipe ($recipeId: String, $recipeData: RecipeUpsertInput!, $tags
   }
 }
 
+input UpdateUserPreferencesInput {
+  theme: String
+}
+
+mutation UpdateUserPreferences ($preferences: UpdateUserPreferencesInput) {
+  updateUserPreferences(preferences: $preferences) {
+    theme
+  }
+}
+
 type Query {
   recipes(where: RecipesWhereInput): [Recipe!]!
   tags: [Tag]
@@ -67,4 +81,5 @@ type Query {
 type Mutation {
   deleteRecipe(slug: String!): Boolean
   upsertRecipe(id: String, data: RecipeUpsertInput!, tagsConnect: [String!]!, tagsCreate: [String!]!): Recipe
+  updateUserPreferences(preferences: UpdateUserPreferencesInput): UserPreferences
 }

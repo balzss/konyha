@@ -20,12 +20,18 @@ export type Scalars = {
 export type Mutation = {
   __typename?: 'Mutation';
   deleteRecipe?: Maybe<Scalars['Boolean']>;
+  updateUserPreferences?: Maybe<UserPreferences>;
   upsertRecipe?: Maybe<Recipe>;
 };
 
 
 export type MutationDeleteRecipeArgs = {
   slug: Scalars['String'];
+};
+
+
+export type MutationUpdateUserPreferencesArgs = {
+  preferences?: InputMaybe<UpdateUserPreferencesInput>;
 };
 
 
@@ -77,6 +83,15 @@ export type Tag = {
   name: Scalars['String'];
 };
 
+export type UpdateUserPreferencesInput = {
+  theme?: InputMaybe<Scalars['String']>;
+};
+
+export type UserPreferences = {
+  __typename?: 'UserPreferences';
+  theme?: Maybe<Scalars['String']>;
+};
+
 export type GetRecipesQueryVariables = Exact<{
   where?: InputMaybe<RecipesWhereInput>;
 }>;
@@ -105,6 +120,13 @@ export type UpsertRecipeMutationVariables = Exact<{
 
 
 export type UpsertRecipeMutation = { __typename?: 'Mutation', upsertRecipe?: { __typename?: 'Recipe', id: string, slug: string } | null };
+
+export type UpdateUserPreferencesMutationVariables = Exact<{
+  preferences?: InputMaybe<UpdateUserPreferencesInput>;
+}>;
+
+
+export type UpdateUserPreferencesMutation = { __typename?: 'Mutation', updateUserPreferences?: { __typename?: 'UserPreferences', theme?: string | null } | null };
 
 
 
@@ -183,6 +205,8 @@ export type ResolversTypes = {
   RecipesWhereInput: RecipesWhereInput;
   String: ResolverTypeWrapper<Scalars['String']>;
   Tag: ResolverTypeWrapper<Tag>;
+  UpdateUserPreferencesInput: UpdateUserPreferencesInput;
+  UserPreferences: ResolverTypeWrapper<UserPreferences>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -195,10 +219,13 @@ export type ResolversParentTypes = {
   RecipesWhereInput: RecipesWhereInput;
   String: Scalars['String'];
   Tag: Tag;
+  UpdateUserPreferencesInput: UpdateUserPreferencesInput;
+  UserPreferences: UserPreferences;
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   deleteRecipe?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteRecipeArgs, 'slug'>>;
+  updateUserPreferences?: Resolver<Maybe<ResolversTypes['UserPreferences']>, ParentType, ContextType, Partial<MutationUpdateUserPreferencesArgs>>;
   upsertRecipe?: Resolver<Maybe<ResolversTypes['Recipe']>, ParentType, ContextType, RequireFields<MutationUpsertRecipeArgs, 'data' | 'tagsConnect' | 'tagsCreate'>>;
 };
 
@@ -224,11 +251,17 @@ export type TagResolvers<ContextType = any, ParentType extends ResolversParentTy
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type UserPreferencesResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserPreferences'] = ResolversParentTypes['UserPreferences']> = {
+  theme?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Recipe?: RecipeResolvers<ContextType>;
   Tag?: TagResolvers<ContextType>;
+  UserPreferences?: UserPreferencesResolvers<ContextType>;
 };
 
 
@@ -385,3 +418,36 @@ export function useUpsertRecipeMutation(baseOptions?: Apollo.MutationHookOptions
 export type UpsertRecipeMutationHookResult = ReturnType<typeof useUpsertRecipeMutation>;
 export type UpsertRecipeMutationResult = Apollo.MutationResult<UpsertRecipeMutation>;
 export type UpsertRecipeMutationOptions = Apollo.BaseMutationOptions<UpsertRecipeMutation, UpsertRecipeMutationVariables>;
+export const UpdateUserPreferencesDocument = gql`
+    mutation UpdateUserPreferences($preferences: UpdateUserPreferencesInput) {
+  updateUserPreferences(preferences: $preferences) {
+    theme
+  }
+}
+    `;
+export type UpdateUserPreferencesMutationFn = Apollo.MutationFunction<UpdateUserPreferencesMutation, UpdateUserPreferencesMutationVariables>;
+
+/**
+ * __useUpdateUserPreferencesMutation__
+ *
+ * To run a mutation, you first call `useUpdateUserPreferencesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateUserPreferencesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateUserPreferencesMutation, { data, loading, error }] = useUpdateUserPreferencesMutation({
+ *   variables: {
+ *      preferences: // value for 'preferences'
+ *   },
+ * });
+ */
+export function useUpdateUserPreferencesMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserPreferencesMutation, UpdateUserPreferencesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UpdateUserPreferencesMutation, UpdateUserPreferencesMutationVariables>(UpdateUserPreferencesDocument, options);
+      }
+export type UpdateUserPreferencesMutationHookResult = ReturnType<typeof useUpdateUserPreferencesMutation>;
+export type UpdateUserPreferencesMutationResult = Apollo.MutationResult<UpdateUserPreferencesMutation>;
+export type UpdateUserPreferencesMutationOptions = Apollo.BaseMutationOptions<UpdateUserPreferencesMutation, UpdateUserPreferencesMutationVariables>;

@@ -18,8 +18,12 @@ export default NextAuth({
     // }),
   ],
   callbacks: {
-    async session({ session, user }) {
+    async session({ session, user }: {session: any, user: any}) {
       session.userId = user.id;
+      const theme = user?.preferences?.theme;
+      if (theme) {
+        session.theme = theme;
+      }
       return session;
     }
   },

@@ -82,6 +82,22 @@ const resolvers: Resolvers = {
       const upsertRecipe = await prisma.recipe.upsert(options);
       return upsertRecipe;
     },
+    updateUserPreferences: async (_, {preferences}, {prisma, session}) => {
+      if (!session) {
+        throw new AuthenticationError('No session found, please log in!');
+      }
+      const { userId } = session;
+      const options = {
+        where: {
+          id: userId,
+        },
+        data: {
+          preferences,
+        }
+      };
+      const updatedPreferences = await prisma.user.update(options);
+      return updatedPreferences;
+    },
   }
 };
 

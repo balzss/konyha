@@ -1,5 +1,7 @@
-import { ReactElement, useState, useEffect } from 'react';
-import { signOut } from 'next-auth/react';
+import { ReactElement, useState } from 'react';
+import { useRouter } from 'next/router';
+import { Session } from 'next-auth';
+import { useSession, signOut } from 'next-auth/react';
 import {
   Switch,
   List,
@@ -7,27 +9,34 @@ import {
   ListItemText,
   ListItemButton,
 } from '@mui/material';
-import Layout from '../components/Layout'
+import { Layout } from '../components/';
 import { propsWithAuth } from '../utils/propsWithAuth';
+import { useUpdateUserPreferences } from '../dataHooks';
 
-export default function ProfilePage() {
-  const user = {
-    id: '11',
-    email: 'hali@ga.li',
-  };
-  const [darkMode, setDarkMode] = useState<boolean>(false);
+type ProfilePageArgs = {
+  session: Session,
+}
 
-  useEffect(() => {
-    const colorMode = localStorage.getItem('colorMode');
-    setDarkMode(colorMode === 'dark');
-  }, []);
+export default function ProfilePage({session}: ProfilePageArgs) {
+  const router = useRouter();
+  const { data: sessionData } = useSession();
+  const userThemePreference = sessionData?.theme;
 
-  useEffect(() => {
-    localStorage.setItem('colorMode', darkMode ? 'dark' : 'light');
-  }, [darkMode]);
+  const [updatePreferences] = useUpdateUserPreferences();
+  const [darkMode, setDarkMode] = useState<boolean>(userThemePreference === 'dark');
 
   const handleSignOut = () => {
     signOut({callbackUrl: '/login'});
+  };
+
+  const handleChangeTheme = async ({target}: any) => {
+    setDarkMode(target.checked);
+    await updatePreferences({variables: {
+      preferences: {
+        theme: target.checked ? 'dark' : 'light',
+      }
+    }});
+    router.reload();
   };
 
   return (
@@ -35,13 +44,13 @@ export default function ProfilePage() {
       sx={{ width: '100%', maxWidth: 480, bgcolor: 'background.default', margin: 'auto', p: 1}}
     >
       <ListItem>
-        <ListItemText primary="Email" secondary={user?.email || 'n/a'}/>
+        <ListItemText primary="Email" secondary={session?.user?.email || 'n/a'}/>
       </ListItem>
       <ListItem>
         <ListItemText id="switch-list-label-wifi" primary="Sötét mód" />
         <Switch
           edge="end"
-          onChange={({target}) => setDarkMode(target.checked)}
+          onChange={handleChangeTheme}
           checked={darkMode}
           inputProps={{
             'aria-labelledby': 'switch-list-label-wifi',
