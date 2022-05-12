@@ -50,7 +50,7 @@ const resolvers: Resolvers = {
       const deletedRecipe = await prisma.recipe.deleteMany(options);
       return !!deletedRecipe;
     },
-    upsertRecipe: async (_, {id, data}, {prisma, session}) => {
+    upsertRecipe: async (_, {id, data, tagsConnect}, {prisma, session}) => {
       if (!session) {
         throw new AuthenticationError('No session found, please log in');
       }
@@ -58,12 +58,16 @@ const resolvers: Resolvers = {
       if (data.authorId !== userId) {
         throw new ForbiddenError('Not authorized for this action');
       }
+      const formattedTags = tagsConnect.map((tagId) => ({id: tagId}));
       const options = {
         where: {
           id,
         },
         update: {
           ...data,
+          tags: {
+            set: formattedTags,
+          }
         },
         create: {
           ...data,

@@ -47,15 +47,15 @@ export default function EditRecipePage() {
       setRecipeName(recipe.name);
       setIngredients(recipe.ingredients?.join('\n') ?? '');
       setInstructions(recipe.instructions?.join('\n') ?? '');
-      setSelectedTags(recipe.tags?.map((tag) => tag?.name as string) ?? []);
+      setSelectedTags(recipe.tags?.map((tag) => tag?.id as string) ?? []);
       if (recipe.description) {
         setDescription(recipe.description);
       }
     }
   }, [recipe, tags]);
 
-  const getTagIdByName = (tagName: string): string | undefined => {
-    return tags?.find((tag) => tag?.name === tagName)?.id;
+  const getTagNameById = (tagId: string): string | undefined => {
+    return tags?.find((tag) => tag?.id === tagId)?.name;
   };
 
   const handleSubmitRecipe = async (e: React.SyntheticEvent) => {
@@ -66,12 +66,11 @@ export default function EditRecipePage() {
       description,
       ingredients: ingredients.split('\n'),
       instructions: instructions.split('\n'),
-      // tags: selectedTags.map(getTagIdByName) as string[],
       // newTags,
     };
 
     if (recipe?.id) {
-      const {data: {upsertRecipe: {slug}}} = await updateRecipe(recipe.id, newRecipeData);
+      const {data: {upsertRecipe: {slug}}} = await updateRecipe(recipe.id, newRecipeData, selectedTags);
       if (slug) {
         router.push(`/r/${slug}`);
       }
@@ -167,11 +166,11 @@ export default function EditRecipePage() {
               value={selectedTags}
               onChange={handleTagChange}
               input={<OutlinedInput label="Mentett címkék" />}
-              renderValue={(selected) => selected.join(', ')}
+              renderValue={(selected) => selected.map(getTagNameById).join(', ')}
             >
-              {tags && tags.length > 0 && tags.map(({name}) => (
-                <MenuItem key={name} value={name}>
-                  <Checkbox checked={selectedTags.indexOf(name) > -1} />
+              {tags && tags.length > 0 && tags.map(({name, id}) => (
+                <MenuItem key={id} value={id}>
+                  <Checkbox checked={selectedTags.indexOf(id) > -1} />
                   <ListItemText primary={name} />
                 </MenuItem>
               ))}

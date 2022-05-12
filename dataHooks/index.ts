@@ -1,9 +1,6 @@
 import type { RawRecipe } from '../utils/types';
 import { useSession } from 'next-auth/react';
 import {
-  CREATE_RECIPE,
-} from './mutations';
-import {
   useGetRecipesQuery,
   useGetTagsQuery,
   useDeleteRecipeMutation,
@@ -11,29 +8,12 @@ import {
   RecipeUpsertInput,
 } from '../graphql/generated';
 
-function authHeader(token: string) {
-  return {
-    'Authorization': `Bearer ${token}`
-  };
-}
-
 function slugify(input: string): string {
   return input
     ?.trim()
     .toLowerCase()
     .replace(/[^\w ]+/g, '')
     .replace(/ +/g, '-');
-}
-
-function formatFields(rawFields: {description?: string | undefined, ingredients: string, instructions: string}) {
-  const description = rawFields.description?.trim() ?? '';
-  const ingredients = rawFields.ingredients?.split('\n').map((ingredient) => ingredient.trim()).join(',') ?? '';
-  const instructions = rawFields.instructions?.split('\n').map((instruction) => instruction.trim()).join(',') ?? '';
-  return {
-    description,
-    ingredients,
-    instructions
-  };
 }
 
 function formatTags(tags: string, userId: string) {
@@ -75,25 +55,13 @@ function useSingleRecipe(recipeSlug: string) {
 }
 
 function useCreateRecipe() {
-  return useMutation(async ({recipeData, sessionToken}: {recipeData: RawRecipe, sessionToken: string}) => {
-    const { insert_recipes_one } = await client.request(
-      CREATE_RECIPE,
-      { recipeData: formatRecipeForMutation(recipeData) },
-      authHeader(sessionToken),
-    );
-    return insert_recipes_one;
-  }, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('recipes');
-    },
-  });
 }
 
 function useUpdateRecipe(): [Function, any] {
   const { data: sessionData } = useSession();
   const authorId = sessionData?.userId as string;
-  const [mutate, results] = useUpsertRecipeMutation();
-  function updateRecipe (recipeId: string, recipeData: Omit<RecipeUpsertInput, 'slug' | 'authorId'>) {
+  const [mutate, results] = useUpsertRecipeMutation({refetchQueries: ['GetRecipes']});
+  function updateRecipe (recipeId: string, recipeData: Omit<RecipeUpsertInput, 'slug' | 'authorId'>, tagsConnect: string[]) {
     return mutate({variables: {
       recipeData: {
         ...recipeData,
@@ -101,6 +69,7 @@ function useUpdateRecipe(): [Function, any] {
         slug: slugify(recipeData.name),
       },
       recipeId,
+      tagsConnect,
     }});
   }
   return [updateRecipe, results];
