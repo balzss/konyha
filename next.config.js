@@ -4,8 +4,8 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/edit/:recipeSlug',
-        destination: '/add',
+        source: '/r/:recipeSlug/edit',
+        destination: '/r/add',
       },
     ]
   },

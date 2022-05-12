@@ -62,7 +62,7 @@ const resolvers: Resolvers = {
       const newTags = tagsCreate.map((tagName) => ({name: tagName, ownerId: userId}));
       const options = {
         where: {
-          id,
+          id: id ?? '',
         },
         update: {
           ...data,
@@ -73,6 +73,10 @@ const resolvers: Resolvers = {
         },
         create: {
           ...data,
+          tags: {
+            connect: formattedTags,
+            create: newTags,
+          }
         },
       };
       const upsertRecipe = await prisma.recipe.upsert(options);

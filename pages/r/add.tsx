@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
 import {
   OutlinedInput,
   ListItemText,
@@ -18,17 +17,21 @@ import {
   Close as CloseIcon,
   Save as SaveIcon,
 } from '@mui/icons-material'
-import TopBar from '../components/TopBar';
-import ConfirmModal from '../components/ConfirmModal';
-import { useSingleRecipe, useTags, useCreateRecipe, useUpdateRecipe } from '../dataHooks';
+import TopBar from '../../components/TopBar';
+import ConfirmModal from '../../components/ConfirmModal';
+import { useSingleRecipe, useTags, useUpsertRecipe } from '../../dataHooks';
+
+function trimSplit(input: string, delimeter: string): string[] {
+  return input
+    .split(delimeter)
+    .map((item) => item.trim())
+    .filter((item) => item);
+}
 
 export default function EditRecipePage() {
   const router = useRouter();
   const recipeSlug = router.query.recipeSlug as string;
-  const { data: sessionData } = useSession();
-  // const { mutate: createRecipe } = useCreateRecipe();
-  const [ updateRecipe, {error: recipeUpdateError} ] = useUpdateRecipe();
-  const createRecipe = () => {}
+  const [ upsertRecipe, {error: recipeUpsertError} ] = useUpsertRecipe();
   const { data: recipesData } = useSingleRecipe(recipeSlug);
   const recipe = recipesData?.recipes[0];
   const { data: tagsData } = useTags();
@@ -48,9 +51,7 @@ export default function EditRecipePage() {
       setIngredients(recipe.ingredients?.join('\n') ?? '');
       setInstructions(recipe.instructions?.join('\n') ?? '');
       setSelectedTags(recipe.tags?.map((tag) => tag?.id as string) ?? []);
-      if (recipe.description) {
-        setDescription(recipe.description);
-      }
+      setDescription(recipe.description ?? '');
     }
   }, [recipe, tags]);
 
@@ -61,23 +62,25 @@ export default function EditRecipePage() {
   const handleSubmitRecipe = async (e: React.SyntheticEvent) => {
     e.preventDefault();
 
-    const newRecipeData = {
+    const recipeData = {
       name: recipeName,
       description,
-      ingredients: ingredients.split('\n'),
-      instructions: instructions.split('\n'),
+      ingredients: trimSplit(ingredients, '\n'),
+      instructions: trimSplit(instructions, '\n'),
     };
 
-    if (recipe?.id) {
-      const {data: {upsertRecipe: {slug}}} = await updateRecipe(recipe.id, newRecipeData, selectedTags, newTags);
-      if (slug) {
-        router.push(`/r/${slug}`);
-      }
-    } else {
-      // createRecipe({recipeData: newRecipeData, sessionToken}, {
-      //     if (data.slug) {
-      //       router.push(`/r/${data.slug}`);
-      //     }
+    const trimmedNewTags = trimSplit(newTags, ',');
+
+    const upsertOptions = {
+      recipeId: recipe?.id,
+      recipeData,
+      tagsConnect: selectedTags,
+      tagsCreate: trimmedNewTags,
+    };
+
+    const {data: {upsertRecipe: {slug}}} = await upsertRecipe(upsertOptions);
+    if (slug) {
+      router.push(`/r/${slug}`);
     }
   };
 

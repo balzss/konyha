@@ -25,7 +25,7 @@ export default function MainPage() {
   const recipes = recipesData?.recipes;
 
   const handleClickAdd = (_event: React.SyntheticEvent) => {
-    router.push('/add');
+    router.push('/r/add');
   };
 
   const handleClickRecipe = (recipeSlug: string) => {

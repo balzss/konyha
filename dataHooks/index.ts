@@ -1,4 +1,3 @@
-import type { RawRecipe } from '../utils/types';
 import { useSession } from 'next-auth/react';
 import {
   useGetRecipesQuery,
@@ -16,51 +15,29 @@ function slugify(input: string): string {
     .replace(/ +/g, '-');
 }
 
-function formatTags(tags: string) {
-  return tags
-    .split(',')
-    .map((tag) => tag.trim())
-    .filter((tag) => tag);
-}
-
-function formatRecipeForMutation(recipeData: RawRecipe, userId: string = '1141c679-c91a-4785-89c4-3c919d819cc4') {
-  const formattedNewTags = formatTags(recipeData.newTags ?? '', userId);
-  const formattedExistingTags = recipeData.tags?.map((tagId) => ({id: tagId})) ?? [];
-  const newTagsData = formattedNewTags.map((tagInner) => ({tag: {data: tagInner}}));
-  const existingTagsData = formattedExistingTags.map((tagInner) => ({tag: {data: tagInner}}));
-  const { description, ingredients, instructions } = formatFields(recipeData);
-  return  {
-    user_id: userId,
-    name: recipeData.recipeName,
-    slug: slugify(recipeData.recipeName),
-    description,
-    ingredients,
-    instructions,
-    tags: {
-      data: [...newTagsData, ...existingTagsData],
-    }
-  };
-}
-
-function useRecipes() {
+export function useRecipes() {
   return useGetRecipesQuery();
 }
 
-function useSingleRecipe(recipeSlug: string) {
+export function useSingleRecipe(recipeSlug: string) {
   const variables = {
     where: {slug: recipeSlug},
   };
   return useGetRecipesQuery({ variables, skip: !recipeSlug });
 }
 
-function useCreateRecipe() {
-}
+type UpsertRawInput = {
+  recipeId: string;
+  recipeData: Omit<RecipeUpsertInput, 'slug' | 'authorId'>;
+  tagsConnect: string[];
+  tagsCreate: string[];
+};
 
-function useUpdateRecipe(): [Function, any] {
+export function useUpsertRecipe(): [Function, any] {
   const { data: sessionData } = useSession();
   const authorId = sessionData?.userId as string;
   const [mutate, results] = useUpsertRecipeMutation({refetchQueries: ['GetRecipes', 'GetTags']});
-  function updateRecipe (recipeId: string, recipeData: Omit<RecipeUpsertInput, 'slug' | 'authorId'>, tagsConnect: string[], newTags: string) {
+  function upsertRecipe({recipeData, recipeId, tagsConnect, tagsCreate}: UpsertRawInput) {
     return mutate({variables: {
       recipeData: {
         ...recipeData,
@@ -69,25 +46,16 @@ function useUpdateRecipe(): [Function, any] {
       },
       recipeId,
       tagsConnect,
-      tagsCreate: formatTags(newTags),
+      tagsCreate,
     }});
   }
-  return [updateRecipe, results];
+  return [upsertRecipe, results];
 }
 
-function useDeleteRecipe() {
-  return useDeleteRecipeMutation();
+export function useDeleteRecipe() {
+  return useDeleteRecipeMutation({refetchQueries: ['GetRecipes', 'GetTags']});
 }
 
-function useTags() {
+export function useTags() {
   return useGetTagsQuery();
 }
-
-export {
-  useRecipes,
-  useTags,
-  useSingleRecipe,
-  useCreateRecipe,
-  useDeleteRecipe,
-  useUpdateRecipe,
-};

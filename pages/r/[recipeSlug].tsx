@@ -77,7 +77,7 @@ export default function RecipeDetailsPage() {
 
   const handleClickEdit = () => {
     if (!recipeSlug) return;
-    router.push(`/edit/${recipeSlug}`);
+    router.push(`/r/${recipeSlug}/edit`);
   };
 
   const handleDeleteRecipe = async (_e: React.SyntheticEvent) => {
