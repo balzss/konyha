@@ -33,6 +33,7 @@ export type MutationUpsertRecipeArgs = {
   data: RecipeUpsertInput;
   id?: InputMaybe<Scalars['String']>;
   tagsConnect: Array<Scalars['String']>;
+  tagsCreate: Array<Scalars['String']>;
 };
 
 export type Query = {
@@ -99,6 +100,7 @@ export type UpsertRecipeMutationVariables = Exact<{
   recipeId?: InputMaybe<Scalars['String']>;
   recipeData: RecipeUpsertInput;
   tagsConnect: Array<Scalars['String']> | Scalars['String'];
+  tagsCreate: Array<Scalars['String']> | Scalars['String'];
 }>;
 
 
@@ -197,7 +199,7 @@ export type ResolversParentTypes = {
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   deleteRecipe?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteRecipeArgs, 'slug'>>;
-  upsertRecipe?: Resolver<Maybe<ResolversTypes['Recipe']>, ParentType, ContextType, RequireFields<MutationUpsertRecipeArgs, 'data' | 'tagsConnect'>>;
+  upsertRecipe?: Resolver<Maybe<ResolversTypes['Recipe']>, ParentType, ContextType, RequireFields<MutationUpsertRecipeArgs, 'data' | 'tagsConnect' | 'tagsCreate'>>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -342,8 +344,13 @@ export type DeleteRecipeMutationHookResult = ReturnType<typeof useDeleteRecipeMu
 export type DeleteRecipeMutationResult = Apollo.MutationResult<DeleteRecipeMutation>;
 export type DeleteRecipeMutationOptions = Apollo.BaseMutationOptions<DeleteRecipeMutation, DeleteRecipeMutationVariables>;
 export const UpsertRecipeDocument = gql`
-    mutation UpsertRecipe($recipeId: String, $recipeData: RecipeUpsertInput!, $tagsConnect: [String!]!) {
-  upsertRecipe(id: $recipeId, data: $recipeData, tagsConnect: $tagsConnect) {
+    mutation UpsertRecipe($recipeId: String, $recipeData: RecipeUpsertInput!, $tagsConnect: [String!]!, $tagsCreate: [String!]!) {
+  upsertRecipe(
+    id: $recipeId
+    data: $recipeData
+    tagsConnect: $tagsConnect
+    tagsCreate: $tagsCreate
+  ) {
     id
     slug
   }
@@ -367,6 +374,7 @@ export type UpsertRecipeMutationFn = Apollo.MutationFunction<UpsertRecipeMutatio
  *      recipeId: // value for 'recipeId'
  *      recipeData: // value for 'recipeData'
  *      tagsConnect: // value for 'tagsConnect'
+ *      tagsCreate: // value for 'tagsCreate'
  *   },
  * });
  */

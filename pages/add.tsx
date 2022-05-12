@@ -66,11 +66,10 @@ export default function EditRecipePage() {
       description,
       ingredients: ingredients.split('\n'),
       instructions: instructions.split('\n'),
-      // newTags,
     };
 
     if (recipe?.id) {
-      const {data: {upsertRecipe: {slug}}} = await updateRecipe(recipe.id, newRecipeData, selectedTags);
+      const {data: {upsertRecipe: {slug}}} = await updateRecipe(recipe.id, newRecipeData, selectedTags, newTags);
       if (slug) {
         router.push(`/r/${slug}`);
       }

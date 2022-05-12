@@ -16,12 +16,11 @@ function slugify(input: string): string {
     .replace(/ +/g, '-');
 }
 
-function formatTags(tags: string, userId: string) {
+function formatTags(tags: string) {
   return tags
     .split(',')
     .map((tag) => tag.trim())
-    .filter((tag) => tag)
-    .map((tagName) => ({name: tagName, user_id: userId}));
+    .filter((tag) => tag);
 }
 
 function formatRecipeForMutation(recipeData: RawRecipe, userId: string = '1141c679-c91a-4785-89c4-3c919d819cc4') {
@@ -60,8 +59,8 @@ function useCreateRecipe() {
 function useUpdateRecipe(): [Function, any] {
   const { data: sessionData } = useSession();
   const authorId = sessionData?.userId as string;
-  const [mutate, results] = useUpsertRecipeMutation({refetchQueries: ['GetRecipes']});
-  function updateRecipe (recipeId: string, recipeData: Omit<RecipeUpsertInput, 'slug' | 'authorId'>, tagsConnect: string[]) {
+  const [mutate, results] = useUpsertRecipeMutation({refetchQueries: ['GetRecipes', 'GetTags']});
+  function updateRecipe (recipeId: string, recipeData: Omit<RecipeUpsertInput, 'slug' | 'authorId'>, tagsConnect: string[], newTags: string) {
     return mutate({variables: {
       recipeData: {
         ...recipeData,
@@ -70,6 +69,7 @@ function useUpdateRecipe(): [Function, any] {
       },
       recipeId,
       tagsConnect,
+      tagsCreate: formatTags(newTags),
     }});
   }
   return [updateRecipe, results];

@@ -52,8 +52,8 @@ input RecipeUpsertInput {
   instructions: [String!]
 }
 
-mutation UpsertRecipe ($recipeId: String, $recipeData: RecipeUpsertInput!, $tagsConnect: [String!]!) {
-  upsertRecipe(id: $recipeId, data: $recipeData, tagsConnect: $tagsConnect) {
+mutation UpsertRecipe ($recipeId: String, $recipeData: RecipeUpsertInput!, $tagsConnect: [String!]!, $tagsCreate: [String!]!) {
+  upsertRecipe(id: $recipeId, data: $recipeData, tagsConnect: $tagsConnect, tagsCreate: $tagsCreate) {
     id
     slug
   }
@@ -66,5 +66,5 @@ type Query {
 
 type Mutation {
   deleteRecipe(slug: String!): Boolean
-  upsertRecipe(id: String, data: RecipeUpsertInput!, tagsConnect: [String!]!): Recipe
+  upsertRecipe(id: String, data: RecipeUpsertInput!, tagsConnect: [String!]!, tagsCreate: [String!]!): Recipe
 }
