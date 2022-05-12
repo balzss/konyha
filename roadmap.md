@@ -2,12 +2,7 @@
 
 ## Alpha release:
 
-- [ ] mutations rewrite
-- [ ] combine single and multiple recipe request
-- [ ] use generated types everywhere
-- [ ] use string array for ingredients and instructions
 - [ ] google login
-- [ ] recept mentés authorral együtt
 - [ ] dark mode mentése user preference-ként (default to system preference)
 - [ ] basic keresés -> SearchPage
 - [ ] címke/recept filter
