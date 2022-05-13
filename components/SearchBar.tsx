@@ -1,5 +1,6 @@
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
+import { useDebouncedCallback } from 'use-debounce';
 import {
   Paper,
   IconButton,
@@ -10,51 +11,24 @@ import {
   Close as CloseIcon,
 } from '@mui/icons-material';
 
-// Generic reusable hook
-const useDebouncedSearch = (searchFunction) => {
-
-  // Handle the input text state
-  const [inputText, setInputText] = useState('');
-
-  // Debounce the original search async function
-  const debouncedSearchFunction = useConstant(() =>
-    AwesomeDebouncePromise(searchFunction, 300)
-  );
-
-  // The async callback is run each time the text changes,
-  // but as the search function is debounced, it does not
-  // fire a new request on each keystroke
-  const searchResults = useAsync(
-    async () => {
-      if (inputText.length === 0) {
-        return [];
-      } else {
-        return debouncedSearchFunction(inputText);
-      }
-    },
-    [debouncedSearchFunction, inputText]
-  );
-
-  // Return everything needed for the hook consumer
-  return {
-    inputText,
-    setInputText,
-    searchResults,
-  };
-};
-
-const useSearchStarwarsHero = () => useDebouncedSearch((text) => {
-  console.log(text);
-  return Math.random();
-});
 
 type SearchBarProps = {
+  onDebouncedChange: (query: string) => void;
+  delay: number;
 };
 
 export default function SearchBar({
+  onDebouncedChange,
+  delay,
 }: SearchBarProps) {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const debounce = useDebouncedCallback(
+    (value: string) => {
+      onDebouncedChange(value);
+    },
+    delay,
+  );
 
   const handleClickBack = (_e: React.SyntheticEvent) => {
     router.push('/');
@@ -62,6 +36,7 @@ export default function SearchBar({
 
   const handleChangeQuery = (e: any) => {
     setSearchQuery(e.target.value);
+    debounce(e.target.value)
   }
 
   return (
@@ -89,7 +64,7 @@ export default function SearchBar({
         <ArrowBackIcon/>
       </IconButton>
       <InputBase
-        sx={{ ml: 1, flex: 1, lineHeight: 1.5 }}
+        sx={{ ml: 2, flex: 1, lineHeight: 1.5 }}
         placeholder="Keresés"
         autoFocus
         value={searchQuery}

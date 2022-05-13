@@ -1,11 +1,18 @@
 import { useSession } from 'next-auth/react';
+import type {
+  Recipe,
+  RecipeUpsertInput,
+} from '../graphql/generated';
+import type {
+  ApolloError,
+} from '@apollo/client'
 import {
   useGetRecipesQuery,
   useGetTagsQuery,
   useDeleteRecipeMutation,
   useUpsertRecipeMutation,
-  RecipeUpsertInput,
   useUpdateUserPreferencesMutation,
+  useSearchRecipesLazyQuery,
 } from '../graphql/generated';
 
 function slugify(input: string): string {
@@ -63,4 +70,21 @@ export function useTags() {
 
 export function useUpdateUserPreferences() {
   return useUpdateUserPreferencesMutation();
+}
+
+export function useSearchRecipes(): [Function, { error: ApolloError | undefined, data: Recipe[] | undefined}] {
+  const [query, {data, error, loading}] = useSearchRecipesLazyQuery();
+  function searchRecipes(searchQuery: string) {
+    return query({
+      variables: {
+        searchQuery,
+      }
+    })
+  }
+  const searchResults = {
+    loading,
+    error: error,
+    data: data?.searchRecipes,
+  };
+  return [searchRecipes, searchResults];
 }

@@ -3,10 +3,10 @@
 ## Alpha release:
 
 - [ ] google login
-- [ ] keresés, debounce
-- [ ] címke/recept filter
+- [ ] tag filter
 - [ ] error kezelés
-- [ ] basic import/export
+- [ ] page headers (title), favicon
+- [ ] basic db import/export
 - [ ] deploy (digitalocean app platformra?)
 
 ## Beta release:

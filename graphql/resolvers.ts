@@ -34,6 +34,24 @@ const resolvers: Resolvers = {
       const tags = await prisma.tag.findMany(options);
       return tags;
     },
+    searchRecipes: async (_, {query}, {prisma, session}) => {
+      if (!session) {
+        throw new AuthenticationError('No session found, please log in!');
+      }
+      const { userId } = session;
+      const options = {
+        include: {tags: true},
+        where: {
+          authorId: userId,
+          OR: [
+            { name: { contains: query, mode: 'insensitive' } },
+            { description: { contains: query, mode: 'insensitive' } },
+          ],
+        }
+      };
+      const recipes = await prisma.recipe.findMany(options);
+      return recipes;
+    },
   },
   Mutation: {
     deleteRecipe: async (_, {slug}, {prisma, session}) => {

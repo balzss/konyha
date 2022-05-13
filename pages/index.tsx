@@ -8,15 +8,10 @@ import {
   Box
 } from '@mui/material';
 import {
-  Add as AddIcon,
-  Search as SearchIcon,
-  Tune as TuneIcon,
-} from '@mui/icons-material';
-import {
   BottomNav,
   Layout,
-  TopBar,
   RecipeCard,
+  HomeTopBar,
 } from '../components';
 import { propsWithAuth } from '../utils/propsWithAuth';
 
@@ -24,14 +19,6 @@ export default function MainPage() {
   const router = useRouter();
   const { data: recipesData, error, loading } = useRecipes();
   const recipes = recipesData?.recipes;
-
-  const handleSearchAction = (_event: React.SyntheticEvent) => {
-    router.push('/search');
-  };
-
-  const handleClickAdd = (_event: React.SyntheticEvent) => {
-    router.push('/r/add');
-  };
 
   const handleClickRecipe = (recipeSlug: string) => {
     router.push(`/r/${recipeSlug}`);
@@ -46,13 +33,9 @@ export default function MainPage() {
         py: 8,
       }}
     >
-      <TopBar
-        leadingAction={{action: () => {}, icon: <TuneIcon/>, label: 'Menü'}}
-        title="Összes recept"
-        trailingActions={[
-          {icon: <SearchIcon/>, action: handleSearchAction, label: 'Keresés'},
-          {icon: <AddIcon/>, action: handleClickAdd, label: 'Új recept'},
-        ]}
+      <HomeTopBar
+        selection={[]}
+        onSelectionChange={() => {}}
       />
       <Container maxWidth="md" sx={{px: 2}} disableGutters>
         <Grid container spacing={1}>

@@ -13,22 +13,26 @@ type Recipe {
   tags: [Tag!]
 }
 
+fragment recipeFields on Recipe {
+  id
+  name
+  slug
+  description
+  ingredients
+  instructions
+  tags {
+    id
+    name
+  }
+}
+
 type UserPreferences {
   theme: String
 }
 
 query GetRecipes($where: RecipesWhereInput) {
   recipes(where: $where) {
-    id
-    name
-    slug
-    description
-    ingredients
-    instructions
-    tags {
-      id
-      name
-    }
+    ...recipeFields
   }
 }
 
@@ -36,6 +40,12 @@ query GetTags {
   tags {
     id
     name
+  }
+}
+
+query SearchRecipes($searchQuery: String!) {
+  searchRecipes(query: $searchQuery) {
+    ...recipeFields
   }
 }
 
@@ -75,7 +85,8 @@ mutation UpdateUserPreferences ($preferences: UpdateUserPreferencesInput) {
 
 type Query {
   recipes(where: RecipesWhereInput): [Recipe!]!
-  tags: [Tag]
+  tags: [Tag!]!
+  searchRecipes(query: String): [Recipe!]!
 }
 
 type Mutation {
