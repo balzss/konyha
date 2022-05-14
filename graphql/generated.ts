@@ -80,12 +80,14 @@ export type RecipeUpsertInput = {
 
 export type RecipesWhereInput = {
   slug?: InputMaybe<Scalars['String']>;
+  tags?: InputMaybe<Array<Scalars['String']>>;
 };
 
 export type Tag = {
   __typename?: 'Tag';
   id: Scalars['String'];
   name: Scalars['String'];
+  slug?: Maybe<Scalars['String']>;
 };
 
 export type UpdateUserPreferencesInput = {
@@ -97,26 +99,28 @@ export type UserPreferences = {
   theme?: Maybe<Scalars['String']>;
 };
 
-export type RecipeFieldsFragment = { __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, tags?: Array<{ __typename?: 'Tag', id: string, name: string }> | null };
+export type TagFieldsFragment = { __typename?: 'Tag', id: string, name: string, slug?: string | null };
+
+export type RecipeFieldsFragment = { __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, tags?: Array<{ __typename?: 'Tag', id: string, name: string, slug?: string | null }> | null };
 
 export type GetRecipesQueryVariables = Exact<{
   where?: InputMaybe<RecipesWhereInput>;
 }>;
 
 
-export type GetRecipesQuery = { __typename?: 'Query', recipes: Array<{ __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, tags?: Array<{ __typename?: 'Tag', id: string, name: string }> | null }> };
+export type GetRecipesQuery = { __typename?: 'Query', recipes: Array<{ __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, tags?: Array<{ __typename?: 'Tag', id: string, name: string, slug?: string | null }> | null }> };
 
 export type GetTagsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetTagsQuery = { __typename?: 'Query', tags: Array<{ __typename?: 'Tag', id: string, name: string }> };
+export type GetTagsQuery = { __typename?: 'Query', tags: Array<{ __typename?: 'Tag', id: string, name: string, slug?: string | null }> };
 
 export type SearchRecipesQueryVariables = Exact<{
   searchQuery: Scalars['String'];
 }>;
 
 
-export type SearchRecipesQuery = { __typename?: 'Query', searchRecipes: Array<{ __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, tags?: Array<{ __typename?: 'Tag', id: string, name: string }> | null }> };
+export type SearchRecipesQuery = { __typename?: 'Query', searchRecipes: Array<{ __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, tags?: Array<{ __typename?: 'Tag', id: string, name: string, slug?: string | null }> | null }> };
 
 export type DeleteRecipeMutationVariables = Exact<{
   recipeSlug: Scalars['String'];
@@ -263,6 +267,7 @@ export type RecipeResolvers<ContextType = any, ParentType extends ResolversParen
 export type TagResolvers<ContextType = any, ParentType extends ResolversParentTypes['Tag'] = ResolversParentTypes['Tag']> = {
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  slug?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
@@ -280,6 +285,13 @@ export type Resolvers<ContextType = any> = {
 };
 
 
+export const TagFieldsFragmentDoc = gql`
+    fragment tagFields on Tag {
+  id
+  name
+  slug
+}
+    `;
 export const RecipeFieldsFragmentDoc = gql`
     fragment recipeFields on Recipe {
   id
@@ -289,11 +301,10 @@ export const RecipeFieldsFragmentDoc = gql`
   ingredients
   instructions
   tags {
-    id
-    name
+    ...tagFields
   }
 }
-    `;
+    ${TagFieldsFragmentDoc}`;
 export const GetRecipesDocument = gql`
     query GetRecipes($where: RecipesWhereInput) {
   recipes(where: $where) {
@@ -332,11 +343,10 @@ export type GetRecipesQueryResult = Apollo.QueryResult<GetRecipesQuery, GetRecip
 export const GetTagsDocument = gql`
     query GetTags {
   tags {
-    id
-    name
+    ...tagFields
   }
 }
-    `;
+    ${TagFieldsFragmentDoc}`;
 
 /**
  * __useGetTagsQuery__

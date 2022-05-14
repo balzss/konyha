@@ -1,6 +1,13 @@
 type Tag {
   id: String!
   name: String!
+  slug: String
+}
+
+fragment tagFields on Tag {
+  id
+  name
+  slug
 }
 
 type Recipe {
@@ -21,8 +28,7 @@ fragment recipeFields on Recipe {
   ingredients
   instructions
   tags {
-    id
-    name
+    ...tagFields
   }
 }
 
@@ -38,8 +44,7 @@ query GetRecipes($where: RecipesWhereInput) {
 
 query GetTags {
   tags {
-    id
-    name
+    ...tagFields
   }
 }
 
@@ -55,6 +60,7 @@ mutation DeleteRecipe ($recipeSlug: String!) {
 
 input RecipesWhereInput {
   slug: String
+  tags: [String!]
 }
 
 input RecipeUpsertInput {

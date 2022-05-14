@@ -63,7 +63,7 @@ export default function LoginPage() {
                 </IconButton>
               </NextLink>
               <NextLink href="/api/auth/signin" passHref>
-                <IconButton aria-label="google-login">
+                <IconButton aria-label="google-login" onClick={() => signIn('google', {callbackUrl: '/'})}>
                   <GoogleIcon />
                 </IconButton>
               </NextLink>

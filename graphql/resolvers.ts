@@ -2,7 +2,7 @@ import {
   AuthenticationError,
   ForbiddenError,
 } from 'apollo-server-micro';
-import type { Resolvers } from './generated';
+import type { Resolvers, Tag } from './generated';
 import slugify from '../utils/slugify';
 
 const resolvers: Resolvers = {
@@ -15,7 +15,16 @@ const resolvers: Resolvers = {
       const options = {
         include: {tags: true},
         where: {
-          ...where,
+          ...(where?.tags && {
+            tags: {
+              slug: {
+                in: where.tags,
+              }
+            }
+          }),
+          ...(where?.slug && {
+            slug: where.slug,
+          }),
           authorId: userId,
         }
       };
@@ -77,15 +86,13 @@ const resolvers: Resolvers = {
       if (data.authorId !== userId) {
         throw new ForbiddenError('Not authorized for this action');
       }
-      const formattedTags = tagsConnect.map((tagId) => ({id: tagId}));
-      const newTags = tagsCreate.map((tagName) => ({name: tagName, ownerId: userId}));
 
       // handle slug collision
       const baseSlug = slugify(data.name);
       const recipesWithSameSlug = await prisma.recipe.findMany({
         where: {
-          NOT: {
-            id: id ?? '',
+          id: {
+            not: id ?? '',
           },
           slug: {
             startsWith: baseSlug,
@@ -93,6 +100,25 @@ const resolvers: Resolvers = {
         }
       });
       const slug = baseSlug + (recipesWithSameSlug.length || '');
+
+      const formattedTags = tagsConnect.map((tagId) => ({id: tagId}));
+
+      // handle tag slug collision
+      const userTags = await prisma.tag.findMany({
+        where: {
+          ownerId: userId,
+        }
+      });
+
+      const newTags = tagsCreate.map((tagName) => {
+        const tagBaseSlug = slugify(tagName);
+        const tagSlugOverlap = userTags.filter(({slug}: Tag) => slug?.startsWith(tagBaseSlug));
+        return {
+          name: tagName,
+          ownerId: userId,
+          slug: tagBaseSlug + (tagSlugOverlap.length || ''),
+        };
+      });
 
       const options = {
         where: {

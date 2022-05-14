@@ -2,8 +2,9 @@
 
 ## Alpha release:
 
-- [ ] google login
+- [ ] email login
 - [ ] tag filter
+- [ ] better slug collision handling
 - [ ] error kezelés
 - [ ] page headers (title), favicon
 - [ ] basic db import/export
