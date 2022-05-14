@@ -3,6 +3,7 @@ import {
   ForbiddenError,
 } from 'apollo-server-micro';
 import type { Resolvers } from './generated';
+import slugify from '../utils/slugify';
 
 const resolvers: Resolvers = {
   Query: {
@@ -78,12 +79,28 @@ const resolvers: Resolvers = {
       }
       const formattedTags = tagsConnect.map((tagId) => ({id: tagId}));
       const newTags = tagsCreate.map((tagName) => ({name: tagName, ownerId: userId}));
+
+      // handle slug collision
+      const baseSlug = slugify(data.name);
+      const recipesWithSameSlug = await prisma.recipe.findMany({
+        where: {
+          NOT: {
+            id: id ?? '',
+          },
+          slug: {
+            startsWith: baseSlug,
+          }
+        }
+      });
+      const slug = baseSlug + (recipesWithSameSlug.length || '');
+
       const options = {
         where: {
           id: id ?? '',
         },
         update: {
           ...data,
+          slug,
           tags: {
             set: formattedTags,
             create: newTags,
@@ -91,6 +108,7 @@ const resolvers: Resolvers = {
         },
         create: {
           ...data,
+          slug,
           tags: {
             connect: formattedTags,
             create: newTags,

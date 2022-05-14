@@ -33,10 +33,7 @@ export default function MainPage() {
         py: 8,
       }}
     >
-      <HomeTopBar
-        selection={[]}
-        onSelectionChange={() => {}}
-      />
+      <HomeTopBar />
       <Container maxWidth="md" sx={{px: 2}} disableGutters>
         <Grid container spacing={1}>
           <>

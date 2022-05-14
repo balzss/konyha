@@ -16,18 +16,12 @@ import {
   TopBar,
 } from '../components';
 import { useTags } from '../dataHooks';
+import useUrlParams from '../utils/useUrlParams';
 
-type HomeTopBarProps = {
-  selection: any;
-  onSelectionChange: any;
-}
-
-export default function HomeTopBar({
-  selection,
-  onSelectionChange,
-}: HomeTopBarProps) {
+export default function HomeTopBar() {
   const router = useRouter();
-  const selectedTags = router?.query?.tags?.toString().split(',');
+  const selectedTags = useUrlParams(['tags']);
+  console.log(selectedTags)
   const { data: tagsData } = useTags();
   const tags = tagsData?.tags;
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);

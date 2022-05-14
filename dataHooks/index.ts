@@ -15,14 +15,6 @@ import {
   useSearchRecipesLazyQuery,
 } from '../graphql/generated';
 
-function slugify(input: string): string {
-  return input
-    ?.trim()
-    .toLowerCase()
-    .replace(/[^\w ]+/g, '')
-    .replace(/ +/g, '-');
-}
-
 export function useRecipes() {
   return useGetRecipesQuery();
 }
@@ -50,7 +42,6 @@ export function useUpsertRecipe(): [Function, any] {
       recipeData: {
         ...recipeData,
         authorId,
-        slug: slugify(recipeData.name),
       },
       recipeId,
       tagsConnect,

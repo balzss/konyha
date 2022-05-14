@@ -60,7 +60,6 @@ input RecipesWhereInput {
 input RecipeUpsertInput {
   authorId: String!
   name: String!
-  slug: String!
   description: String
   ingredients: [String!]
   instructions: [String!]

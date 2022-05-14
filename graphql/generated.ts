@@ -76,7 +76,6 @@ export type RecipeUpsertInput = {
   ingredients?: InputMaybe<Array<Scalars['String']>>;
   instructions?: InputMaybe<Array<Scalars['String']>>;
   name: Scalars['String'];
-  slug: Scalars['String'];
 };
 
 export type RecipesWhereInput = {
