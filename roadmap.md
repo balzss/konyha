@@ -2,11 +2,12 @@
 
 ## Alpha release:
 
-- [ ] email login
-- [ ] tag filter
-- [ ] better slug collision handling
-- [ ] error kezelés
 - [ ] page headers (title), favicon
+- [ ] email login
+- [ ] error kezelés
+- [ ] handle when theres no recipes or a tag is empty
+- [ ] improve login screen
+- [ ] better slug collision handling
 - [ ] basic db import/export
 - [ ] deploy (digitalocean app platformra?)
 

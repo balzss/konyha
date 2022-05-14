@@ -1,6 +1,5 @@
 import type { ReactElement } from 'react';
 import { useRouter } from 'next/router';
-import { useRecipes } from '../dataHooks';
 import {
   Alert,
   Container,
@@ -13,12 +12,21 @@ import {
   RecipeCard,
   HomeTopBar,
 } from '../components';
+import { useRecipes, useTags } from '../dataHooks';
 import { propsWithAuth } from '../utils/propsWithAuth';
+import getTagsFromUrl from '../utils/getTagsFromUrl';
 
 export default function MainPage() {
   const router = useRouter();
+  const selectedTags = getTagsFromUrl(router);
   const { data: recipesData, error, loading } = useRecipes();
-  const recipes = recipesData?.recipes;
+  // TODO filter in request?
+  const recipes = recipesData?.recipes.filter((recipe) => {
+    if (!selectedTags.length) return true;
+    const recipeSlugs = recipe?.tags?.map((tag) => tag.slug) || [];
+    const intersection = selectedTags.filter(t => recipeSlugs.includes(t));
+    return !!intersection?.length;
+  });
 
   const handleClickRecipe = (recipeSlug: string) => {
     router.push(`/r/${recipeSlug}`);

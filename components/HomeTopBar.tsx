@@ -16,14 +16,14 @@ import {
   TopBar,
 } from '../components';
 import { useTags } from '../dataHooks';
-import useUrlParams from '../utils/useUrlParams';
+import getTagsFromUrl from '../utils/getTagsFromUrl';
 
 export default function HomeTopBar() {
   const router = useRouter();
-  const selectedTags = useUrlParams(['tags']);
-  console.log(selectedTags)
+  const selectedTags = getTagsFromUrl(router);
   const { data: tagsData } = useTags();
   const tags = tagsData?.tags;
+  const title = selectedTags.length ? selectedTags.map((tagSlug) => tags?.find(({slug}) => tagSlug === slug)?.name).join(', ') : 'Összes recept';
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -38,11 +38,22 @@ export default function HomeTopBar() {
   const handleClickSearch = () => {
     router.push('/search');
   };
+  const handleSelectTag = (tagSlug: string) => {
+    const newSelection = selectedTags.includes(tagSlug) ? selectedTags.filter(tag => tag !== tagSlug) : [...selectedTags, tagSlug];
+    router.push(
+      {
+        pathname: '/',
+        query: {
+          ...(newSelection.length && { tags: newSelection.join(' ')})
+        }
+      },
+    );
+  };
   return (
     <>
       <TopBar
         leadingAction={{action: handleOpenMenu, icon: <TuneIcon/>, label: 'Menü'}}
-        title="Összes recept"
+        title={title}
         trailingActions={[
           {icon: <SearchIcon/>, action: handleClickSearch, label: 'Keresés'},
           {icon: <AddIcon/>, action: handleClickAdd, label: 'Új recept'},
@@ -56,11 +67,11 @@ export default function HomeTopBar() {
         onClose={handleCloseMenu}
         sx={{zIndex: 2000}}
       >
-        <MenuItem onClick={(e) => {}}>
+        <MenuItem onClick={(e) => router.push('/')}>
           <ListItemIcon>
             <Checkbox
               edge="start"
-              checked={true}
+              checked={!selectedTags.length}
               tabIndex={-1}
               disableRipple
             />
@@ -68,12 +79,12 @@ export default function HomeTopBar() {
           Összes recept
         </MenuItem>
         <Divider />
-        { tags && tags.length > 0 && tags.map(({name}) => (
-          <MenuItem key={name} onClick={(e) => {}}>
+        { tags && tags.length > 0 && tags.map(({name, slug}) => (
+          <MenuItem key={slug} onClick={() => handleSelectTag(slug)}>
             <ListItemIcon>
               <Checkbox
                 edge="start"
-                checked={false}
+                checked={selectedTags.includes(slug as string)}
                 tabIndex={-1}
                 disableRipple
               />

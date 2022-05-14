@@ -41,35 +41,38 @@ export default function LoginPage() {
         <BrandHero/>
         <Card variant="outlined" sx={{bgcolor: 'background.paper', mt: 4}}>
           <CardContent>
-            <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-              Bejelentkezés
-            </Typography>
-            <TextField
-              label="Email"
-              variant="outlined"
-              margin="normal"
-              type="email"
-              required
-              fullWidth
-              value={email}
-              onChange={({target}) => setEmail(target.value)}
-            />
-          </CardContent>
-          <CardActions sx={{px: 2, pb: 2, justifyContent: 'space-between'}}>
-            <Stack direction="row" spacing={1}>
-              <NextLink href="/api/auth/signin" passHref>
-                <IconButton aria-label="github-login" onClick={() => signIn('github', {callbackUrl: '/'})}>
-                  <GitHubIcon />
-                </IconButton>
-              </NextLink>
-              <NextLink href="/api/auth/signin" passHref>
-                <IconButton aria-label="google-login" onClick={() => signIn('google', {callbackUrl: '/'})}>
-                  <GoogleIcon />
-                </IconButton>
-              </NextLink>
+            <Stack direction="column" spacing={2}>
+              <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+                Bejelentkezés
+              </Typography>
+              <TextField
+                label="Email"
+                variant="outlined"
+                margin="normal"
+                type="email"
+                required
+                fullWidth
+                value={email}
+                onChange={({target}) => setEmail(target.value)}
+              />
+              <Button variant="outlined" onClick={handleLogin} sx={{minWidth: '240px', alignSelf: 'center'}}>Link küldése</Button>
+              <Typography variant="caption" sx={{textAlign: 'center'}}>
+                vagy
+              </Typography>
+              <Stack direction="row" spacing={2} sx={{justifyContent: 'center'}}>
+                <NextLink href="/api/auth/signin" passHref>
+                  <Button variant="text" startIcon={<GitHubIcon />} onClick={() => signIn('github', {callbackUrl: '/'})}>
+                    Github
+                  </Button>
+                </NextLink>
+                <NextLink href="/api/auth/signin" passHref>
+                  <Button variant="text" startIcon={<GoogleIcon />} onClick={() => signIn('google', {callbackUrl: '/'})}>
+                    Google
+                  </Button>
+                </NextLink>
+              </Stack>
             </Stack>
-            <Button variant="outlined" onClick={handleLogin}>Bejelentkezés</Button>
-          </CardActions>
+          </CardContent>
         </Card>
       </Container>
     </Box>
