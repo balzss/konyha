@@ -17,8 +17,11 @@ import {
   Close as CloseIcon,
   Save as SaveIcon,
 } from '@mui/icons-material'
-import TopBar from '../../components/TopBar';
-import ConfirmModal from '../../components/ConfirmModal';
+import {
+  Head,
+  TopBar,
+  ConfirmModal,
+} from '../../components';
 import { useSingleRecipe, useTags, useUpsertRecipe } from '../../dataHooks';
 import { propsWithAuth } from '../../utils/propsWithAuth';
 
@@ -32,6 +35,7 @@ function trimSplit(input: string, delimeter: string): string[] {
 export default function EditRecipePage() {
   const router = useRouter();
   const recipeSlug = router.query.recipeSlug as string;
+  const pageTitle = recipeSlug ? 'Recept szerkesztése' : 'Új recept';
   const [ upsertRecipe, {error: recipeUpsertError} ] = useUpsertRecipe();
   const { data: recipesData } = useSingleRecipe(recipeSlug);
   const recipe = recipesData?.recipes[0];
@@ -102,9 +106,10 @@ export default function EditRecipePage() {
         paddingTop: '80px',
       }}
     >
+      <Head title={pageTitle}/>
       <TopBar
         leadingAction={{action: handleClickBack, icon: <CloseIcon/>, label: 'Vissza'}}
-        title={recipeSlug ? 'Recept szerkesztése' : 'Új recept'}
+        title={pageTitle}
         trailingActions={[
           {icon: <SaveIcon/>, action: () => setSaveConfirmOpen(true), label: 'Mentés'},
         ]}
@@ -164,6 +169,7 @@ export default function EditRecipePage() {
           <FormControl margin="dense" sx={{ width: "100%" }}>
             <InputLabel id="tag-select-label">Mentett címkék</InputLabel>
             <Select
+              disabled={!tags?.length}
               labelId="tag-select-label"
               multiple
               value={selectedTags}

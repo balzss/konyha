@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
@@ -13,7 +14,12 @@ export default function RecipeCard({
   recipe,
   onClick,
 }: RecipeCardProps) {
+  const router = useRouter();
   const { tags } = recipe;
+
+  const handleClickTag = (tagSlug: string) => {
+    router.push(`/?tags=${tagSlug}`);
+  }
   return (
     <Card variant="outlined" sx={{bgcolor: 'background.default', height: '100%'}}>
       <CardActionArea onClick={() => onClick(recipe.slug)}>
@@ -26,7 +32,7 @@ export default function RecipeCard({
       { tags && tags.length > 0 && (
         <CardActions sx={{px: 2, pb: 2}}>
           {tags.map((tag) => (
-            <Chip key={tag.id} label={`${tag.name}`} size="small" onClick={() => console.log(`Tag ID: ${tag.id}`)}/>
+            <Chip key={tag.id} label={`${tag.name}`} size="small" onClick={() => handleClickTag(tag.slug as string)}/>
           ))}
         </CardActions>
       )}

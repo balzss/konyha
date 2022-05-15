@@ -2,7 +2,6 @@
 
 ## Alpha release:
 
-- [ ] page headers (title), favicon
 - [ ] email login
 - [ ] error kezelés
 - [ ] handle when theres no recipes or a tag is empty

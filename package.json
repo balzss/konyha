@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "lt": "lt --port 3000 --subdomain konyha-dev",
     "studio": "prisma studio",
     "prisma-generate": "prisma generate",
     "migrate": "prisma migrate",
@@ -46,6 +47,7 @@
     "@types/react-dom": "18.0.1",
     "eslint": "8.13.0",
     "eslint-config-next": "12.1.5",
+    "localtunnel": "^2.0.2",
     "prisma": "^3.14.0",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.4"

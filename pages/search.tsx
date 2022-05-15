@@ -6,6 +6,7 @@ import {
   Grid,
 } from '@mui/material';
 import {
+  Head,
   SearchBar,
   RecipeCard,
 } from '../components';
@@ -33,6 +34,7 @@ export default function SearchPage() {
         py: 8,
       }}
     >
+      <Head title="Keresés"/>
       <SearchBar onDebouncedChange={handleQueryChange} delay={500}/>
       <Container maxWidth="md" sx={{px: 2}} disableGutters>
         <Grid container spacing={1}>

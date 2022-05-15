@@ -19,8 +19,11 @@ import {
   Edit as EditIcon,
   Delete as DeleteIcon,
 } from '@mui/icons-material'
-import TopBar from '../../components/TopBar';
-import ConfirmModal from '../../components/ConfirmModal';
+import {
+  TopBar,
+  Head,
+  ConfirmModal,
+} from '../../components';
 import { useSingleRecipe, useDeleteRecipe } from '../../dataHooks';
 import { propsWithAuth } from '../../utils/propsWithAuth';
 
@@ -89,6 +92,10 @@ export default function RecipeDetailsPage() {
     }
   };
 
+  const handleClickTag = (tagSlug: string) => {
+    router.push(`/?tags=${tagSlug}`);
+  }
+
   return (
     <Box
       sx={{
@@ -98,6 +105,7 @@ export default function RecipeDetailsPage() {
         paddingTop: '64px',
       }}
     >
+      <Head title={recipe?.name as string}/>
       <TopBar
         leadingAction={{action: handleClickBack, icon: <ArrowBackIcon/>, label: 'Vissza'}}
         title={recipe?.name}
@@ -126,7 +134,7 @@ export default function RecipeDetailsPage() {
         { recipe?.instructions && <RecipeInstructions instructions={recipe.instructions}/> }
         <Stack direction="row" spacing={1}>
           {tags && tags.length > 0 && tags.map((tag) => (
-            <Chip key={tag.id} label={`${tag.name}`} size="small" onClick={() => console.log(`Tag ID: ${tag.id}`)} />
+            <Chip key={tag.id} label={`${tag.name}`} size="small" onClick={() => handleClickTag(tag.slug as string)} />
           ))}
         </Stack>
         {recipeError && (

@@ -9,7 +9,10 @@ import {
   ListItemText,
   ListItemButton,
 } from '@mui/material';
-import { Layout } from '../components/';
+import { 
+  Head,
+  Layout,
+} from '../components/';
 import { propsWithAuth } from '../utils/propsWithAuth';
 import { useUpdateUserPreferences } from '../dataHooks';
 
@@ -43,6 +46,7 @@ export default function ProfilePage({session}: ProfilePageArgs) {
     <List
       sx={{ width: '100%', maxWidth: 480, bgcolor: 'background.default', margin: 'auto', p: 1}}
     >
+      <Head title="Személyes"/>
       <ListItem>
         <ListItemText primary="Email" secondary={session?.user?.email || 'n/a'}/>
       </ListItem>

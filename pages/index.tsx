@@ -7,12 +7,13 @@ import {
   Box
 } from '@mui/material';
 import {
+  Head,
   BottomNav,
   Layout,
   RecipeCard,
   HomeTopBar,
 } from '../components';
-import { useRecipes, useTags } from '../dataHooks';
+import { useRecipes } from '../dataHooks';
 import { propsWithAuth } from '../utils/propsWithAuth';
 import getTagsFromUrl from '../utils/getTagsFromUrl';
 
@@ -41,6 +42,7 @@ export default function MainPage() {
         py: 8,
       }}
     >
+      <Head title="Receptek"/>
       <HomeTopBar />
       <Container maxWidth="md" sx={{px: 2}} disableGutters>
         <Grid container spacing={1}>

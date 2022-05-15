@@ -8,17 +8,18 @@ import {
   Typography,
   Card,
   CardContent,
-  CardActions,
   Button,
   TextField,
   Stack,
-  IconButton,
 } from '@mui/material';
 import {
   GitHub as GitHubIcon,
   Google as GoogleIcon,
 } from '@mui/icons-material';
-import BrandHero from '../components/BrandHero';
+import {
+  Head,
+  BrandHero,
+} from '../components';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -37,6 +38,7 @@ export default function LoginPage() {
         pt: 4,
       }}
     >
+      <Head title="Bejelentkezés"/>
       <Container maxWidth="sm">
         <BrandHero/>
         <Card variant="outlined" sx={{bgcolor: 'background.paper', mt: 4}}>

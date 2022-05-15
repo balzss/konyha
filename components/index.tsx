@@ -8,3 +8,4 @@ export { default as TopBar } from './TopBar';
 export { default as SearchBar } from './SearchBar';
 export { default as HomeTopBar } from './HomeTopBar';
 export { default as CustomThemeProvider } from './CustomThemeProvider';
+export { default as Head } from './Head';
