@@ -2,8 +2,10 @@ import type { ReactElement } from 'react';
 import { useRouter } from 'next/router';
 import {
   Alert,
+  AlertTitle,
   Container,
   Grid,
+  Button,
   Box
 } from '@mui/material';
 import {
@@ -12,6 +14,7 @@ import {
   Layout,
   RecipeCard,
   HomeTopBar,
+  Link,
 } from '../components';
 import { useRecipes } from '../dataHooks';
 import { propsWithAuth } from '../utils/propsWithAuth';
@@ -57,6 +60,29 @@ export default function MainPage() {
                 <RecipeCard recipe={recipe} onClick={handleClickRecipe}/>
               </Grid>
             ))}
+            {(!recipes || !recipes.length) && selectedTags.length ? (
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <Alert variant="outlined" severity="info">
+                  <AlertTitle>Üres kategória</AlertTitle>
+                  Ebben a kategóriában nincsenek receptjeid. Szeretnéd törölni ezt a címkét?
+                  <br /><br />
+                  <Link href="#">
+                    Címke törlése
+                  </Link>
+                </Alert>
+              </Grid>
+            ) : (
+              <Grid item>
+                <Alert variant="outlined" severity="info">
+                  <AlertTitle>Nincsenek receptjeid</AlertTitle>
+                  Itt lesznek listázva a receptjeid miután hozzáadod őket a könyvtáradhoz.
+                  <br /><br />
+                  <Link href="/r/add">
+                    Új recept hozzáadása
+                  </Link>
+                </Alert>
+              </Grid>
+            )}
           </>
         </Grid>
       </Container>

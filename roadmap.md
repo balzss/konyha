@@ -2,9 +2,9 @@
 
 ## Alpha release:
 
+- [ ] recept törlés mutáció
 - [ ] email login
 - [ ] error kezelés
-- [ ] handle when theres no recipes or a tag is empty
 - [ ] improve login screen
 - [ ] better slug collision handling
 - [ ] basic db import/export
