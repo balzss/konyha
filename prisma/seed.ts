@@ -14,49 +14,14 @@ async function main() {
     },
   });
 
-  // await prisma.recipe.create({
-  //   data: {
-  //     name: 'Egy Recept',
-  //     slug: 'egy-recept',
-  //     description: 'd d',
-  //     ingredients: 'egy,ketto',
-  //     instructions: 'egyik,masik',
-  //     authorId: firstUser.id,
-  //     tags: {
-  //       create: [
-  //         {
-  //           name: 'egyikTag',
-  //           ownerId: firstUser.id,
-  //         },
-  //         {
-  //           name: 'megegy tag',
-  //           ownerId: firstUser.id,
-  //         },
-  //       ]
-  //     }
-  //   }
-  // });
-
   await prisma.recipe.create({
     data: {
-      name: 'kettes Recept',
-      slug: 'ket-recept',
-      description: 'd d',
-      ingredients: '',
-      instructions: '',
+      name: 'seeded recipes 1',
+      slug: 'seeded-recipe1',
+      description: 'this recipe was programatically generated',
+      ingredients: [],
+      instructions: [],
       authorId: firstUser.id,
-      tags: {
-        create: [
-          {
-            name: 'uj tag',
-            ownerId: firstUser.id,
-          },
-          {
-            name: 'megujjabb tagg',
-            ownerId: firstUser.id,
-          },
-        ]
-      }
     }
   });
 }

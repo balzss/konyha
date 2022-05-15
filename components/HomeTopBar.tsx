@@ -84,7 +84,7 @@ export default function HomeTopBar() {
             <ListItemIcon>
               <Checkbox
                 edge="start"
-                checked={selectedTags.includes(slug as string)}
+                checked={selectedTags.includes(slug)}
                 tabIndex={-1}
                 disableRipple
               />

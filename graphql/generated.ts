@@ -67,7 +67,7 @@ export type Recipe = {
   instructions?: Maybe<Array<Scalars['String']>>;
   name: Scalars['String'];
   slug: Scalars['String'];
-  tags?: Maybe<Array<Tag>>;
+  tags: Array<Tag>;
 };
 
 export type RecipeUpsertInput = {
@@ -87,7 +87,7 @@ export type Tag = {
   __typename?: 'Tag';
   id: Scalars['String'];
   name: Scalars['String'];
-  slug?: Maybe<Scalars['String']>;
+  slug: Scalars['String'];
 };
 
 export type UpdateUserPreferencesInput = {
@@ -99,28 +99,28 @@ export type UserPreferences = {
   theme?: Maybe<Scalars['String']>;
 };
 
-export type TagFieldsFragment = { __typename?: 'Tag', id: string, name: string, slug?: string | null };
+export type TagFieldsFragment = { __typename?: 'Tag', id: string, name: string, slug: string };
 
-export type RecipeFieldsFragment = { __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, tags?: Array<{ __typename?: 'Tag', id: string, name: string, slug?: string | null }> | null };
+export type RecipeFieldsFragment = { __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> };
 
 export type GetRecipesQueryVariables = Exact<{
   where?: InputMaybe<RecipesWhereInput>;
 }>;
 
 
-export type GetRecipesQuery = { __typename?: 'Query', recipes: Array<{ __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, tags?: Array<{ __typename?: 'Tag', id: string, name: string, slug?: string | null }> | null }> };
+export type GetRecipesQuery = { __typename?: 'Query', recipes: Array<{ __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> }> };
 
 export type GetTagsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetTagsQuery = { __typename?: 'Query', tags: Array<{ __typename?: 'Tag', id: string, name: string, slug?: string | null }> };
+export type GetTagsQuery = { __typename?: 'Query', tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> };
 
 export type SearchRecipesQueryVariables = Exact<{
   searchQuery: Scalars['String'];
 }>;
 
 
-export type SearchRecipesQuery = { __typename?: 'Query', searchRecipes: Array<{ __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, tags?: Array<{ __typename?: 'Tag', id: string, name: string, slug?: string | null }> | null }> };
+export type SearchRecipesQuery = { __typename?: 'Query', searchRecipes: Array<{ __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> }> };
 
 export type DeleteRecipeMutationVariables = Exact<{
   recipeSlug: Scalars['String'];
@@ -260,14 +260,14 @@ export type RecipeResolvers<ContextType = any, ParentType extends ResolversParen
   instructions?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  tags?: Resolver<Maybe<Array<ResolversTypes['Tag']>>, ParentType, ContextType>;
+  tags?: Resolver<Array<ResolversTypes['Tag']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type TagResolvers<ContextType = any, ParentType extends ResolversParentTypes['Tag'] = ResolversParentTypes['Tag']> = {
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  slug?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

@@ -21,7 +21,7 @@ const bottomNavItems = [
     displayName: 'Bevásárlás',
     icon: <LocalGroceryStoreIcon />,
     path: '/groceries',
-    disabled: true,
+    disabled: false,
   },
   // {
   //   displayName: 'Időzítők',

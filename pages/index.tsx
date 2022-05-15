@@ -5,7 +5,6 @@ import {
   AlertTitle,
   Container,
   Grid,
-  Button,
   Box
 } from '@mui/material';
 import {
@@ -60,7 +59,7 @@ export default function MainPage() {
                 <RecipeCard recipe={recipe} onClick={handleClickRecipe}/>
               </Grid>
             ))}
-            {(!recipes || !recipes.length) && selectedTags.length ? (
+            {(!recipes || !recipes.length) && (selectedTags.length ? (
               <Grid item xs={12} sm={6} md={4} lg={3}>
                 <Alert variant="outlined" severity="info">
                   <AlertTitle>Üres kategória</AlertTitle>
@@ -82,7 +81,7 @@ export default function MainPage() {
                   </Link>
                 </Alert>
               </Grid>
-            )}
+            ))}
           </>
         </Grid>
       </Container>

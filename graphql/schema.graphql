@@ -1,7 +1,7 @@
 type Tag {
   id: String!
   name: String!
-  slug: String
+  slug: String!
 }
 
 fragment tagFields on Tag {
@@ -17,7 +17,7 @@ type Recipe {
   description: String
   ingredients: [String!]
   instructions: [String!]
-  tags: [Tag!]
+  tags: [Tag!]!
 }
 
 fragment recipeFields on Recipe {

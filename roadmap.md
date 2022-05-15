@@ -2,13 +2,13 @@
 
 ## Alpha release:
 
-- [ ] recept törlés mutáció
+- [ ] tag törlés mutáció
 - [ ] email login
 - [ ] error kezelés
 - [ ] improve login screen
 - [ ] better slug collision handling
 - [ ] basic db import/export
-- [ ] deploy (digitalocean app platformra?)
+- [ ] deploy (digitalocean + caprover)
 
 ## Beta release:
 
