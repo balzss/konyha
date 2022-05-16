@@ -65,11 +65,6 @@ export default function ProfilePage({session}: ProfilePageArgs) {
           />
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton >
-            <ListItemText primary="Kreditek" />
-          </ListItemButton>
-        </ListItem>
-        <ListItem disablePadding>
           <ListItemButton onClick={() => setLogoutConfirmOpen(true)}>
             <ListItemText primary="Kijelentkezés" />
           </ListItemButton>

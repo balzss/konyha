@@ -2,11 +2,11 @@
 
 ## Alpha release:
 
-- [ ] tag törlés mutáció
 - [ ] email login
 - [ ] error kezelés
 - [ ] improve login screen
 - [ ] better slug collision handling
+- [ ] fix theming
 - [ ] basic db import/export
 - [ ] deploy (digitalocean + caprover)
 

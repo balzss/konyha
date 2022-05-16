@@ -48,6 +48,7 @@ export default function LoginPage() {
                 Bejelentkezés
               </Typography>
               <TextField
+                disabled
                 label="Email"
                 variant="outlined"
                 margin="normal"
@@ -57,7 +58,14 @@ export default function LoginPage() {
                 value={email}
                 onChange={({target}) => setEmail(target.value)}
               />
-              <Button variant="outlined" onClick={handleLogin} sx={{minWidth: '240px', alignSelf: 'center'}}>Link küldése</Button>
+              <Button 
+                variant="outlined" 
+                onClick={handleLogin} 
+                sx={{minWidth: '240px', alignSelf: 'center'}}
+                disabled
+              >
+                Link küldése
+              </Button>
               <Typography variant="caption" sx={{textAlign: 'center'}}>
                 vagy
               </Typography>
