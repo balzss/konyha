@@ -88,6 +88,10 @@ mutation UpdateUserPreferences ($preferences: UpdateUserPreferencesInput) {
   }
 }
 
+mutation DeleteTags ($tagIds: [String!]!) {
+  deleteTags(ids: $tagIds)
+}
+
 type Query {
   recipes(where: RecipesWhereInput): [Recipe!]!
   tags: [Tag!]!
@@ -96,6 +100,7 @@ type Query {
 
 type Mutation {
   deleteRecipe(slug: String!): Boolean
+  deleteTags(ids: [String!]!): Boolean
   upsertRecipe(id: String, data: RecipeUpsertInput!, tagsConnect: [String!]!, tagsCreate: [String!]!): Recipe
   updateUserPreferences(preferences: UpdateUserPreferencesInput): UserPreferences
 }

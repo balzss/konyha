@@ -13,6 +13,7 @@ import {
   useUpsertRecipeMutation,
   useUpdateUserPreferencesMutation,
   useSearchRecipesLazyQuery,
+  useDeleteTagsMutation,
 } from '../graphql/generated';
 
 export function useRecipes() {
@@ -53,6 +54,10 @@ export function useUpsertRecipe(): [Function, any] {
 
 export function useDeleteRecipe() {
   return useDeleteRecipeMutation({refetchQueries: ['GetRecipes', 'GetTags']});
+}
+
+export function useDeleteTags() {
+  return useDeleteTagsMutation({refetchQueries: ['GetTags']});
 }
 
 export function useTags() {

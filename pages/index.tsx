@@ -14,20 +14,25 @@ import {
   RecipeCard,
   HomeTopBar,
   Link,
+  EmptyTagWarning,
 } from '../components';
-import { useRecipes } from '../dataHooks';
+import { useRecipes, useTags } from '../dataHooks';
 import { propsWithAuth } from '../utils/propsWithAuth';
 import getTagsFromUrl from '../utils/getTagsFromUrl';
 
 export default function MainPage() {
   const router = useRouter();
-  const selectedTags = getTagsFromUrl(router);
+
+  const tagsInUrl = getTagsFromUrl(router);
+  const { data: tagsData } = useTags();
+  const selectedTags = tagsData?.tags.filter((tag) => tagsInUrl.includes(tag.slug)) ?? [];
+
   const { data: recipesData, error, loading } = useRecipes();
   // TODO filter in request?
   const recipes = recipesData?.recipes.filter((recipe) => {
     if (!selectedTags.length) return true;
     const recipeSlugs = recipe?.tags?.map((tag) => tag.slug) || [];
-    const intersection = selectedTags.filter(t => recipeSlugs.includes(t));
+    const intersection = selectedTags.filter((t) => recipeSlugs.includes(t.slug));
     return !!intersection?.length;
   });
 
@@ -60,15 +65,8 @@ export default function MainPage() {
               </Grid>
             ))}
             {(!recipes || !recipes.length) && (selectedTags.length ? (
-              <Grid item xs={12} sm={6} md={4} lg={3}>
-                <Alert variant="outlined" severity="info">
-                  <AlertTitle>Üres kategória</AlertTitle>
-                  Ebben a kategóriában nincsenek receptjeid. Szeretnéd törölni ezt a címkét?
-                  <br /><br />
-                  <Link href="#">
-                    Címke törlése
-                  </Link>
-                </Alert>
+              <Grid item>
+                <EmptyTagWarning tags={selectedTags}/>
               </Grid>
             ) : (
               <Grid item>

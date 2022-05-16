@@ -20,6 +20,7 @@ export type Scalars = {
 export type Mutation = {
   __typename?: 'Mutation';
   deleteRecipe?: Maybe<Scalars['Boolean']>;
+  deleteTags?: Maybe<Scalars['Boolean']>;
   updateUserPreferences?: Maybe<UserPreferences>;
   upsertRecipe?: Maybe<Recipe>;
 };
@@ -27,6 +28,11 @@ export type Mutation = {
 
 export type MutationDeleteRecipeArgs = {
   slug: Scalars['String'];
+};
+
+
+export type MutationDeleteTagsArgs = {
+  ids: Array<Scalars['String']>;
 };
 
 
@@ -146,6 +152,13 @@ export type UpdateUserPreferencesMutationVariables = Exact<{
 
 export type UpdateUserPreferencesMutation = { __typename?: 'Mutation', updateUserPreferences?: { __typename?: 'UserPreferences', theme?: string | null } | null };
 
+export type DeleteTagsMutationVariables = Exact<{
+  tagIds: Array<Scalars['String']> | Scalars['String'];
+}>;
+
+
+export type DeleteTagsMutation = { __typename?: 'Mutation', deleteTags?: boolean | null };
+
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -243,6 +256,7 @@ export type ResolversParentTypes = {
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   deleteRecipe?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteRecipeArgs, 'slug'>>;
+  deleteTags?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteTagsArgs, 'ids'>>;
   updateUserPreferences?: Resolver<Maybe<ResolversTypes['UserPreferences']>, ParentType, ContextType, Partial<MutationUpdateUserPreferencesArgs>>;
   upsertRecipe?: Resolver<Maybe<ResolversTypes['Recipe']>, ParentType, ContextType, RequireFields<MutationUpsertRecipeArgs, 'data' | 'tagsConnect' | 'tagsCreate'>>;
 };
@@ -515,3 +529,34 @@ export function useUpdateUserPreferencesMutation(baseOptions?: Apollo.MutationHo
 export type UpdateUserPreferencesMutationHookResult = ReturnType<typeof useUpdateUserPreferencesMutation>;
 export type UpdateUserPreferencesMutationResult = Apollo.MutationResult<UpdateUserPreferencesMutation>;
 export type UpdateUserPreferencesMutationOptions = Apollo.BaseMutationOptions<UpdateUserPreferencesMutation, UpdateUserPreferencesMutationVariables>;
+export const DeleteTagsDocument = gql`
+    mutation DeleteTags($tagIds: [String!]!) {
+  deleteTags(ids: $tagIds)
+}
+    `;
+export type DeleteTagsMutationFn = Apollo.MutationFunction<DeleteTagsMutation, DeleteTagsMutationVariables>;
+
+/**
+ * __useDeleteTagsMutation__
+ *
+ * To run a mutation, you first call `useDeleteTagsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteTagsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteTagsMutation, { data, loading, error }] = useDeleteTagsMutation({
+ *   variables: {
+ *      tagIds: // value for 'tagIds'
+ *   },
+ * });
+ */
+export function useDeleteTagsMutation(baseOptions?: Apollo.MutationHookOptions<DeleteTagsMutation, DeleteTagsMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<DeleteTagsMutation, DeleteTagsMutationVariables>(DeleteTagsDocument, options);
+      }
+export type DeleteTagsMutationHookResult = ReturnType<typeof useDeleteTagsMutation>;
+export type DeleteTagsMutationResult = Apollo.MutationResult<DeleteTagsMutation>;
+export type DeleteTagsMutationOptions = Apollo.BaseMutationOptions<DeleteTagsMutation, DeleteTagsMutationVariables>;
