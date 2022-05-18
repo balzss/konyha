@@ -4,15 +4,15 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma migrate deploy && NODE_ENV=production next build",
-    "start": "NODE_ENV=production next start",
+    "build": "next build",
+    "start": "next start",
     "lint": "next lint",
-    "lt": "lt --port 3000 --subdomain konyha-dev",
     "studio": "prisma studio",
     "prisma-generate": "prisma generate",
     "migrate": "prisma migrate",
     "gql-generate": "graphql-codegen --config ./graphql/codegen.yml",
-    "postgres": "docker-compose up",
+    "docker:build": "docker-compose up -d --no-deps --build konyha-next",
+    "docker:run": "docker-compose up",
     "tmux-dev": "tmux send-keys 'yarn dev' C-m  && tmux split-window -h && tmux send-keys 'yarn postgres' C-m && tmux split-window -v && tmux send-keys 'yarn studio' C-m"
   },
   "dependencies": {
@@ -47,7 +47,6 @@
     "@types/react-dom": "18.0.1",
     "eslint": "8.13.0",
     "eslint-config-next": "12.1.5",
-    "localtunnel": "^2.0.2",
     "prisma": "^3.14.0",
     "ts-node": "^10.7.0",
     "typescript": "^4.6.4"
