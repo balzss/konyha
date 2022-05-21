@@ -23,6 +23,8 @@ services:
       - '5432:5432'
     volumes:
       - db:/var/lib/postgresql/data
+    labels:
+      - "traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)"
   konyha-next:
     stdin_open: true
     build:
@@ -38,6 +40,8 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    labels:
+      - "traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)"
 volumes:
   db:
     driver: local
