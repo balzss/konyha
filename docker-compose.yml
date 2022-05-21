@@ -1,9 +1,22 @@
 version: '3.8'
 services:
+  reverse-proxy:
+    # The official v2 Traefik docker image
+    image: traefik:v2.6
+    # Enables the web UI and tells Traefik to listen to docker
+    command: --api.insecure=true --providers.docker
+    ports:
+      # The HTTP port
+      - "80:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
   db:
     image: postgres:14.2
     stop_signal: SIGINT
-    restart: always
+    restart: unless-stopped
     env_file:
       - .env
     ports:
@@ -22,7 +35,7 @@ services:
       - db
     ports:
       - "3000:3000"
-    restart: always
+    restart: unless-stopped
     env_file:
       - .env
 volumes:
