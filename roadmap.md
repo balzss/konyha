@@ -1,5 +1,10 @@
 # Roadmap
 
+## In progress:
+
+- [ ] deploy (digitalocean + docker + github actions/registry)
+  - [ ] update docker compose file and add npm scripts to run it
+
 ## Alpha release:
 
 - [ ] email login
@@ -8,7 +13,6 @@
 - [ ] better slug collision handling
 - [ ] fix theming
 - [ ] basic db import/export
-- [ ] deploy (digitalocean + caprover)
 
 ## Beta release:
 

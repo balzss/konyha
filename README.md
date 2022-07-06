@@ -2,39 +2,45 @@
 
 Self hostable recipe manager written in typescript.
 
-### Prerequisites
+### Features:
+
+- Optimised for smaller screens
+- Material Design 3
+- Dark and light theme
+- Tagging, and filtering by tags
+- Authentication with email, Github or Google
+
+### Prerequisites:
 
 - Docker and Docker Compose
 - Node
 
-### Setting it up:
+### Setting it up locally:
 
-Install dependencies:
+1. Clone the project:
+
+```
+git clone https://github.com/balzss/konyha-club.git && cd konyha-club
+```
+
+2. Install dependencies:
 
 ```
 yarn install
 ```
 
-- set env vars
-- start db
-- push to db
-- generate graphql
+3. Create an `.env` file in the project root by copying `.env.example` and adding your variables.
 
-### Running it:
-
-Start the database:
+4. Start the database:
 
 ```
-yarn postgres
+yarn docker:db
 ```
 
-And start the client:
+5. Push the prisma schema to the running db:
 
 ```
-yarn dev
+yarn prisma:push
 ```
 
 ### Development:
-
-- updating the database schema
-- updating the graphql schema
