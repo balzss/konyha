@@ -27,7 +27,7 @@ ENV NEXT_TELEMETRY_DISABLED 1
 # Generate prisma client
 RUN npx prisma generate
 
-RUN yarn build
+RUN yarn next:build
 
 # If using npm comment out above and use below instead
 # RUN npm run build

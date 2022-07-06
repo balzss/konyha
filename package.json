@@ -1,19 +1,19 @@
 {
-  "name": "next-frontend",
+  "name": "konyha-next",
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "studio": "prisma studio",
-    "prisma-generate": "prisma generate",
-    "migrate": "prisma migrate",
-    "gql-generate": "graphql-codegen --config ./graphql/codegen.yml",
+    "next:dev": "next dev",
+    "next:build": "next build",
+    "next:start": "next start",
+    "next:lint": "next lint",
+    "prisma:studio": "prisma studio",
+    "prisma:generate": "prisma generate",
+    "prisma:push": "prisma db push",
+    "gql:generate": "graphql-codegen --config ./graphql/codegen.yml",
     "docker:build": "docker-compose up -d --no-deps --build konyha-next",
-    "docker:run": "docker-compose up",
-    "tmux-dev": "tmux send-keys 'yarn dev' C-m  && tmux split-window -h && tmux send-keys 'yarn postgres' C-m && tmux split-window -v && tmux send-keys 'yarn studio' C-m"
+    "docker:db": "docker-compose up db",
+    "tmux:dev": "tmux send-keys 'yarn next:dev' C-m  && tmux split-window -h && tmux send-keys 'yarn docker:db' C-m && tmux split-window -v && tmux send-keys 'yarn prisma:studio' C-m"
   },
   "dependencies": {
     "@apollo/client": "^3.6.2",
