@@ -167,14 +167,14 @@ export default function EditRecipePage() {
             onChange={({target}) => setInstructions(target.value)}
           />
           <FormControl margin="dense" sx={{ width: "100%" }}>
-            <InputLabel id="tag-select-label">Mentett címkék</InputLabel>
+            <InputLabel id="tag-select-label">Címkék</InputLabel>
             <Select
               disabled={!tags?.length}
               labelId="tag-select-label"
               multiple
               value={selectedTags}
               onChange={handleTagChange}
-              input={<OutlinedInput label="Mentett címkék" />}
+              input={<OutlinedInput label="Címkék" />}
               renderValue={(selected) => selected.map(getTagNameById).join(', ')}
             >
               {tags && tags.length > 0 && tags.map(({name, id}) => (
@@ -186,7 +186,7 @@ export default function EditRecipePage() {
             </Select>
           </FormControl>
           <TextField
-            label="Új címkék"
+            label="Új címke"
             variant="outlined"
             margin="dense"
             sx={{width: '100%'}}

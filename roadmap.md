@@ -13,6 +13,7 @@
 - [ ] better slug collision handling
 - [ ] fix theming
 - [ ] basic db import/export
+  - [ ] export to markdown, json, pdf, csv
 
 ## Beta release:
 

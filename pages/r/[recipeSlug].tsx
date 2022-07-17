@@ -74,6 +74,7 @@ export default function RecipeDetailsPage() {
   const tags = recipe?.tags;
 
   const [errorConfirmOpen, setErrorConfirmOpen] = useState<boolean>(false);
+  const [showPortionCalculator, setShowPortionCalculator] = useState<boolean>(false);
 
   const handleClickBack = () => {
     router.push('/');
@@ -113,6 +114,11 @@ export default function RecipeDetailsPage() {
           {icon: <EditIcon/>, action: handleClickEdit, label: 'Szerkesztés'},
         ]}
         hiddenActions={[
+          {icon: (<Checkbox
+                  edge="start"
+                  checked={showPortionCalculator}
+                  tabIndex={-1}
+                />), action: () => setShowPortionCalculator((prevState) => !prevState), label: 'Recept törlése'},
           {icon: <DeleteIcon fontSize="small"/>, action: () => setErrorConfirmOpen(true), label: 'Recept törlése'},
         ]}
       />
