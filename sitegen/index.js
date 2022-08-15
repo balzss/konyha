@@ -1,4 +1,3 @@
-const fetch = require('../node_modules/node-fetch');
 const Eleventy = require('@11ty/eleventy');
 const fastify = require('fastify')({
   logger: true,
@@ -66,7 +65,7 @@ fastify.delete('/:userId', function (req, reply) {
   return reply.send({message: 'delete'});
 });
 
-fastify.listen({ port: 7777 }, function (err, address) {
+fastify.listen({ port: 7777, host: '0.0.0.0' }, function (err, address) {
   if (err) {
     fastify.log.error(err);
     process.exit(1);
