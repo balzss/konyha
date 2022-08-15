@@ -21,6 +21,7 @@ model User {
   recipes       Recipe[]
   tags          Tag[]
   preferences   Json      @default("{}")
+  publishid     String?   @unique
 }
 
 model Account {

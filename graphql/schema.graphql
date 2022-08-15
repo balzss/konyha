@@ -36,6 +36,13 @@ type UserPreferences {
   theme: String
 }
 
+type Me {
+  id: String!
+  name: String!
+  email: String!
+  publishid: String!
+}
+
 query GetRecipes($where: RecipesWhereInput) {
   recipes(where: $where) {
     ...recipeFields
@@ -51,6 +58,15 @@ query GetTags {
 query SearchRecipes($searchQuery: String!) {
   searchRecipes(query: $searchQuery) {
     ...recipeFields
+  }
+}
+
+query GetMe {
+  me {
+    id
+    name
+    email
+    publishid
   }
 }
 
@@ -96,6 +112,7 @@ type Query {
   recipes(where: RecipesWhereInput): [Recipe!]!
   tags: [Tag!]!
   searchRecipes(query: String): [Recipe!]!
+  me: Me!
 }
 
 type Mutation {

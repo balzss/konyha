@@ -9,6 +9,7 @@ import type {
 import {
   useGetRecipesQuery,
   useGetTagsQuery,
+  useGetMeQuery,
   useDeleteRecipeMutation,
   useUpsertRecipeMutation,
   useUpdateUserPreferencesMutation,
@@ -62,6 +63,10 @@ export function useDeleteTags() {
 
 export function useTags() {
   return useGetTagsQuery();
+}
+
+export function useGetMe() {
+  return useGetMeQuery();
 }
 
 export function useUpdateUserPreferences() {

@@ -62,6 +62,19 @@ const resolvers: Resolvers = {
       const recipes = await prisma.recipe.findMany(options);
       return recipes;
     },
+    me: async (_, {}, {prisma, session}) => {
+      if (!session) {
+        throw new AuthenticationError('No session found, please log in!');
+      }
+      const { userId } = session;
+      const options = {
+        where: {
+          id: userId,
+        }
+      };
+      const me = await prisma.user.findUnique(options);
+      return me;
+    },
   },
   Mutation: {
     deleteRecipe: async (_, {slug}, {prisma, session}) => {

@@ -15,7 +15,7 @@ import {
   ConfirmModal,
 } from '../components/';
 import { propsWithAuth } from '../utils/propsWithAuth';
-import { useUpdateUserPreferences } from '../dataHooks';
+import { useGetMe, useUpdateUserPreferences } from '../dataHooks';
 
 type ProfilePageArgs = {
   session: Session,
@@ -25,6 +25,9 @@ export default function ProfilePage({session}: ProfilePageArgs) {
   const router = useRouter();
   const { data: sessionData } = useSession();
   const userThemePreference = sessionData?.theme;
+  const { data: meData } = useGetMe();
+  const email = meData?.me.email;
+  const publishId = meData?.me.publishid;
 
   const [updatePreferences] = useUpdateUserPreferences();
   const [darkMode, setDarkMode] = useState<boolean>(userThemePreference === 'dark');
@@ -51,7 +54,10 @@ export default function ProfilePage({session}: ProfilePageArgs) {
       >
         <Head title="Személyes"/>
         <ListItem>
-          <ListItemText primary="Email" secondary={session?.user?.email || 'n/a'}/>
+          <ListItemText primary="Email" secondary={email || 'n/a'}/>
+        </ListItem>
+        <ListItem>
+          <ListItemText primary="Publish ID" secondary={publishId || '<not published>'}/>
         </ListItem>
         <ListItem>
           <ListItemText id="switch-list-label-wifi" primary="Sötét mód" />

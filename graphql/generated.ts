@@ -17,6 +17,14 @@ export type Scalars = {
   Float: number;
 };
 
+export type Me = {
+  __typename?: 'Me';
+  email: Scalars['String'];
+  id: Scalars['String'];
+  name: Scalars['String'];
+  publishid: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   deleteRecipe?: Maybe<Scalars['Boolean']>;
@@ -50,6 +58,7 @@ export type MutationUpsertRecipeArgs = {
 
 export type Query = {
   __typename?: 'Query';
+  me: Me;
   recipes: Array<Recipe>;
   searchRecipes: Array<Recipe>;
   tags: Array<Tag>;
@@ -127,6 +136,11 @@ export type SearchRecipesQueryVariables = Exact<{
 
 
 export type SearchRecipesQuery = { __typename?: 'Query', searchRecipes: Array<{ __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> }> };
+
+export type GetMeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetMeQuery = { __typename?: 'Query', me: { __typename?: 'Me', id: string, name: string, email: string, publishid: string } };
 
 export type DeleteRecipeMutationVariables = Exact<{
   recipeSlug: Scalars['String'];
@@ -229,6 +243,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Me: ResolverTypeWrapper<Me>;
   Mutation: ResolverTypeWrapper<{}>;
   Query: ResolverTypeWrapper<{}>;
   Recipe: ResolverTypeWrapper<Recipe>;
@@ -243,6 +258,7 @@ export type ResolversTypes = {
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
+  Me: Me;
   Mutation: {};
   Query: {};
   Recipe: Recipe;
@@ -254,6 +270,14 @@ export type ResolversParentTypes = {
   UserPreferences: UserPreferences;
 };
 
+export type MeResolvers<ContextType = any, ParentType extends ResolversParentTypes['Me'] = ResolversParentTypes['Me']> = {
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  publishid?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   deleteRecipe?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteRecipeArgs, 'slug'>>;
   deleteTags?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteTagsArgs, 'ids'>>;
@@ -262,6 +286,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  me?: Resolver<ResolversTypes['Me'], ParentType, ContextType>;
   recipes?: Resolver<Array<ResolversTypes['Recipe']>, ParentType, ContextType, Partial<QueryRecipesArgs>>;
   searchRecipes?: Resolver<Array<ResolversTypes['Recipe']>, ParentType, ContextType, Partial<QuerySearchRecipesArgs>>;
   tags?: Resolver<Array<ResolversTypes['Tag']>, ParentType, ContextType>;
@@ -291,6 +316,7 @@ export type UserPreferencesResolvers<ContextType = any, ParentType extends Resol
 };
 
 export type Resolvers<ContextType = any> = {
+  Me?: MeResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Recipe?: RecipeResolvers<ContextType>;
@@ -423,6 +449,43 @@ export function useSearchRecipesLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type SearchRecipesQueryHookResult = ReturnType<typeof useSearchRecipesQuery>;
 export type SearchRecipesLazyQueryHookResult = ReturnType<typeof useSearchRecipesLazyQuery>;
 export type SearchRecipesQueryResult = Apollo.QueryResult<SearchRecipesQuery, SearchRecipesQueryVariables>;
+export const GetMeDocument = gql`
+    query GetMe {
+  me {
+    id
+    name
+    email
+    publishid
+  }
+}
+    `;
+
+/**
+ * __useGetMeQuery__
+ *
+ * To run a query within a React component, call `useGetMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetMeQuery(baseOptions?: Apollo.QueryHookOptions<GetMeQuery, GetMeQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetMeQuery, GetMeQueryVariables>(GetMeDocument, options);
+      }
+export function useGetMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMeQuery, GetMeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetMeQuery, GetMeQueryVariables>(GetMeDocument, options);
+        }
+export type GetMeQueryHookResult = ReturnType<typeof useGetMeQuery>;
+export type GetMeLazyQueryHookResult = ReturnType<typeof useGetMeLazyQuery>;
+export type GetMeQueryResult = Apollo.QueryResult<GetMeQuery, GetMeQueryVariables>;
 export const DeleteRecipeDocument = gql`
     mutation DeleteRecipe($recipeSlug: String!) {
   deleteRecipe(slug: $recipeSlug)
