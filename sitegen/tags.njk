@@ -1,0 +1,12 @@
+---
+layout: layouts/tagged.njk
+pagination:
+  data: Tags
+  size: 1
+  alias: Tag
+permalink: "/tags/{{ Tag }}/index.html"
+eleventyComputed:
+  Title: "{{Site.Title}} | {{Tag}}"
+---
+
+{{ content | safe }}

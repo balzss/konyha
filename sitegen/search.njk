@@ -1,0 +1,11 @@
+---
+layout: layouts/base.njk
+---
+{% include "searchbar.njk" %}
+
+<section class="recipe-section appview-only">
+  <h3 class="recipe-title">Találatok</h3>
+  {% include "list.njk" %}
+</section>
+
+<script src="{{ Site.BaseUrl }}/static/js/search.js"></script>

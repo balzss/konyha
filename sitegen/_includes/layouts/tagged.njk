@@ -1,0 +1,10 @@
+---
+layout: layouts/base.njk
+---
+{% include "navbar.njk" %}
+
+<section class="recipe-section appview-only">
+  <h3 class="recipe-title">{{ Tag }}</h3>
+  {% set Recipes = Recipes | includeTag(Tag) %}
+  {% include "list.njk" %}
+</section>

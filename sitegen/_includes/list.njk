@@ -1,0 +1,12 @@
+<div class="recipe-grid">
+  {% for Recipe in Recipes %}
+  <a class="recipe-card" href="{{Site.BaseUrl}}/{{ Recipe.Slug }}" aria-label="{{ Recipe.Title }}">
+    <div class="recipe-card-title">{{ Recipe.Title }}</div>
+    <div class="recipe-card-tags">
+      {% for Tag in Recipe.Tags  %}
+      <span class="recipe-tag passive">{{ Tag }}</span>
+      {% endfor %}
+    </div>
+  </a>
+  {% endfor %}
+</div>

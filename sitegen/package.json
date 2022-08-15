@@ -1,0 +1,27 @@
+{
+  "name": "sitegen",
+  "version": "1.0.0",
+  "description": "static recipe generator test",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon index.js",
+    "watch": "npx @11ty/eleventy --watch",
+    "serve": "npx @11ty/eleventy --serve",
+    "build": "npx @11ty/eleventy",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@11ty/eleventy": "^1.0.1",
+    "@11ty/eleventy-navigation": "^0.3.3",
+    "@11ty/eleventy-plugin-rss": "^1.2.0",
+    "markdown-it": "^13.0.1",
+    "markdown-it-anchor": "^8.6.4",
+    "nodemon": "^2.0.19"
+  },
+  "dependencies": {
+    "@fastify/static": "^6.5.0",
+    "fastify": "^4.4.0"
+  }
+}

@@ -1,0 +1,12 @@
+---
+layout: layouts/single.njk
+pagination:
+  data: Recipes
+  size: 1
+  alias: Recipe
+permalink: "{{ Recipe.Slug }}/index.html"
+eleventyComputed:
+  Title: "{{Site.Title}} | {{ Recipe.Title }}"
+---
+
+{{ content | safe }}

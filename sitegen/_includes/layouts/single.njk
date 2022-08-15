@@ -1,0 +1,62 @@
+---
+layout: layouts/base.njk
+---
+{% include "navbar.njk" %}
+
+<div class="recipe-section">
+  <header>
+    <h1 class="recipe-title">
+      {{ Recipe.Title }}
+    </h1>
+    <div class="recipe-card-tags" style="margin-top: 1em;">
+      {% for Tag in Recipe.Tags  %}
+      <a class="recipe-tag" href="{{ Site.BaseURL }}tags/{{ Tag }}">{{ Tag }}</a>
+      {% endfor %}
+    </div>
+  </header>
+  <div class="content" style="margin-top: 1em;">
+    {% if Recipe.Description %}
+    <p>
+      {{Recipe.Description}}
+    </p>
+    {% endif %}
+
+    {% if Recipe.Ingredients %}
+    <h2>Hozzávalók</h2>
+    <ul>
+      {% for Ingredient in Recipe.Ingredients  %}
+      <li>{{Ingredient}}</li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if Recipe.Instructions %}
+    <h2>Elkészítés</h2>
+    <ol>
+      {% for Instruction in Recipe.Instructions  %}
+      <li>{{Instruction}}</li>
+      {% endfor %}
+    </ol>
+    {% endif %}
+  </div>
+
+  <button
+    class="recipe-button"
+    onclick="copyAction()"
+  >
+    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z" />
+    </svg>
+    <span id="copy-text">Link másolása</span>
+  </button>
+</div>
+
+<script>
+  const copyButton = document.querySelector('#copy-text');
+  document.addEventListener('copy', (event) => {
+      copyButton.innerText = 'Link másolása';
+    });
+  function copyAction() {
+      navigator.clipboard.writeText(window.location.href).then(copyButton.innerText='Vágólapra másolva');
+    }
+</script>

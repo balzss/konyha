@@ -1,0 +1,14 @@
+---
+layout: layouts/home.njk
+---
+{% include "navbar.njk" %}
+
+<section class="recipe-section appview-only">
+  <div class="recipe-card-tags" style="margin-bottom: 24px;">
+    {%- for Tag in Tags -%}
+    <a class="recipe-tag" href="{{ Site.BaseUrl }}/tags/{{ Tag }}">{{Tag}}</a>
+    {%- endfor -%}
+  </div>
+
+  {% include "list.njk" %}
+</section>
