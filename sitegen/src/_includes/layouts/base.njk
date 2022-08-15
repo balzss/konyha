@@ -7,8 +7,8 @@
     <meta name="description" content="{{ description or metadata.description }}">
 
     <!-- favicon from https://www.flaticon.com/free-icon/magazine_7141764 -->
-    <link rel="icon" type="image/png" href="{{Site.BaseUrl}}/static/logo64.png" />
-    <link rel="stylesheet" href="{{Site.BaseUrl}}/static/css/style.css">
+    <link rel="icon" type="image/png" href="{{Data.Site.BaseUrl}}/static/logo64.png" />
+    <link rel="stylesheet" href="{{Data.Site.BaseUrl}}/static/css/style.css">
 
     <!-- TODO: fix these -->
     <link rel="alternate" href="{{ metadata.feed.path | url }}" type="application/atom+xml" title="{{ metadata.title }}">

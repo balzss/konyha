@@ -10,7 +10,7 @@ layout: layouts/base.njk
     </h1>
     <div class="recipe-card-tags" style="margin-top: 1em;">
       {% for Tag in Recipe.Tags  %}
-      <a class="recipe-tag" href="{{ Site.BaseURL }}tags/{{ Tag }}">{{ Tag }}</a>
+      <a class="recipe-tag" href="{{ Data.Site.BaseURL }}tags/{{ Tag }}">{{ Tag }}</a>
       {% endfor %}
     </div>
   </header>

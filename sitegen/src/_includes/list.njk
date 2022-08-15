@@ -1,6 +1,6 @@
 <div class="recipe-grid">
-  {% for Recipe in Recipes %}
-  <a class="recipe-card" href="{{Site.BaseUrl}}/{{ Recipe.Slug }}" aria-label="{{ Recipe.Title }}">
+  {% for Recipe in Recipes or Data.Recipes %}
+  <a class="recipe-card" href="{{Data.Site.BaseUrl}}/{{ Recipe.Slug }}" aria-label="{{ Recipe.Title }}">
     <div class="recipe-card-title">{{ Recipe.Title }}</div>
     <div class="recipe-card-tags">
       {% for Tag in Recipe.Tags  %}

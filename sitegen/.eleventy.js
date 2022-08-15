@@ -1,4 +1,4 @@
-const fs = require("fs");
+const fetch = require("node-fetch");
 
 const markdownIt = require("markdown-it");
 const markdownItAnchor = require("markdown-it-anchor");
@@ -33,26 +33,11 @@ const configOptions = {
 };
 
 module.exports = function(eleventyConfig) {
-  eleventyConfig.addPassthroughCopy('static');
+  eleventyConfig.addPassthroughCopy('src/static');
 
   // Add plugins
   eleventyConfig.addPlugin(pluginRss);
   eleventyConfig.addPlugin(pluginNavigation);
-
-  // Add config data
-  eleventyConfig.addGlobalData('Site', {
-    BaseUrl: configOptions.publishId,
-    Title: configOptions.title,
-  });
-
-  // Add recipe data
-  eleventyConfig.addGlobalData('Recipes', configOptions.recipes);
-
-  function getTags(recipes) {
-    return [...new Set(recipes.reduce((acc, r) => [...r.Tags, ...acc], []))];
-  }
-
-  eleventyConfig.addGlobalData('Tags', getTags(configOptions.recipes));
 
   eleventyConfig.addFilter("filterattr", (inputArray, filterKey, filterValue) => {
     return inputArray.filter((item) => item.data[filterKey] === filterValue);
@@ -113,16 +98,15 @@ module.exports = function(eleventyConfig) {
     // You can also pass this in on the command line using `--pathprefix`
 
     // Optional (default is shown)
-    pathPrefix: "/",
+    pathPrefix: "/src",
     // -----------------------------------------------------------------
 
     // These are all optional (defaults are shown):
     dir: {
-      input: ".",
+      input: "src",
       includes: "_includes",
       data: "_data",
-      output: "_site/bazsi420"
+      output: "public/bazsi420"
     }
   };
 };
-

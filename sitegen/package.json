@@ -4,11 +4,10 @@
   "description": "static recipe generator test",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
-    "watch": "npx @11ty/eleventy --watch",
-    "serve": "npx @11ty/eleventy --serve",
-    "build": "npx @11ty/eleventy",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "watch": "npx @11ty/eleventy --input=src/. --watch",
+    "build": "npx @11ty/eleventy --input=src"
   },
   "author": "",
   "license": "ISC",
@@ -22,6 +21,7 @@
   },
   "dependencies": {
     "@fastify/static": "^6.5.0",
-    "fastify": "^4.4.0"
+    "fastify": "^4.4.0",
+    "node-fetch": "2"
   }
 }

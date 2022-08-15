@@ -1,12 +1,12 @@
 ---
 layout: layouts/tagged.njk
 pagination:
-  data: Tags
+  data: Data.Tags
   size: 1
   alias: Tag
 permalink: "/tags/{{ Tag }}/index.html"
 eleventyComputed:
-  Title: "{{Site.Title}} | {{Tag}}"
+  Title: "{{Data.Site.Title}} | {{Tag}}"
 ---
 
 {{ content | safe }}

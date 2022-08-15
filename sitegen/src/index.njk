@@ -5,8 +5,8 @@ layout: layouts/home.njk
 
 <section class="recipe-section appview-only">
   <div class="recipe-card-tags" style="margin-bottom: 24px;">
-    {%- for Tag in Tags -%}
-    <a class="recipe-tag" href="{{ Site.BaseUrl }}/tags/{{ Tag }}">{{Tag}}</a>
+    {%- for Tag in Data.Tags -%}
+    <a class="recipe-tag" href="{{ Data.Site.BaseUrl }}/tags/{{ Tag }}">{{Tag}}</a>
     {%- endfor -%}
   </div>
 

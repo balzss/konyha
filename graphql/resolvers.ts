@@ -4,6 +4,39 @@ import {
 } from 'apollo-server-micro';
 import type { Resolvers, Tag } from './generated';
 import slugify from '../utils/slugify';
+import fetch from 'node-fetch';
+
+async function publishSite(userId: string, prisma: any) {
+  const userOptions = {
+    where: {
+      id: userId,
+    }
+  };
+  const userData = await prisma.user.findUnique(userOptions);
+
+  const recipesOptions = {
+    include: {tags: true},
+    where: {
+      authorId: userId,
+    }
+  }
+  const recipes = await prisma.recipe.findMany(recipesOptions);
+
+  if (!userData?.publishid || !recipes) {
+    return;
+  }
+  const response = await fetch(`http://localhost:7777/${userData.publishid}`, {
+    method: 'post',
+    body: JSON.stringify({
+      recipes,
+      title: userData.publishid,
+    }),
+    headers: {'Content-Type': 'application/json'},
+  });
+  const responseData = await response.json();
+  console.log(responseData);
+  return responseData;
+}
 
 const resolvers: Resolvers = {
   Query: {
@@ -155,6 +188,9 @@ const resolvers: Resolvers = {
         },
       };
       const upsertRecipe = await prisma.recipe.upsert(options);
+
+      await publishSite(userId, prisma);
+
       return upsertRecipe;
     },
     updateUserPreferences: async (_, {preferences}, {prisma, session}) => {
