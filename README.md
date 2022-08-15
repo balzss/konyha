@@ -4,11 +4,18 @@ Self hostable recipe manager written in typescript.
 
 ### Features:
 
-- Optimised for smaller screens
+- Works on every screensize
 - Material Design 3
 - Dark and light theme
-- Tagging, and filtering by tags
+- Tagging, and filtering
 - Authentication with email, Github or Google
+
+Features to come:
+
+- Groceries list
+- Portion calculator
+- Export to json, csv or html
+- Create and host static site with selected or all recipes
 
 ### Prerequisites:
 

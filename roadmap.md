@@ -2,8 +2,12 @@
 
 ## In progress:
 
+- [ ] basic db import/export
+  - [ ] export to markdown, json, pdf, csv, static site
+  - [ ] publish recipes one by one
 - [ ] deploy (digitalocean + docker + github actions/registry)
-  - [ ] update docker compose file and add npm scripts to run it
+  - [ ] pull and run docker image from github registry to digitalocean vps
+  - [ ] configure domain + ssl + routing on vps
 
 ## Alpha release:
 
@@ -12,8 +16,6 @@
 - [ ] improve login screen
 - [ ] better slug collision handling
 - [ ] fix theming
-- [ ] basic db import/export
-  - [ ] export to markdown, json, pdf, csv
 
 ## Beta release:
 
@@ -35,6 +37,7 @@
   - [ ] elemek hozzáadása a recept oldalról
 - [ ] project page, ami bemutatja az oldal célját, működését, használatát, stb
 - [ ] public repo
+- [ ] export to hugo static site
 
 ## Post beta
 
@@ -42,3 +45,4 @@
   - [ ] időzítő linkelés recept instrukciókból
 - [ ] portion calculator
 - [ ] presentation mode
+- [ ] report
