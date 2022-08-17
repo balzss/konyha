@@ -2,7 +2,7 @@
 
 Self hostable recipe manager and site generator written in typescript.
 
-## Features:
+### Features:
 
 - Works on every screensize
 - Modern UI
@@ -18,7 +18,7 @@ Planned features:
 - Portion calculator
 - Export to/Import from json and csv
 
-## Prerequisites:
+### Prerequisites:
 
 - Docker and Docker Compose
 - Node
