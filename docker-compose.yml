@@ -1,18 +1,5 @@
 version: '3.8'
 services:
-  reverse-proxy:
-    # The official v2 Traefik docker image
-    image: traefik:v2.6
-    # Enables the web UI and tells Traefik to listen to docker
-    command: --api.insecure=true --providers.docker
-    ports:
-      # The HTTP port
-      - "80:80"
-      # The Web UI (enabled by --api.insecure=true)
-      - "8080:8080"
-    volumes:
-      # So that Traefik can listen to the Docker events
-      - /var/run/docker.sock:/var/run/docker.sock
   db:
     image: postgres:14.2
     stop_signal: SIGINT
@@ -23,15 +10,11 @@ services:
       - '5432:5432'
     volumes:
       - db:/var/lib/postgresql/data
-    labels:
-      - "traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)"
   konyha-next:
     stdin_open: true
     build:
       context: .
       dockerfile: Dockerfile
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     container_name: konyha-next
     depends_on:
       - db
@@ -40,8 +23,18 @@ services:
     restart: unless-stopped
     env_file:
       - .env
-    labels:
-      - "traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)"
+  sitegen:
+    stdin_open: true
+    build:
+      context: .
+      dockerfile: ./sitegen/Dockerfile
+    container_name: sitegen
+    depends_on:
+      - db
+      - konyha-next
+    ports:
+      - "7777:7777"
+    restart: unless-stopped
 volumes:
   db:
     driver: local

@@ -11,9 +11,16 @@
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
     "gql:generate": "graphql-codegen --config ./graphql/codegen.yml",
-    "docker:build": "docker-compose up -d --no-deps --build konyha-next",
-    "docker:db": "docker-compose up db",
-    "tmux:dev": "tmux send-keys 'yarn next:dev' C-m  && tmux split-window -h && tmux send-keys 'yarn docker:db' C-m && tmux split-window -v && tmux send-keys 'yarn prisma:studio' C-m"
+    "docker:manager": "docker compose up konyha-next",
+    "docker:manager:build": "docker compose up --no-deps --build konyha-next",
+    "docker:db": "docker compose up db",
+    "docker:sitegen": "docker compose up sitegen",
+    "docker:sitegen:build": "docker compose up --no-deps --build sitegen",
+    "sitegen:dev": "cd sitegen && yarn dev",
+    "sitegen:watch": "cd sitegen && yarn watch",
+    "sitegen:build": "cd sitegen && yarn build",
+    "tmux:dev": "tmux send-keys 'yarn next:dev' C-m  && tmux split-window -h && tmux send-keys 'yarn docker:db' C-m && tmux split-window -v && tmux send-keys 'yarn sitegen:dev' C-m",
+    "postinstall": "cd sitegen && yarn install"
   },
   "dependencies": {
     "@apollo/client": "^3.6.2",

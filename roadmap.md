@@ -2,9 +2,13 @@
 
 ## In progress:
 
+- [ ] publish
+  - [ ] configure options
+  - [ ] publish/unpublish recipes
+  - [ ] check for name collision
 - [ ] basic db import/export
-  - [ ] export to markdown, json, pdf, csv, static site
-  - [ ] publish recipes one by one
+  - [ ] export to json
+  - [ ] import from json
 - [ ] deploy (digitalocean + docker + github actions/registry)
   - [ ] pull and run docker image from github registry to digitalocean vps
   - [ ] configure domain + ssl + routing on vps
@@ -12,37 +16,34 @@
 ## Alpha release:
 
 - [ ] email login
-- [ ] error kezelés
+- [ ] error handling
 - [ ] improve login screen
 - [ ] better slug collision handling
 - [ ] fix theming
+- [ ] 404 page
 
 ## Beta release:
 
-- [ ] feature branch szabály beállítása githubon
-- [ ] lint, tesztek és CI bevezetése
-- [ ] ory kratos user management
-- [ ] asztali nézet (sidebar)
-- [ ] i18n (angol és magyar)
-- [ ] 404 page
-- [ ] offline működés
-- [ ] change page transitions (open card, edit recipe, etc)
-- [ ] TextField -> InputBase, divider csíkok
-- [ ] személyes oldal
-  - [ ] szemetes és töröltek visszaállítása?
-  - [ ] nyelv választó
-  - [ ] connect to git repo
-- [ ] bevásárló lista oldal
-  - [ ] elemek hozzáadása kézzel
-  - [ ] elemek hozzáadása a recept oldalról
-- [ ] project page, ami bemutatja az oldal célját, működését, használatát, stb
 - [ ] public repo
-- [ ] export to hugo static site
+- [ ] feature branch szabály beállítása githubon
+- [ ] lint rules, tests and CI
+- [ ] ory kratos user management (+investigate)
+- [ ] improved desktop view (sidebar)
+- [ ] i18n (EN/HU)
+- [ ] offline mode
+- [ ] portion calculator
+- [ ] change page transitions (open card, edit recipe, etc)
+- [ ] Profile page
+  - [ ] trachcan/archive and restore option
+  - [ ] language selection
+  - [ ] connect to git repo
+- [ ] Groceries page
+  - [ ] add items manually
+  - [ ] add items from recipe page
 
 ## Post beta
 
-- [ ] időzítő oldal
-  - [ ] időzítő linkelés recept instrukciókból
-- [ ] portion calculator
+- [ ] Timers page
+  - [ ] link to timers from recipes
 - [ ] presentation mode
 - [ ] report

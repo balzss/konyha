@@ -1,28 +1,29 @@
 # Konyha Recipe Manager
 
-Self hostable recipe manager written in typescript.
+Self hostable recipe manager and site generator written in typescript.
 
 ### Features:
 
 - Works on every screensize
-- Material Design 3
+- Modern UI
 - Dark and light theme
-- Tagging, and filtering
-- Authentication with email, Github or Google
+- Tagging and filtering
+- Authentication with Github or Google
+- Publish selected recipes to a static site
 
-Features to come:
+Planned features:
 
+- Authentication with email
 - Groceries list
 - Portion calculator
-- Export to json, csv or html
-- Create and host static site with selected or all recipes
+- Export to/Import from json and csv
 
 ### Prerequisites:
 
 - Docker and Docker Compose
 - Node
 
-### Setting it up locally:
+### Running locally:
 
 1. Clone the project:
 
@@ -36,7 +37,7 @@ git clone https://github.com/balzss/konyha-club.git && cd konyha-club
 yarn install
 ```
 
-3. Create an `.env` file in the project root by copying `.env.example` and adding your variables.
+3. Create an `.env` and `.env.local` file in the project root by copying `.env.example` and adding your variables.
 
 4. Start the database:
 
@@ -50,4 +51,22 @@ yarn docker:db
 yarn prisma:push
 ```
 
-### Development:
+6. Start the manager app:
+
+```
+yarn next:dev
+```
+
+7. Start the site generator:
+
+```
+yarn sitegen:dev
+```
+
+8. You can now access the manager at `localhost:3000` and the generated sites at `localhost:7777/<username>`
+
+9. Optionally you can inspect the db with running [prisma studio](https://www.prisma.io/studio):
+
+```
+yarn prisma:studio
+```

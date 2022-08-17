@@ -25,7 +25,7 @@ async function publishSite(userId: string, prisma: any) {
   if (!userData?.publishid || !recipes) {
     return;
   }
-  const response = await fetch(`http://localhost:7777/${userData.publishid}`, {
+  const response = await fetch(`http://${process.env.HOST}:7777/${userData.publishid}`, {
     method: 'post',
     body: JSON.stringify({
       recipes,
