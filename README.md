@@ -2,7 +2,7 @@
 
 Self hostable recipe manager and site generator written in typescript.
 
-### Features:
+## Features:
 
 - Works on every screensize
 - Modern UI
@@ -18,12 +18,12 @@ Planned features:
 - Portion calculator
 - Export to/Import from json and csv
 
-### Prerequisites:
+## Prerequisites:
 
 - Docker and Docker Compose
 - Node
 
-### Running locally:
+## Running locally:
 
 1. Clone the project:
 
@@ -72,9 +72,9 @@ yarn sitegen:dev
 yarn prisma:studio
 ```
 
-### Development
+## Development
 
-#### Updating the db schema
+### Updating the db schema
 
 The database schema is located at `prisma/schema.prisma`. You can read about how it works 
 and how to configure it [here](https://www.prisma.io/docs/concepts/components/prisma-schema).
@@ -82,7 +82,7 @@ and how to configure it [here](https://www.prisma.io/docs/concepts/components/pr
 After updating the schema you have to run `yarn prisma:push` to push your changes to the running db and generating the
 prisma client. More about it [here](https://www.prisma.io/docs/concepts/components/prisma-migrate/db-push).
 
-#### Updating the graphql types, queries or mutations
+### Updating the graphql types, queries or mutations
 
 All graphql code is located in `graphql/schema.graphql`. After updating it you have run `yarn gql:generate` to generate
 corresponding types.
@@ -93,22 +93,22 @@ and the generation config is located at `graphql/codegen.yml`.
 Resolvers are in `grapqhl/resolvers.ts` and are used to define how the graphql api serves and modifies data. After
 modification you have to run `yarn gql:generate` again to generate the typescript files for apollo server and client.
 
-#### Reading and modifying data with data hooks
+### Reading and modifying data with data hooks
 
 The graphql code generator creates data hooks that can be used directly however they are "proxied" in
 `dataHooks/index.ts`. Any pre- or postprocessing of data is done here.
 
-#### Project structure: pages and components
+### Project structure: pages and components
 
 The project follows the general structure of a next.js project so [pages](https://nextjs.org/docs/basic-features/pages)
 are in the `pages/` folder and components are in `components/`.
 
-#### Theming
+### Theming
 
 Theming is done via [MUI](https://mui.com/material-ui/customization/theming/) in `utils/theme.ts` and with css in
 `styles/`.
 
-### Running with Docker
+## Running with Docker
 
 1. Clone the project:
 
