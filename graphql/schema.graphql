@@ -87,7 +87,7 @@ input RecipeUpsertInput {
   description: String
   ingredients: [String!]
   instructions: [String!]
-  published Boolean!
+  published: Boolean!
 }
 
 mutation UpsertRecipe ($recipeId: String, $recipeData: RecipeUpsertInput!, $tagsConnect: [String!]!, $tagsCreate: [String!]!) {
