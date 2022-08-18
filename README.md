@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <img src="/public/logo128.png" height="128px" width="128px">
+  <a href="https://konyha.xyz"><img src="/public/logo128.png" height="128px" width="128px"></a>
   <br>
   Konyha Recipe Manager
   <br>
@@ -11,7 +11,7 @@
 <p align="center">
   <a href="https://konyha.xyz" target="_blank" rel="noopener noreferrer">Website</a> •
   <a href="https://konyha.xyz/docs" target="_blank" rel="noopener noreferrer">Docs</a> •
-  <a href="https://app.konyha.xyz" target="_blank" rel="noopener noreferrer"><s>Try for free</s> (coming soon)</a>
+  <a href="#" target="_blank" rel="noopener noreferrer"><s>Try for free</s></a> (coming soon)
 </p>
 
 
