@@ -4,6 +4,17 @@ const fastify = require('fastify')({
 });
 const path = require('path');
 
+const USER_ID_BLACKLIST = [
+  '404',
+  'assets',
+  'blog',
+  'updates',
+  'docs',
+  'img',
+  'index',
+  'sitemap',
+];
+
 function getTags(recipes) {
   return [...new Set(recipes.reduce((acc, r) => [...r.Tags, ...acc], []))];
 }
@@ -17,12 +28,7 @@ fastify.setNotFoundHandler(function (req, reply) {
 })
 
 fastify.get('/', function (req, reply) {
-  return reply.sendFile('bazsi420/index.html');
-});
-
-fastify.get('/:userId', function (req, reply) {
-  const { userId } = req.params;
-  return reply.sendFile(`${userId}/index.html`);
+  return reply.sendFile('index.html');
 });
 
 fastify.post('/:userId', async function (req, reply) {

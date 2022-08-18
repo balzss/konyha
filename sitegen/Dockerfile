@@ -2,9 +2,14 @@ FROM node:16-alpine
 
 WORKDIR /usr/src/app
 
-COPY sitegen .
+COPY . .
 
-RUN npm install
+RUN yarn install
+WORKDIR /usr/src/app/homepage
+RUN yarn install
+RUN yarn build
+
+WORKDIR /usr/src/app
 
 EXPOSE 7777
 

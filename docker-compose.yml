@@ -26,8 +26,8 @@ services:
   sitegen:
     stdin_open: true
     build:
-      context: .
-      dockerfile: ./sitegen/Dockerfile
+      context: ./sitegen
+      dockerfile: ./Dockerfile
     container_name: sitegen
     depends_on:
       - db
