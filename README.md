@@ -1,6 +1,19 @@
-# Konyha Recipe Manager
+<h1 align="center">
+  <br>
+  <a href="https://konyha.xyz"><img src="/public/logo192.png" height="192px" width="192px"></a>
+  <br>
+  Konyha Recipe Manager
+  <br>
+</h1>
 
-Self hostable recipe manager and site generator written in typescript.
+<h4 align="center">Self hostable recipe manager and site generator written in typescript.</h4>
+
+<p align="center">
+  <a href="https://konyha.xyz" target="_blank" rel="noopener noreferrer">Website</a> •
+  <a href="https://konyha.xyz/docs" target="_blank" rel="noopener noreferrer">Docs</a> •
+  <a href="https://app.konyha.xyz" target="_blank" rel="noopener noreferrer">Try for free</a>
+</p>
+
 
 ### Features:
 
