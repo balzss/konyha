@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <a href="https://konyha.xyz"><img src="/public/logo192.png" height="192px" width="192px"></a>
+  <a href="https://konyha.xyz"><img src="/public/logo128.png" height="128px" width="128px"></a>
   <br>
   Konyha Recipe Manager
   <br>
