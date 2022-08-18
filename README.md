@@ -10,8 +10,7 @@
 
 <p align="center">
   <a href="https://konyha.xyz" target="_blank" rel="noopener noreferrer">Website</a> •
-  <a href="https://konyha.xyz/docs" target="_blank" rel="noopener noreferrer">Docs</a> •
-  <a href="#" target="_blank" rel="noopener noreferrer"><s>Try for free</s></a> (coming soon)
+  <a href="https://konyha.xyz/docs" target="_blank" rel="noopener noreferrer">Docs</a>
 </p>
 
 
