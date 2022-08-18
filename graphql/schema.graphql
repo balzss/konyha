@@ -17,6 +17,7 @@ type Recipe {
   description: String
   ingredients: [String!]
   instructions: [String!]
+  published: Boolean!
   tags: [Tag!]!
 }
 
@@ -27,6 +28,7 @@ fragment recipeFields on Recipe {
   description
   ingredients
   instructions
+  published
   tags {
     ...tagFields
   }
@@ -85,6 +87,7 @@ input RecipeUpsertInput {
   description: String
   ingredients: [String!]
   instructions: [String!]
+  published Boolean!
 }
 
 mutation UpsertRecipe ($recipeId: String, $recipeData: RecipeUpsertInput!, $tagsConnect: [String!]!, $tagsCreate: [String!]!) {

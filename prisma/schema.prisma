@@ -11,17 +11,18 @@ generator client {
 }
 
 model User {
-  id            String    @id @default(uuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  accounts      Account[]
-  sessions      Session[]
-  recipes       Recipe[]
-  tags          Tag[]
-  preferences   Json      @default("{}")
-  publishid     String?   @unique
+  id              String    @id @default(uuid())
+  name            String?
+  email           String?   @unique
+  emailVerified   DateTime?
+  image           String?
+  accounts        Account[]
+  sessions        Session[]
+  recipes         Recipe[]
+  tags            Tag[]
+  preferences     Json      @default("{}")
+  publishid       String?   @unique
+  publishOptions  Json      @default("{}")
 }
 
 model Account {
@@ -69,6 +70,7 @@ model Recipe {
   authorId      String
   author        User    @relation(fields: [authorId], references: [id])
   tags          Tag[]
+  published     Boolean @default(false)
 }
 
 model Tag {
