@@ -17,12 +17,11 @@
 
 ### Features:
 
-- Works on every screensize
-- Modern UI
-- Dark and light theme
-- Tagging and filtering
-- Authentication with Github or Google
-- Publish selected recipes to a static site
+- **Browse and store recipes** from any device, filter by tags or search by text
+- **Open source** and easy to self host without trackers or ads
+- **Responsive UI** with dark and light themes
+- **One click publish** to share selected recipes in a generated static site
+- **Multiple users** can use the same instance, login with Google or Github accounts
 
 Planned features:
 
