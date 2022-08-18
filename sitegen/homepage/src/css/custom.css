@@ -35,13 +35,13 @@
 
 .header {
   text-align: left;
-  padding: 2rem 0;
+  padding: 4rem 0;
 }
 
 .feature-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 1rem;
+  gap: 2rem;
 }
 
 .feature-item {
