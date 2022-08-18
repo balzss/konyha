@@ -4,6 +4,8 @@ sidebar_position: 2
 
 # Running with Docker
 
+Running the app in containers
+
 1. Clone the project:
 
 ```

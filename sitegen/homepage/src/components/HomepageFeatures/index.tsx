@@ -3,23 +3,23 @@ import styles from './styles.module.css';
 
 type FeatureItem = {
   title: string;
-  img: string;
+  Svg: React.ComponentType<React.ComponentProps<'svg'>>;
   description: JSX.Element;
 };
 
 const FeatureList: FeatureItem[] = [
   {
     title: 'FOSS and Easy to Self Host',
-    img: require('@site/static/img/open-source-icon.png').default,
+    Svg: require('@site/static/img/open-source-icon.svg').default,
     description: (
       <>
-        Licensed under GPLv3, no tracking or ads, easy to self host on a VPS, Raspberry Pi, etc
+        Licensed under GPLv3, no tracking or ads, easy to self host on a VPS or Raspberry Pi
       </>
     ),
   },
   {
-    title: 'Manage Your Recipe Collection',
-    img: require('@site/static/img/cookbook-icon.png').default,
+    title: 'Manage Your Recipes',
+    Svg: require('@site/static/img/books-icon.svg').default,
     description: (
       <>
         Store and browse your recipe collection from any device, filter by tags or use text search
@@ -27,17 +27,8 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
-    title: 'Multi User',
-    img: require('@site/static/img/multi-user-icon.png').default,
-    description: (
-      <>
-        Have multiple users on the same instance, use Github or Google account to login
-      </>
-    ),
-  },
-  {
     title: 'Modern UI',
-    img: require('@site/static/img/ui-icon.png').default,
+    Svg: require('@site/static/img/devices-icon.svg').default,
     description: (
       <>
         Easy handling on any screensize, dark/light themes, no cluttered UI or annoying ads
@@ -45,8 +36,17 @@ const FeatureList: FeatureItem[] = [
     ),
   },
   {
+    title: 'Multi User',
+    Svg: require('@site/static/img/users-icon.svg').default,
+    description: (
+      <>
+        Have multiple users on the same instance, use Github or Google account to login
+      </>
+    ),
+  },
+  {
     title: 'One Click Publish',
-    img: require('@site/static/img/publish-icon.png').default,
+    Svg: require('@site/static/img/share-icon.svg').default,
     description: (
       <>
         Select recipes to publish on a static site for easy sharing
@@ -55,13 +55,13 @@ const FeatureList: FeatureItem[] = [
   },
 ];
 
-function Feature({title, img, description}: FeatureItem) {
+function Feature({title, Svg, description}: FeatureItem) {
   return (
     <div className="feature-item">
       <div className="feature-image">
-        <img src={img} alt="" />
+        <Svg width="64" height="64" strokeWidth="1.5" role="img" />
       </div>
-      <div className="text--center padding-horiz--md">
+      <div>
         <h3>{title}</h3>
         <p>{description}</p>
       </div>
