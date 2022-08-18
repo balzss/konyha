@@ -9,7 +9,7 @@
     "next:lint": "next lint",
     "prisma:studio": "prisma studio",
     "prisma:generate": "prisma generate",
-    "prisma:push": "prisma db push",
+    "prisma:push": "HOST=localhost prisma db push",
     "gql:generate": "graphql-codegen --config ./graphql/codegen.yml",
     "docker:manager": "docker compose up konyha-next",
     "docker:manager:build": "docker compose up --no-deps --build konyha-next",

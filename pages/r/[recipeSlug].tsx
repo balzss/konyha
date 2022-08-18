@@ -31,12 +31,8 @@ function RecipeIngredients({ingredients}: {ingredients: string[]}) {
   return (
     <div>
       <FormControl sx={{mt: 1, mb: 2}}>
-        <FormLabel id="demo-radio-buttons-group-label"><b>Hozzávalók</b></FormLabel>
-        <RadioGroup
-          aria-labelledby="demo-radio-buttons-group-label"
-          defaultValue="female"
-          name="radio-buttons-group"
-        >
+        <FormLabel id="demo-radio-buttons-group-label"><b>Ingredients</b></FormLabel>
+        <RadioGroup>
           { ingredients.map((ingredient, index) => (
             <FormControlLabel key={index} value={index} control={<Checkbox size="small" />} label={ingredient} />
           )) }
@@ -50,12 +46,8 @@ function RecipeInstructions({instructions}: {instructions: string[]}) {
   return (
     <div>
       <FormControl sx={{mt: 1, mb: 3}}>
-        <FormLabel id="demo-radio-buttons-group-label"><b>Elkészítés</b></FormLabel>
-        <RadioGroup
-          aria-labelledby="demo-radio-buttons-group-label"
-          defaultValue="female"
-          name="radio-buttons-group"
-        >
+        <FormLabel id="demo-radio-buttons-group-label"><b>Instructions</b></FormLabel>
+        <RadioGroup>
           { instructions.map((instruction, index) => (
             <FormControlLabel key={index} value={index} control={<Radio size="small" />} label={instruction} sx={{py: 0.5}}/>
           )) }
@@ -108,29 +100,29 @@ export default function RecipeDetailsPage() {
     >
       <Head title={recipe?.name as string}/>
       <TopBar
-        leadingAction={{action: handleClickBack, icon: <ArrowBackIcon/>, label: 'Vissza'}}
+        leadingAction={{action: handleClickBack, icon: <ArrowBackIcon/>, label: 'Back'}}
         title={recipe?.name}
         trailingActions={[
-          {icon: <EditIcon/>, action: handleClickEdit, label: 'Szerkesztés'},
+          {icon: <EditIcon/>, action: handleClickEdit, label: 'Edit'},
         ]}
         hiddenActions={[
           {icon: (<Checkbox
                   edge="start"
                   checked={showPortionCalculator}
                   tabIndex={-1}
-                />), action: () => setShowPortionCalculator((prevState) => !prevState), label: 'Recept törlése'},
-          {icon: <DeleteIcon fontSize="small"/>, action: () => setErrorConfirmOpen(true), label: 'Recept törlése'},
+                />), action: () => setShowPortionCalculator((prevState) => !prevState), label: 'Publish'},
+          {icon: <DeleteIcon fontSize="small"/>, action: () => setErrorConfirmOpen(true), label: 'Delete recipe'},
         ]}
       />
       <ConfirmModal
         open={errorConfirmOpen}
-        title={'Törlés'}
-        desription={'Biztosan törlöd a receptet?'}
+        title={'Delete recipe'}
+        description={'Are you sure to delete this recipe?'}
         handleClose={() => setErrorConfirmOpen(false)}
         handleConfirm={handleDeleteRecipe}
-        confirmText={'Törlés'}
+        confirmText={'Delete'}
       />
-      <Container maxWidth="md">
+      <div style={{maxWidth: '900px', margin: '0 auto', padding: '1rem'}}>
         { recipe?.description && (
           <Typography variant="body1" component="div" sx={{my: 1}}>
             { recipe.description }
@@ -149,7 +141,7 @@ export default function RecipeDetailsPage() {
         {deleteError && (
           <Alert severity="error">{deleteError.message}</Alert>
         )}
-      </Container>
+      </div>
     </Box>
   );
 }

@@ -35,7 +35,7 @@ function trimSplit(input: string, delimeter: string): string[] {
 export default function EditRecipePage() {
   const router = useRouter();
   const recipeSlug = router.query.recipeSlug as string;
-  const pageTitle = recipeSlug ? 'Recept szerkesztése' : 'Új recept';
+  const pageTitle = recipeSlug ? 'Edit recipe' : 'New recipe';
   const [ upsertRecipe, {error: recipeUpsertError} ] = useUpsertRecipe();
   const { data: recipesData } = useSingleRecipe(recipeSlug);
   const recipe = recipesData?.recipes[0];
@@ -117,16 +117,16 @@ export default function EditRecipePage() {
       />
       <ConfirmModal
         open={saveConfirmOpen}
-        title={'Mentés'}
-        desription={'Biztosan mented a receptet?'}
+        title={'Save'}
+        description={'Do you want to save this recipe?'}
         handleClose={() => setSaveConfirmOpen(false)}
         handleConfirm={handleSubmitRecipe}
-        confirmText={'Mentés'}
+        confirmText={'Save'}
       />
-      <Container maxWidth="sm">
+      <div style={{maxWidth: '900px', margin: '0 auto', padding: '1rem'}}>
         <form onSubmit={handleSubmitRecipe}>
           <TextField
-            label="Recept neve"
+            label="Name"
             variant="outlined"
             margin="dense"
             required
@@ -135,7 +135,7 @@ export default function EditRecipePage() {
             onChange={({target}) => setRecipeName(target.value)}
           />
           <TextField
-            label="Leírás"
+            label="Description"
             variant="outlined"
             margin="dense"
             multiline
@@ -145,7 +145,7 @@ export default function EditRecipePage() {
             onChange={({target}) => setDescription(target.value)}
           />
           <TextField
-            label="Hozzávalók"
+            label="Ingredients"
             variant="outlined"
             margin="dense"
             required
@@ -156,7 +156,7 @@ export default function EditRecipePage() {
             onChange={({target}) => setIngredients(target.value)}
           />
           <TextField
-            label="Elkészítés"
+            label="Instructions"
             variant="outlined"
             margin="dense"
             required
@@ -167,14 +167,14 @@ export default function EditRecipePage() {
             onChange={({target}) => setInstructions(target.value)}
           />
           <FormControl margin="dense" sx={{ width: "100%" }}>
-            <InputLabel id="tag-select-label">Címkék</InputLabel>
+            <InputLabel id="tag-select-label">Tags</InputLabel>
             <Select
               disabled={!tags?.length}
               labelId="tag-select-label"
               multiple
               value={selectedTags}
               onChange={handleTagChange}
-              input={<OutlinedInput label="Címkék" />}
+              input={<OutlinedInput label="Tags" />}
               renderValue={(selected) => selected.map(getTagNameById).join(', ')}
             >
               {tags && tags.length > 0 && tags.map(({name, id}) => (
@@ -186,7 +186,7 @@ export default function EditRecipePage() {
             </Select>
           </FormControl>
           <TextField
-            label="Új címke"
+            label="New tags"
             variant="outlined"
             margin="dense"
             sx={{width: '100%'}}
@@ -194,7 +194,7 @@ export default function EditRecipePage() {
             onChange={({target}) => setNewTags(target.value)}
           />
         </form>
-      </Container>
+      </div>
     </Box>
   );
 };

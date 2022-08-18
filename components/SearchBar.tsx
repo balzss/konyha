@@ -60,12 +60,12 @@ export default function SearchBar({
       }}
       square
     >
-      <IconButton onClick={handleClickBack} aria-label="vissza">
+      <IconButton onClick={handleClickBack} aria-label="back">
         <ArrowBackIcon/>
       </IconButton>
       <InputBase
         sx={{ ml: 2, flex: 1, lineHeight: 1.5 }}
-        placeholder="Keresés"
+        placeholder="Search"
         autoFocus
         value={searchQuery}
         onChange={handleChangeQuery}

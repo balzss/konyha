@@ -49,18 +49,18 @@ export default function MainPage() {
         py: 8,
       }}
     >
-      <Head title="Receptek"/>
+      <Head title="Recipes"/>
       <HomeTopBar />
       <Container maxWidth="md" sx={{px: 2}} disableGutters>
-        <Grid container spacing={1}>
+        <Grid container spacing={1.5}>
           <>
             {error && (
-              <Grid item xs={12} sm={6} md={4} lg={3}>
+              <Grid item xs={12} sm={6} md={4} lg={4}>
                 <Alert severity="error">{error.message}</Alert>
               </Grid>
             )}
             {recipes && recipes.map((recipe) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={recipe.id}>
+              <Grid item xs={12} sm={6} md={4} lg={4} key={recipe.id}>
                 <RecipeCard recipe={recipe} onClick={handleClickRecipe}/>
               </Grid>
             ))}
@@ -71,11 +71,11 @@ export default function MainPage() {
             ) : (
               <Grid item>
                 <Alert variant="outlined" severity="info">
-                  <AlertTitle>Nincsenek receptjeid</AlertTitle>
-                  Itt lesznek listázva a receptjeid miután hozzáadod őket a könyvtáradhoz.
+                  <AlertTitle>You don't have any recipes</AlertTitle>
+                  Your recipes are going to be displayed here after you create them.
                   <br /><br />
                   <Link href="/r/add">
-                    Új recept hozzáadása
+                    Add new recipe
                   </Link>
                 </Alert>
               </Grid>

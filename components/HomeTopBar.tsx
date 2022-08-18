@@ -23,7 +23,7 @@ export default function HomeTopBar() {
   const selectedTags = getTagsFromUrl(router);
   const { data: tagsData } = useTags();
   const tags = tagsData?.tags;
-  const title = selectedTags.length ? selectedTags.map((tagSlug) => tags?.find(({slug}) => tagSlug === slug)?.name).join(', ') : 'Összes recept';
+  const title = selectedTags.length ? selectedTags.map((tagSlug) => tags?.find(({slug}) => tagSlug === slug)?.name).join(', ') : 'All recipes';
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -52,11 +52,11 @@ export default function HomeTopBar() {
   return (
     <>
       <TopBar
-        leadingAction={{action: handleOpenMenu, icon: <TuneIcon/>, label: 'Menü'}}
+        leadingAction={{action: handleOpenMenu, icon: <TuneIcon/>, label: 'Menu'}}
         title={title}
         trailingActions={[
-          {icon: <SearchIcon/>, action: handleClickSearch, label: 'Keresés'},
-          {icon: <AddIcon/>, action: handleClickAdd, label: 'Új recept'},
+          {icon: <SearchIcon/>, action: handleClickSearch, label: 'Search'},
+          {icon: <AddIcon/>, action: handleClickAdd, label: 'New recipe'},
         ]}
       />
       <Menu
@@ -76,7 +76,7 @@ export default function HomeTopBar() {
               disableRipple
             />
           </ListItemIcon>
-          Összes recept
+          All recipes
         </MenuItem>
         { tags && tags.length > 0 && (
           <>

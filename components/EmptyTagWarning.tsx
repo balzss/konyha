@@ -34,23 +34,23 @@ export default function EmptyTagWarning({tags}: EmptyTagWarningProps) {
   return (
     <>
       <Alert variant="outlined" severity="info">
-        <AlertTitle>Üres {plural ? 'kategóriák' : 'kategória'}</AlertTitle>
+        <AlertTitle>Empty {plural ? 'categories' : 'category'}</AlertTitle>
         {plural
-          ? 'Ezekben a kategóriákban nincsenek receptjeid. Szeretnéd törölni ezeket a címkéket?'
-          : 'Ebben a kategóriában nincsenek receptjeid. Szeretnéd törölni ezt a címkét?'
+          ? 'You don\'t have any recipes in this category. Do you want to delete it?'
+          : 'You don\'t have any recipes in these categories. Do you want to delete them?'
         }
         <br /><br />
         <Link variant="body2" underline="hover" component="button" onClick={() => setDeleteConfirmOpen(true)}>
-          {plural ? 'Címkék' : 'Címke'} törlése
+          Delete {plural ? 'tags' : 'tag'}
         </Link>
       </Alert>
       <ConfirmModal
         open={deleteConfirmOpen}
-        title={`${plural ? 'Címkék' : 'Címke'} törlése`}
-        desription={`Biztosan törlöd a következő ${tags.length < 2 ? 'címkét' : 'címkéket'}: ${tags.map((t) => t.name).join(', ')}?`}
+        title={`Delete ${plural ? 'tags' : 'tag'}`}
+        description={`Are you sure to delete the following ${tags.length < 2 ? 'tag' : 'tags'}: ${tags.map((t) => t.name).join(', ')}?`}
         handleClose={() => setDeleteConfirmOpen(false)}
         handleConfirm={handleDelete}
-        confirmText={'Igen'}
+        confirmText={'Delete'}
       />
     </>
   );

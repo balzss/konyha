@@ -34,7 +34,7 @@ export default function SearchPage() {
         py: 8,
       }}
     >
-      <Head title="Keresés"/>
+      <Head title="Search"/>
       <SearchBar onDebouncedChange={handleQueryChange} delay={500}/>
       <Container maxWidth="md" sx={{px: 2}} disableGutters>
         <Grid container spacing={1}>

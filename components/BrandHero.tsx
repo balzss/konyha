@@ -10,7 +10,7 @@ export default function BrandHero() {
       <a style={{display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', paddingInline: '16px'}}>
         <Image src="/logo128.png" alt="logo" width="80" height="80"/>
         <Typography variant="h4" component="div" sx={{minWidth: '300px', textAlign: 'center'}}>
-          Konyha Recept Manager
+          Konyha Recipe Manager
         </Typography>
       </a>
     </NextLink>

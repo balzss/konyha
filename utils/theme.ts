@@ -6,6 +6,9 @@ export function getCustomTheme(mode: 'dark' | 'light') {
       mode,
       ...(mode === 'dark'
         ? {
+          primary: {
+            main: '#F49196',
+          },
           background: {
             default: '#161616', // carbon design GRAY100
             paper: '#262626', // carbon design GRAY90
@@ -16,6 +19,9 @@ export function getCustomTheme(mode: 'dark' | 'light') {
           }
         }
         : {
+          primary: {
+            main: '#FA4C4F',
+          },
           divider: '#8d8d8d', // carbon design GRAY50
           text: {
             primary: '#1C1B1F', // material 3

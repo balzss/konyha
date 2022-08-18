@@ -81,6 +81,7 @@ export type Recipe = {
   ingredients?: Maybe<Array<Scalars['String']>>;
   instructions?: Maybe<Array<Scalars['String']>>;
   name: Scalars['String'];
+  published: Scalars['Boolean'];
   slug: Scalars['String'];
   tags: Array<Tag>;
 };
@@ -116,14 +117,14 @@ export type UserPreferences = {
 
 export type TagFieldsFragment = { __typename?: 'Tag', id: string, name: string, slug: string };
 
-export type RecipeFieldsFragment = { __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> };
+export type RecipeFieldsFragment = { __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, published: boolean, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> };
 
 export type GetRecipesQueryVariables = Exact<{
   where?: InputMaybe<RecipesWhereInput>;
 }>;
 
 
-export type GetRecipesQuery = { __typename?: 'Query', recipes: Array<{ __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> }> };
+export type GetRecipesQuery = { __typename?: 'Query', recipes: Array<{ __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, published: boolean, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> }> };
 
 export type GetTagsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -135,7 +136,7 @@ export type SearchRecipesQueryVariables = Exact<{
 }>;
 
 
-export type SearchRecipesQuery = { __typename?: 'Query', searchRecipes: Array<{ __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> }> };
+export type SearchRecipesQuery = { __typename?: 'Query', searchRecipes: Array<{ __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, published: boolean, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> }> };
 
 export type GetMeQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -298,6 +299,7 @@ export type RecipeResolvers<ContextType = any, ParentType extends ResolversParen
   ingredients?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
   instructions?: Resolver<Maybe<Array<ResolversTypes['String']>>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  published?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   tags?: Resolver<Array<ResolversTypes['Tag']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -340,6 +342,7 @@ export const RecipeFieldsFragmentDoc = gql`
   description
   ingredients
   instructions
+  published
   tags {
     ...tagFields
   }

@@ -21,11 +21,11 @@ export default function GroceriesPage() {
     >
       <Container maxWidth="md" sx={{px: 2}}>
         <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-          Bevásárlás
+          Groceries
         </Typography>
         <Alert variant="outlined" severity="warning" sx={{mt: 2}}>
-          <AlertTitle>Fejlesztés alatt</AlertTitle>
-          Itt fogod tudni kezelni a bevásárló listáid. 
+          <AlertTitle>Work in progress</AlertTitle>
+          You'll be able to manage your groceries list here.
         </Alert>
       </Container>
       <BottomNav/>

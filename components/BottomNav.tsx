@@ -12,25 +12,25 @@ import {
 
 const bottomNavItems = [
   {
-    displayName: 'Receptek',
+    displayName: 'Recipes',
     icon: <MenuBookIcon />,
     path: '/',
     disabled: false,
   },
   {
-    displayName: 'Bevásárlás',
+    displayName: 'Groceries',
     icon: <LocalGroceryStoreIcon />,
     path: '/groceries',
     disabled: false,
   },
   // {
-  //   displayName: 'Időzítők',
+  //   displayName: 'Timers',
   //   icon: <TimerIcon />,
   //   path: '/',
   //   disabled: true,
   // },
   {
-    displayName: 'Személyes',
+    displayName: 'Profile',
     icon: <AccountCircleIcon />,
     path: '/profile',
     disabled: false,

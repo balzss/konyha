@@ -22,7 +22,7 @@ const modalStyle = {
 type ConfirmModalProps = {
   open: boolean;
   title: string;
-  desription?: string;
+  description?: string;
   confirmText: string;
   handleClose: () => void;
   handleConfirm: (e: React.SyntheticEvent) => void;
@@ -31,7 +31,7 @@ type ConfirmModalProps = {
 export default function ConfirmModal({
   open,
   title,
-  desription,
+  description,
   confirmText,
   handleClose,
   handleConfirm,
@@ -50,14 +50,14 @@ export default function ConfirmModal({
             {title}
           </Typography>
         ) }
-        { desription && (
+        { description && (
           <Typography sx={{color: '#CAC4D0'}}>
-            {desription}
+            {description}
           </Typography>
         ) }
         <Stack direction="row-reverse" spacing={3} sx={{mt: 3}}>
           <Button onClick={handleConfirm} variant="outlined">{confirmText}</Button>
-          <Button onClick={handleClose}>Mégse</Button>
+          <Button onClick={handleClose}>Cancel</Button>
         </Stack>
       </Box>
     </Modal>

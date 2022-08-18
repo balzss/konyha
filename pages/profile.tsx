@@ -48,9 +48,9 @@ export default function ProfilePage({session}: ProfilePageArgs) {
   };
 
   return (
-    <>
+    <div style={{maxWidth: '900px', margin: '0 auto'}}>
       <List
-        sx={{ width: '100%', maxWidth: 480, bgcolor: 'background.default', margin: 'auto', p: 1}}
+        sx={{ width: '100%', maxWidth: 480, bgcolor: 'background.default', p: 1}}
       >
         <Head title="Személyes"/>
         <ListItem>
@@ -60,7 +60,7 @@ export default function ProfilePage({session}: ProfilePageArgs) {
           <ListItemText primary="Publish ID" secondary={publishId || '<not published>'}/>
         </ListItem>
         <ListItem>
-          <ListItemText id="switch-list-label-wifi" primary="Sötét mód" />
+          <ListItemText id="switch-list-label-wifi" primary="Dark mode" />
           <Switch
             edge="end"
             onChange={handleChangeTheme}
@@ -72,19 +72,19 @@ export default function ProfilePage({session}: ProfilePageArgs) {
         </ListItem>
         <ListItem disablePadding>
           <ListItemButton onClick={() => setLogoutConfirmOpen(true)}>
-            <ListItemText primary="Kijelentkezés" />
+            <ListItemText primary="Log out" />
           </ListItemButton>
         </ListItem>
       </List>
       <ConfirmModal
         open={logoutConfirmOpen}
-        title={'Kijelentkezés'}
-        desription={'Biztosan kijelentkezel?'}
+        title={'Log out'}
+        description={'Are you sure to log out?'}
         handleClose={() => setLogoutConfirmOpen(false)}
         handleConfirm={handleSignOut}
-        confirmText={'Igen'}
+        confirmText={'Log out'}
       />
-    </>
+    </div>
   );
 };
 
