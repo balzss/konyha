@@ -22,6 +22,10 @@ export function getCustomTheme(mode: 'dark' | 'light') {
           primary: {
             main: '#FA4C4F',
           },
+          background: {
+            default: '#f4f4f4',
+            paper: '#fff',
+          },
           divider: '#8d8d8d', // carbon design GRAY50
           text: {
             primary: '#1C1B1F', // material 3

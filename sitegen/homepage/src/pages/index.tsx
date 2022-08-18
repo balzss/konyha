@@ -1,4 +1,5 @@
 import React from 'react';
+import ThemedImage from '@theme/ThemedImage';
 import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import Layout from '@theme/Layout';
@@ -36,6 +37,38 @@ export default function Home(): JSX.Element {
       <HomepageHeader />
       <main>
         <HomepageFeatures />
+        <div className="container" style={{margin: '4rem auto'}}>
+          <h2>Screenshots</h2>
+          <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2rem'}}>
+            <div>
+              <ThemedImage
+                sources={{
+                  light: require('@site/static/img/screenshot-manager-home-light.png').default,
+                  dark: require('@site/static/img/screenshot-manager-home.png').default,
+                }}
+              />
+              <div className="caption">Home page</div>
+            </div>
+            <div>
+              <ThemedImage
+                sources={{
+                  light: require('@site/static/img/screenshot-manager-details-light.png').default,
+                  dark: require('@site/static/img/screenshot-manager-details.png').default,
+                }}
+              />
+              <div className="caption">Recipe details</div>
+            </div>
+            <div>
+              <ThemedImage
+                sources={{
+                  light: require('@site/static/img/screenshot-manager-edit-light.png').default,
+                  dark: require('@site/static/img/screenshot-manager-edit.png').default,
+                }}
+              />
+              <div className="caption">Edit page</div>
+            </div>
+          </div>
+        </div>
       </main>
     </Layout>
   );
