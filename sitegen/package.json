@@ -1,13 +1,12 @@
 {
   "name": "sitegen",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "static recipe generator test",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "watch": "npx @11ty/eleventy --input=src/. --watch",
-    "build": "npx @11ty/eleventy --input=src"
+    "demo": "node demo.js && cp demo.json public/demo.json"
   },
   "author": "",
   "license": "ISC",

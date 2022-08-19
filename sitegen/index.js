@@ -1,3 +1,4 @@
+const fs = require('fs').promises;
 const Eleventy = require('@11ty/eleventy');
 const fastify = require('fastify')({
   logger: true,
@@ -5,6 +6,7 @@ const fastify = require('fastify')({
 const path = require('path');
 
 const USER_ID_BLACKLIST = [
+  'demo',
   '404',
   'assets',
   'blog',
@@ -34,8 +36,8 @@ fastify.get('/', function (req, reply) {
 fastify.post('/:userId', async function (req, reply) {
   const { userId } = req.params;
   const { recipes, title } = req.body;
-  console.log(recipes)
-  console.log(title)
+
+  fs.writeFile('./demo.json', JSON.stringify(req.body), 'utf8', () => console.log('\n\n\nfile written\n\n\n'));
 
   const Recipes = recipes.map(r => ({
       Title: r.name,

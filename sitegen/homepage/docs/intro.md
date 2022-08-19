@@ -10,7 +10,7 @@ need Node and Docker to run it. Multiple users can use the same instance.
 
 ### How it works
 
-The app instance can be accessed under the `app.example.com` subdomain and any number of user can register and log in
+After installation the app instance can be accessed under the `app.example.com` subdomain and any number of user can register and log in
 with their Google or Github account (email is coming soon). Each user can store and access their recipes after
 authentication.
 

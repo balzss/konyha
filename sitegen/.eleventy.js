@@ -7,8 +7,8 @@ const pluginRss = require("@11ty/eleventy-plugin-rss");
 const pluginNavigation = require("@11ty/eleventy-navigation");
 
 const configOptions = {
-  publishId: '/bazsi420',
-  title: '420 gyors recept',
+  baseUrl: '/demo',
+  title: 'Konyha Demo',
   recipes: [
     {
       Title: 'Test 3',
@@ -22,7 +22,7 @@ const configOptions = {
         'egy',
         'ketto'
       ],
-      Tags: ['tag1', 'tag6'],
+      Tags: ['tag1', 'tag6', 'ttt'],
     },
     {
       Title: 'Test 4',
@@ -32,8 +32,32 @@ const configOptions = {
   ],
 };
 
+function getTags(recipes) {
+  return [...new Set(recipes.reduce((acc, r) => [...r.Tags, ...acc], []))];
+}
+
 module.exports = function(eleventyConfig) {
   eleventyConfig.addPassthroughCopy('src/static');
+
+  const Recipes = configOptions.recipes.map(r => ({
+    Title: r.Title,
+    Slug: r.Slug,
+    Description: r.Description,
+    Ingredients: r.Ingredients,
+    Instructions: r.Instructions,
+    Tags: r.Tags,
+  }));
+
+  const Tags = getTags(Recipes);
+
+  eleventyConfig.addGlobalData('DemoData', {
+    Site: {
+      BaseUrl: configOptions.baseUrl,
+      Title: configOptions.title,
+    },
+    Recipes,
+    Tags,
+  });
 
   // Add plugins
   eleventyConfig.addPlugin(pluginRss);
@@ -106,7 +130,7 @@ module.exports = function(eleventyConfig) {
       input: "src",
       includes: "_includes",
       data: "_data",
-      output: "public/bazsi420"
+      output: "public/demo"
     }
   };
 };

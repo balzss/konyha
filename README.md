@@ -6,7 +6,7 @@
   <br>
 </h1>
 
-<h4 align="center">Self hostable recipe manager and site generator written in typescript.</h4>
+<h4 align="center">Self hostable recipe manager and site generator written in TypeScript</h4>
 
 <p align="center">
   <a href="https://konyha.xyz" target="_blank" rel="noopener noreferrer">Website</a> •
@@ -33,6 +33,8 @@ Planned features:
 
 - Docker and Docker Compose
 - Node
+
+# Getting started
 
 ## Running locally:
 
