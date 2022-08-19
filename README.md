@@ -29,12 +29,12 @@ Planned features:
 - Portion calculator
 - Export to/Import from json and csv
 
+## Getting started
+
 ### Prerequisites:
 
 - Docker and Docker Compose
 - Node
-
-# Getting started
 
 ### Running locally:
 
