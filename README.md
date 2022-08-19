@@ -29,6 +29,16 @@ Planned features:
 - Portion calculator
 - Export to/Import from json and csv
 
+### Screenshots
+
+<p float="left" align="middle">
+  <img src="/sitegen/homepage/static/img/screenshot-manager-home.png" width="100" />
+  <img src="/sitegen/homepage/static/img/screenshot-manager-home.png" width="100" />
+  <img src="/sitegen/homepage/static/img/screenshot-manager-home.png" width="100" />
+</p>
+
+---
+
 ## Getting started
 
 ### Prerequisites:
