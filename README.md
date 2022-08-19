@@ -37,7 +37,9 @@ Planned features:
   <img src="/sitegen/homepage/static/img/screenshot-manager-edit.png" width="260" />
 </p>
 
-# Getting started
+
+
+## Getting started
 
 ### Prerequisites:
 
