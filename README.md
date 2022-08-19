@@ -31,10 +31,10 @@ Planned features:
 
 ### Screenshots
 
-<p float="left" align="middle">
-  <img src="/sitegen/homepage/static/img/screenshot-manager-home.png" width="300" />
-  <img src="/sitegen/homepage/static/img/screenshot-manager-details.png" width="300" />
-  <img src="/sitegen/homepage/static/img/screenshot-manager-edit.png" width="300" />
+<p float="left">
+  <img src="/sitegen/homepage/static/img/screenshot-manager-home.png" width="280" />
+  <img src="/sitegen/homepage/static/img/screenshot-manager-details.png" width="280" />
+  <img src="/sitegen/homepage/static/img/screenshot-manager-edit.png" width="280" />
 </p>
 
 ## Getting started
