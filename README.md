@@ -16,11 +16,11 @@
 
 ### Features:
 
-- **Browse and store recipes** from any device, filter by tags or search by text
 - **Open source** and easy to self host without trackers or ads
+- **Browse and store recipes** from any device, filter by tags or search by text
 - **Responsive UI** with dark and light themes
-- **One click publish** to share selected recipes in a generated static site
 - **Multiple users** can use the same instance, login with Google or Github accounts
+- **One click publish** to share selected recipes in a generated static site
 
 Planned features:
 
@@ -37,7 +37,7 @@ Planned features:
   <img src="/sitegen/homepage/static/img/screenshot-manager-edit.png" width="260" />
 </p>
 
-## Getting started
+# Getting started
 
 ### Prerequisites:
 
