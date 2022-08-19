@@ -13,8 +13,7 @@
   <a href="https://konyha.xyz/docs" target="_blank" rel="noopener noreferrer">Docs</a>
 </p>
 
-
-### Features:
+## Features:
 
 - **Open source** and easy to self host without trackers or ads
 - **Browse and store recipes** from any device, filter by tags or search by text
@@ -22,14 +21,16 @@
 - **Multiple users** can use the same instance, login with Google or Github accounts
 - **One click publish** to share selected recipes in a generated static site
 
-Planned features:
+### Planned features
 
-- Authentication with email
-- Groceries list
-- Portion calculator
-- Export to/Import from json and csv
+- Email login
+- Import from and export to json
+- Themes
+- i18n
+- Groceries
+- Connect to git repo
 
-### Screenshots
+## Screenshots
 
 <p float="left">
   <img src="/sitegen/homepage/static/img/screenshot-manager-home.png" width="260" />
@@ -37,7 +38,7 @@ Planned features:
   <img src="/sitegen/homepage/static/img/screenshot-manager-edit.png" width="260" />
 </p>
 
-### Static site generator
+## Static site generator
 
 There is a [demo site](https://konyha.xyz/demo) generated from [this json](/sitegen/demo.json) file and is identical 
 to the output of the site generator in Konyha.
@@ -127,3 +128,12 @@ yarn docker:sitegen:build
 ```
 
 6. You can now access the manager at `localhost:3000` and the generated sites at `localhost:7777/<username>`
+
+
+## Development
+
+Read about development in the [docs](https://konyha/xyz/docs/category/development).
+
+## Licence and acknowledgements
+
+The project is licensed under GPLv3.
