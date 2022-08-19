@@ -32,9 +32,9 @@ Planned features:
 ### Screenshots
 
 <p float="left">
-  <img src="/sitegen/homepage/static/img/screenshot-manager-home.png" width="280" />
+  <img src="/sitegen/homepage/static/img/screenshot-manager-home.png" width="260" />
   <img src="/sitegen/homepage/static/img/screenshot-manager-details.png" width="280" />
-  <img src="/sitegen/homepage/static/img/screenshot-manager-edit.png" width="280" />
+  <img src="/sitegen/homepage/static/img/screenshot-manager-edit.png" width="260" />
 </p>
 
 ## Getting started
