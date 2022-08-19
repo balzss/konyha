@@ -37,7 +37,10 @@ Planned features:
   <img src="/sitegen/homepage/static/img/screenshot-manager-edit.png" width="260" />
 </p>
 
+### Static site generator
 
+There is a [demo site](https://konyha.xyz/demo) generated from [this json](/sitegen/demo.json) file and is identical 
+to the output of the site generator in Konyha.
 
 ## Getting started
 
