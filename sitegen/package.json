@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "demo": "node demo.js && cp demo.json public/demo.json"
+    "demo": "node demo.js && cp demo.json public/demo.json",
+    "gh-pages": "rm -rf public && mkdir public && echo konyha.xyz > public/CNAME && yarn demo && cd homepage && yarn build && cd .. && gh-pages -d public"
   },
   "author": "",
   "license": "ISC",
@@ -14,6 +15,7 @@
     "@11ty/eleventy": "^1.0.1",
     "@11ty/eleventy-navigation": "^0.3.3",
     "@11ty/eleventy-plugin-rss": "^1.2.0",
+    "gh-pages": "^4.0.0",
     "markdown-it": "^13.0.1",
     "markdown-it-anchor": "^8.6.4",
     "nodemon": "^2.0.19"
