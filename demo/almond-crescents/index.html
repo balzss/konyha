@@ -1,0 +1,127 @@
+<!doctype html>
+
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konyha Demo | Almond crescents</title>
+    <meta name="description" content="">
+
+    <!-- favicon from https://www.flaticon.com/free-icon/magazine_7141764 -->
+    <link rel="icon" type="image/png" href="/demo/static/logo64.png" />
+    <link rel="stylesheet" href="/demo/static/css/style.css">
+
+    <!-- TODO: fix these -->
+    <link rel="alternate" href="." type="application/atom+xml" title="">
+    <link rel="alternate" href="." type="application/json" title="">
+  </head>
+  <body>
+    <nav class="recipe-nav appview-only" role="navigation" aria-label="main navigation">
+  <div class="recipe-nav-inner">
+    <a class="recipe-home-button" href="/demo">
+      Konyha Demo
+    </a>
+    <a class="search-icon" href="/demo/search">
+      <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
+      </svg>
+    </a>
+  </div>
+</nav>
+
+
+<div class="recipe-section">
+  <header>
+    <h1 class="recipe-title">
+      Almond crescents
+    </h1>
+    <div class="recipe-card-tags" style="margin-top: 1em;">
+      
+      <a class="recipe-tag" href="tags/dessert">dessert</a>
+      
+      <a class="recipe-tag" href="tags/sweet">sweet</a>
+      
+      <a class="recipe-tag" href="tags/cookie">cookie</a>
+      
+    </div>
+  </header>
+  <div class="content" style="margin-top: 1em;">
+    
+    <p>
+      <p>from <a href="https://zserbo.com/breads-buns-biscuits/mandulas-kifli-almond-crescents/">https://zserbo.com/breads-buns-biscuits/mandulas-kifli-almond-crescents/</a></p>
+
+    </p>
+    
+
+    
+    <h2>Ingredients</h2>
+    <ul>
+      
+      <li>280 g (~10 oz) flour</li>
+      
+      <li>100 g (~3 1/2 oz) ground almonds</li>
+      
+      <li>100 g (~3 1/2 oz) powdered sugar</li>
+      
+      <li>2 pinches of salt</li>
+      
+      <li>1 tsp vanilla extract</li>
+      
+      <li>200 g (~7 oz) soft butter</li>
+      
+      <li>2 egg yolks</li>
+      
+      <li>80-100 g (~3 – 3 1/2 oz) powdered vanilla sugar</li>
+      
+      <li>100 g (~3 1/2 oz) dark chocolate</li>
+      
+      <li>2 tbsp vegetable oil</li>
+      
+    </ul>
+    
+
+    
+    <h2>Instructions</h2>
+    <ol>
+      
+      <li>Sift flour in a bowl. Add powdered sugar, ground almonds, salt, vanilla extract, egg yolks and cubed butter, and knead into a smooth dough. Divide the dough into 4 equal pieces. Roll each of the four pieces of dough between your hands, making four ropes, about 20 cm/7-8 inch long. Wrap the ropes in cling film and put them into the fridge for two hours.</li>
+      
+      <li>Line 2-3 baking sheets with parchment paper. Preheat the oven to 200°C/392°F.</li>
+      
+      <li>Cut the dough ropes into 1 cm / 1/2 inch thick slices, and roll each slice into tiny 5-6 cm / 2 inch long crescents. Place the crescents onto the baking sheets and bake them for 10-12 minutes.</li>
+      
+      <li>Once they are done, roll half of the crescents in powdered vanilla sugar. Place them onto a wire rack and let them cool. The other half of the crescents should be left on the baking sheet until they are cool.</li>
+      
+      <li>Melt the chocolate with the oil in a heatproof bowl set over a pan of simmering water (make sure the water does not touch the bottom of the bowl), stirring a few times until the chocolate is just melted.</li>
+      
+      <li>Dip both ends of the crescents into the chocolate, then set each piece on the wire rack. Allow the chocolate to set at room temperature.</li>
+      
+      <li>Store the cookies in an airtight container, in layers separated by a sheet of parchment paper</li>
+      
+    </ol>
+    
+  </div>
+
+  <button
+    class="recipe-button"
+    onclick="copyAction()"
+  >
+    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z" />
+    </svg>
+    <span id="copy-text">Copy url</span>
+  </button>
+</div>
+
+<script>
+  const copyButton = document.querySelector('#copy-text');
+  document.addEventListener('copy', (event) => {
+      copyButton.innerText = 'Copy url';
+    });
+  function copyAction() {
+      navigator.clipboard.writeText(window.location.href).then(copyButton.innerText='Url copied to clipboard');
+    }
+</script>
+
+  </body>
+</html>

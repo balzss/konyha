@@ -1,0 +1,123 @@
+<!doctype html>
+
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konyha Demo | Brassói</title>
+    <meta name="description" content="">
+
+    <!-- favicon from https://www.flaticon.com/free-icon/magazine_7141764 -->
+    <link rel="icon" type="image/png" href="/demo/static/logo64.png" />
+    <link rel="stylesheet" href="/demo/static/css/style.css">
+
+    <!-- TODO: fix these -->
+    <link rel="alternate" href="." type="application/atom+xml" title="">
+    <link rel="alternate" href="." type="application/json" title="">
+  </head>
+  <body>
+    <nav class="recipe-nav appview-only" role="navigation" aria-label="main navigation">
+  <div class="recipe-nav-inner">
+    <a class="recipe-home-button" href="/demo">
+      Konyha Demo
+    </a>
+    <a class="search-icon" href="/demo/search">
+      <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z" />
+      </svg>
+    </a>
+  </div>
+</nav>
+
+
+<div class="recipe-section">
+  <header>
+    <h1 class="recipe-title">
+      Brassói
+    </h1>
+    <div class="recipe-card-tags" style="margin-top: 1em;">
+      
+      <a class="recipe-tag" href="tags/hungarian">hungarian</a>
+      
+      <a class="recipe-tag" href="tags/pork">pork</a>
+      
+      <a class="recipe-tag" href="tags/potato">potato</a>
+      
+    </div>
+  </header>
+  <div class="content" style="margin-top: 1em;">
+    
+    <p>
+      <p>from <a href="https://zserbo.com/meat-dishes/brassoi-apropecsenye/">https://zserbo.com/meat-dishes/brassoi-apropecsenye/</a></p>
+
+    </p>
+    
+
+    
+    <h2>Ingredients</h2>
+    <ul>
+      
+      <li>1 kg (~2 1/4 lbs) potatoes</li>
+      
+      <li>1 kg (~2 1/4 lbs) pork shoulder</li>
+      
+      <li>100 g (~3 1/2 oz) smoked bacon</li>
+      
+      <li>1 medium onion</li>
+      
+      <li>10 garlic cloves</li>
+      
+      <li>50 g (~2 tbsp) lard</li>
+      
+      <li>2 tsp. salt</li>
+      
+      <li>1/2 tsp freshly ground black pepper</li>
+      
+      <li>2-3 tbsp oil</li>
+      
+    </ul>
+    
+
+    
+    <h2>Instructions</h2>
+    <ol>
+      
+      <li>Boil potatoes with their skin on. Drain and let them cool.</li>
+      
+      <li>Cube the meat and the smoked bacon. Peel garlic cloves and the onion, chop the onion finely, crush the garlic.</li>
+      
+      <li>Heat up lard in a pan, add bacon and onion and sauté until translucent. Put in the cubed shoulder and fry until meat turns white on each side.</li>
+      
+      <li>Pour in 200-300 ml of water to cover the meat, reduce the heat, add two-thirds of the garlic, salt and pepper. Cover the pan and cook until meat becomes soft. Check on it regularly, and add more water if necessary. When the meat is tender, remove the lid, add the remaining garlic and increase the heat to boil away the rest of the water.</li>
+      
+      <li>In the meantime peel boiled potatoes and cut them into cubes. Fry them in a separate pan in a little oil until golden brown on all sides. Stir carefully in order to avoid smashing them.</li>
+      
+      <li>When both meat and potatoes are done, stir them gently together.</li>
+      
+    </ol>
+    
+  </div>
+
+  <button
+    class="recipe-button"
+    onclick="copyAction()"
+  >
+    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z" />
+    </svg>
+    <span id="copy-text">Copy url</span>
+  </button>
+</div>
+
+<script>
+  const copyButton = document.querySelector('#copy-text');
+  document.addEventListener('copy', (event) => {
+      copyButton.innerText = 'Copy url';
+    });
+  function copyAction() {
+      navigator.clipboard.writeText(window.location.href).then(copyButton.innerText='Url copied to clipboard');
+    }
+</script>
+
+  </body>
+</html>

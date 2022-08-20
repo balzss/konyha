@@ -1,0 +1,104 @@
+<!doctype html>
+
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <meta name="description" content="">
+
+    <!-- favicon from https://www.flaticon.com/free-icon/magazine_7141764 -->
+    <link rel="icon" type="image/png" href="/demo/static/logo64.png" />
+    <link rel="stylesheet" href="/demo/static/css/style.css">
+
+    <!-- TODO: fix these -->
+    <link rel="alternate" href="." type="application/atom+xml" title="">
+    <link rel="alternate" href="." type="application/json" title="">
+  </head>
+  <body>
+    <nav class="recipe-nav" role="navigation" aria-label="main navigation">
+  <div class="recipe-nav-inner">
+    <a class="search-icon" href="javascript:history.back();">
+      <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z" />
+      </svg>
+    </a>
+    <input id="search-input" type="text" autofocus placeholder="Keresés" autocomplete="off"/>
+    <button
+      class="clear-button"
+      onclick="document.querySelector('#search-input').value = ''; filterList()"
+    >
+      <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+        <path fill="currentColor" d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z" />
+      </svg>
+    </button>
+  </div>
+</nav>
+
+
+<section class="recipe-section appview-only">
+  <h3 class="recipe-title">Találatok</h3>
+  <div class="recipe-grid">
+  
+  <a class="recipe-card" href="/demo/brassi" aria-label="Brassói">
+    <div class="recipe-card-title">Brassói</div>
+    <div class="recipe-card-tags">
+      
+      <span class="recipe-tag passive">hungarian</span>
+      
+      <span class="recipe-tag passive">pork</span>
+      
+      <span class="recipe-tag passive">potato</span>
+      
+    </div>
+  </a>
+  
+  <a class="recipe-card" href="/demo/potato-scones" aria-label="Potato scones">
+    <div class="recipe-card-title">Potato scones</div>
+    <div class="recipe-card-tags">
+      
+      <span class="recipe-tag passive">hungarian</span>
+      
+      <span class="recipe-tag passive">potato</span>
+      
+      <span class="recipe-tag passive">dessert</span>
+      
+      <span class="recipe-tag passive">savory</span>
+      
+    </div>
+  </a>
+  
+  <a class="recipe-card" href="/demo/almond-crescents" aria-label="Almond crescents">
+    <div class="recipe-card-title">Almond crescents</div>
+    <div class="recipe-card-tags">
+      
+      <span class="recipe-tag passive">dessert</span>
+      
+      <span class="recipe-tag passive">sweet</span>
+      
+      <span class="recipe-tag passive">cookie</span>
+      
+    </div>
+  </a>
+  
+  <a class="recipe-card" href="/demo/lecs" aria-label="Lecsó">
+    <div class="recipe-card-title">Lecsó</div>
+    <div class="recipe-card-tags">
+      
+      <span class="recipe-tag passive">lecsó</span>
+      
+      <span class="recipe-tag passive">hungarian</span>
+      
+      <span class="recipe-tag passive">tomato</span>
+      
+    </div>
+  </a>
+  
+</div>
+
+</section>
+
+<script src="/demo/static/js/search.js"></script>
+
+  </body>
+</html>
