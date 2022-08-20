@@ -7,7 +7,7 @@
 </h1>
 
 <h4 align="center">Self hostable recipe manager and site generator written in TypeScript</h4>
-<div align="center"><b><i>🚧 Project is in alpha stage and under heavy development!</i></b></div>
+<div align="center"<i>🚧 Project is in alpha stage and under heavy development! 🚧</i></div>
 
 <p align="center">
   <a href="https://konyha.xyz" target="_blank" rel="noopener noreferrer">Website</a> •
