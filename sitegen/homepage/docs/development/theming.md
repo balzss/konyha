@@ -2,7 +2,7 @@
 sidebar_position: 5
 ---
 
-# Theming
+# Modifying themes
 
 ## Update the default theme
 

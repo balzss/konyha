@@ -21,8 +21,11 @@ automatic and instant.
 
 - Email login
 - Import from and export to json
-- Themes
+- More themes
 - i18n
-- Groceries
+- Groceries list
 - Connect to git repo
 
+### Getting started
+
+If you already have a running instance jump to [usage](/docs/category/usage) otherwise continue to the installation instructions.
