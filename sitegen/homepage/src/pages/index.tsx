@@ -26,6 +26,11 @@ function HomepageHeader() {
             Github
           </Link>
         </div>
+        <div style={{margin: '1rem 0', opacity: 0.8, fontSize: '14px'}}>
+          <i>
+            Warning: project is in alpha stage and under heavy development!
+          </i>
+        </div>
       </div>
     </header>
   );

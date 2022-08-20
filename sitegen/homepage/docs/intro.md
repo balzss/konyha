@@ -5,6 +5,8 @@ slug: /
 
 # Introduction
 
+*Warning: project is in alpha stage and under heavy development!*
+
 Konyha Recipe Manager is a self hostable web app to manage, store and share recipes. It is written in TypeScript and you
 need Node and Docker to run it. Multiple users can use the same instance.
 
