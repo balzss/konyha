@@ -19,6 +19,9 @@
     "sitegen:dev": "cd sitegen && yarn dev",
     "sitegen:watch": "cd sitegen && yarn watch",
     "sitegen:build": "cd sitegen && yarn build",
+    "sitegen:demo": "cd sitegen && yarn demo",
+    "homepage:dev": "cd sitegen/homepage && yarn start",
+    "homepage:build": "cd sitegen/homepage && yarn build",
     "tmux:dev": "tmux send-keys 'yarn next:dev' C-m  && tmux split-window -h && tmux send-keys 'yarn docker:db' C-m && tmux split-window -v && tmux send-keys 'yarn sitegen:dev' C-m",
     "postinstall": "cd sitegen && yarn install"
   },

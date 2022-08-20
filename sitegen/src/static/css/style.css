@@ -12,6 +12,15 @@ body {
   margin: 0;
 }
 
+a {
+  all: unset;
+  cursor: pointer;
+  color: #F49EA4;
+}
+a:hover {
+  text-decoration: underline;
+}
+
 .recipe-card {
   all: unset;
   cursor: pointer;
@@ -22,6 +31,7 @@ body {
   padding: 16px;
 }
 .recipe-card:hover {
+  text-decoration: none;
   background-color: #202020;
   color: inherit;
 }
@@ -45,7 +55,6 @@ body {
 }
 
 .recipe-card-tags {
-  margin-top: auto;
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
@@ -62,6 +71,11 @@ body {
   background-color: #3b3b3b;
   font-size: 13px;
 }
+
+.recipe-tag.passive {
+  text-decoration: none !important;
+}
+
 .recipe-tag:hover:not(.passive) {
   text-decoration: underline;
   background-color: #404040;
@@ -106,13 +120,17 @@ body {
 }
 
 .content {
-  line-height: 1.5;
+  line-height: 1.75;
   margin-bottom: 32px;
 }
 
 .content ul, .content ol {
   margin: 8px 0 16px 0;
   letter-spacing: 0.25px;
+}
+
+.content ol li {
+  margin: 8px;
 }
 
 .recipe-nav .search-icon svg {

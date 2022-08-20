@@ -5,6 +5,7 @@ const markdownItAnchor = require("markdown-it-anchor");
 
 const pluginRss = require("@11ty/eleventy-plugin-rss");
 const pluginNavigation = require("@11ty/eleventy-navigation");
+const { EleventyRenderPlugin } = require("@11ty/eleventy");
 
 const configOptions = {
   baseUrl: '/demo',
@@ -62,6 +63,7 @@ module.exports = function(eleventyConfig) {
   // Add plugins
   eleventyConfig.addPlugin(pluginRss);
   eleventyConfig.addPlugin(pluginNavigation);
+  eleventyConfig.addPlugin(EleventyRenderPlugin);
 
   eleventyConfig.addFilter("filterattr", (inputArray, filterKey, filterValue) => {
     return inputArray.filter((item) => item.data[filterKey] === filterValue);
@@ -99,6 +101,10 @@ module.exports = function(eleventyConfig) {
     slugify: eleventyConfig.getFilter("slugify")
   });
   eleventyConfig.setLibrary("md", markdownLibrary);
+
+  eleventyConfig.addFilter("markdown", (content) => {
+    return markdownLibrary.render(content);
+  });
 
   return {
     templateFormats: [
