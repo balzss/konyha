@@ -9,7 +9,7 @@ Running the app in containers
 1. Clone the project:
 
 ```
-git clone https://github.com/balzss/konyha-club.git && cd konyha-club
+git clone https://github.com/balzss/konyha.git && cd konyha
 ```
 
 2. Create an `.env` file in the project root by copying `.env.example` and adding your variables.

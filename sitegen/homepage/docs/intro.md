@@ -28,6 +28,7 @@ automatic and instant.
 - i18n
 - Groceries list
 - Connect to git repo
+- Browser extension for importing recipes
 
 ### Getting started
 

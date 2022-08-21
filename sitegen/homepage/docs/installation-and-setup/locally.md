@@ -9,7 +9,7 @@ Running the app on your local machine for testing or development
 1. Clone the project:
 
 ```
-git clone https://github.com/balzss/konyha-club.git && cd konyha-club
+git clone https://github.com/balzss/konyha.git && cd konyha
 ```
 
 2. Install dependencies:

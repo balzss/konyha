@@ -28,10 +28,11 @@
 - Email login
 - Import from and export to json
 - Offline mode
-- Themes
+- More themes
 - i18n
-- Groceries
+- Groceries list
 - Connect to git repo
+- Browser extension for importing recipes
 
 ## Screenshots
 
@@ -58,7 +59,7 @@ to the output of the site generator in Konyha.
 1. Clone the project:
 
 ```
-git clone https://github.com/balzss/konyha-club.git && cd konyha-club
+git clone https://github.com/balzss/konyha.git && cd konyha
 ```
 
 2. Install dependencies:
@@ -107,7 +108,7 @@ yarn prisma:studio
 1. Clone the project:
 
 ```
-git clone https://github.com/balzss/konyha-club.git && cd konyha-club
+git clone https://github.com/balzss/konyha.git && cd konyha
 ```
 
 2. Create an `.env` file in the project root by copying `.env.example` and adding your variables.
@@ -137,6 +138,27 @@ yarn docker:sitegen:build
 
 Read about development in the [docs](https://konyha/xyz/docs/category/development).
 
-## Licence and acknowledgements
+## Tools and assets used
+
+- [logo](https://www.flaticon.com/premium-icon/recipe-book_5402878)
+- fonts: Roboto, Roboto Slab
+- for the manager:
+  - next.js
+  - postgres
+  - mui
+  - prisma
+  - node-fetch
+  - use-debounce
+  - apollo
+  - graphql-codegen
+- for the site generator:
+  - eleventy
+  - fastify
+  - markdown-it
+- for the docs:
+  - docusaurus
+  - [Tabler Icons](https://tabler-icons.io/)
+
+## Licence
 
 The project is licensed under GPLv3.
