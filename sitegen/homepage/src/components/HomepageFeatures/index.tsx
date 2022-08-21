@@ -9,20 +9,20 @@ type FeatureItem = {
 
 const FeatureList: FeatureItem[] = [
   {
-    title: 'FOSS and Easy to Self Host',
-    Svg: require('@site/static/img/open-source-icon.svg').default,
-    description: (
-      <>
-        Licensed under GPLv3, no tracking or ads, easy to self host on a VPS or Raspberry Pi
-      </>
-    ),
-  },
-  {
     title: 'Manage Your Recipes',
     Svg: require('@site/static/img/books-icon.svg').default,
     description: (
       <>
         Store and browse your recipe collection from any device, filter by tags or use text search
+      </>
+    ),
+  },
+  {
+    title: 'FOSS and Easy to Self Host',
+    Svg: require('@site/static/img/open-source-icon.svg').default,
+    description: (
+      <>
+        Licensed under GPLv3, no tracking or ads, easy to self host on a VPS or Raspberry Pi
       </>
     ),
   },
