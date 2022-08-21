@@ -17,8 +17,8 @@
 
 ## Features:
 
-- **Open source** and easy to self host without trackers or ads
 - **Browse and store recipes** from any device, filter by tags or search by text
+- **Open source** and easy to self host without trackers or ads
 - **Responsive UI** with dark and light themes
 - **Multiple users** can use the same instance, login with Google or Github accounts
 - **One click publish** to share selected recipes in a generated static site
@@ -27,6 +27,7 @@
 
 - Email login
 - Import from and export to json
+- Offline mode
 - Themes
 - i18n
 - Groceries

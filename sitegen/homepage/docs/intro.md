@@ -23,6 +23,7 @@ automatic and instant.
 
 - Email login
 - Import from and export to json
+- Offline mode
 - More themes
 - i18n
 - Groceries list

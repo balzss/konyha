@@ -62,7 +62,7 @@ const config = {
             label: 'Docs',
           },
           {
-            href: 'https://github.com/balzss/konyha-recipe-manager',
+            href: 'https://github.com/balzss/konyha',
             label: 'GitHub',
             position: 'right',
           },

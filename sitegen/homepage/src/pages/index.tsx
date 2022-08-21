@@ -22,7 +22,7 @@ function HomepageHeader() {
           </Link>
           <Link
             className="button button--secondary button--lg"
-            to="https://github.com/balzss/konyha-recipe-manager">
+            to="https://github.com/balzss/konyha">
             Github
           </Link>
         </div>
