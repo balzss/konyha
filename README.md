@@ -140,25 +140,26 @@ Read about development in the [docs](https://konyha/xyz/docs/category/developmen
 
 ## Tools and assets used
 
-- [logo](https://www.flaticon.com/premium-icon/recipe-book_5402878)
-- fonts: Roboto, Roboto Slab
-- for the manager:
-  - next.js
-  - postgres
-  - mui
-  - prisma
-  - node-fetch
-  - use-debounce
-  - apollo
-  - graphql-codegen
-- for the site generator:
-  - eleventy
-  - fastify
-  - markdown-it
-- for the docs:
-  - docusaurus
+- [Logo](https://www.flaticon.com/premium-icon/recipe-book_5402878)
+- Fonts: [Roboto](https://fonts.google.com/specimen/Roboto), [Roboto Slab](https://fonts.google.com/specimen/Roboto+Slab)
+- [Docker Hub](https://hub.docker.com/)
+- For the manager:
+  - [Next.js](https://nextjs.org/)
+  - [PostgreSQL](https://www.postgresql.org/)
+  - [Material UI](https://mui.com/)
+  - [Prisma](https://www.prisma.io/)
+  - [Apollo](https://www.apollographql.com/docs/)
+  - [node-fetch](https://github.com/node-fetch/node-fetch)
+  - [use-debounce](https://github.com/xnimorz/use-debounce)
+  - [GraphQL Code Generator](https://www.graphql-code-generator.com/)
+- For the site generator:
+  - [11ty](https://www.11ty.dev/)
+  - [Fastify](https://www.fastify.io/)
+  - [markdown-it](https://github.com/markdown-it/markdown-it)
+- For the docs:
+  - [Docusaurus](https://docusaurus.io/)
   - [Tabler Icons](https://tabler-icons.io/)
 
 ## Licence
 
-The project is licensed under GPLv3.
+The project is [licensed under GPLv3](/LICENSE).
