@@ -1,5 +1,5 @@
 {
-  "name": "konyha-next",
+  "name": "konyha",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -11,8 +11,8 @@
     "prisma:generate": "prisma generate",
     "prisma:push": "HOST=localhost prisma db push",
     "gql:generate": "graphql-codegen --config ./graphql/codegen.yml",
-    "docker:manager": "docker compose up konyha-next",
-    "docker:manager:build": "docker compose up --no-deps --build konyha-next",
+    "docker:manager": "docker compose up manager",
+    "docker:manager:build": "docker compose up --no-deps --build manager",
     "docker:db": "docker compose up db",
     "docker:sitegen": "docker compose up sitegen",
     "docker:sitegen:build": "docker compose up --no-deps --build sitegen",
@@ -23,8 +23,7 @@
     "homepage:dev": "cd sitegen/homepage && yarn start",
     "homepage:build": "cd sitegen/homepage && yarn build",
     "tmux:dev": "tmux send-keys 'yarn next:dev' C-m  && tmux split-window -h && tmux send-keys 'yarn docker:db' C-m && tmux split-window -v && tmux send-keys 'yarn sitegen:dev' C-m",
-    "gh-pages": "cd sitegen && yarn gh-pages",
-    "postinstall": "cd sitegen && yarn install"
+    "gh-pages": "cd sitegen && yarn gh-pages"
   },
   "dependencies": {
     "@apollo/client": "^3.6.2",

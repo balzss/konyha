@@ -25,7 +25,7 @@ export default function GroceriesPage() {
         </Typography>
         <Alert variant="outlined" severity="warning" sx={{mt: 2}}>
           <AlertTitle>Work in progress</AlertTitle>
-          You'll be able to manage your groceries list here.
+          You&apos;ll be able to manage your groceries list here.
         </Alert>
       </Container>
       <BottomNav/>

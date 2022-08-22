@@ -71,7 +71,7 @@ export default function MainPage() {
             ) : (
               <Grid item>
                 <Alert variant="outlined" severity="info">
-                  <AlertTitle>You don't have any recipes</AlertTitle>
+                  <AlertTitle>You don&apos;t have any recipes</AlertTitle>
                   Your recipes are going to be displayed here after you create them.
                   <br /><br />
                   <Link href="/r/add">

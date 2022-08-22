@@ -10,12 +10,12 @@ services:
       - '5432:5432'
     volumes:
       - db:/var/lib/postgresql/data
-  konyha-next:
+  manager:
     stdin_open: true
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: konyha-next
+    container_name: manager
     depends_on:
       - db
     ports:
@@ -31,7 +31,7 @@ services:
     container_name: sitegen
     depends_on:
       - db
-      - konyha-next
+      - manager
     ports:
       - "7777:7777"
     restart: unless-stopped
