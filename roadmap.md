@@ -6,16 +6,13 @@
   - [ ] configure options
   - [ ] publish/unpublish recipes
   - [ ] check for name collision
-- [ ] basic db import/export
-  - [ ] export to json
-  - [ ] import from json
 - [ ] hosting + docker images
-  - [ ] publish sitegen image to docker hub
   - [ ] create repo for hosting with docker compose file
   - [ ] add docs for running the official docker images
 
 ## Alpha release:
 
+- [ ] import from json
 - [ ] email login
 - [ ] error handling
 - [ ] improve login screen

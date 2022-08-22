@@ -23,8 +23,14 @@ jobs:
     - name: Docker Login
       run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
       
-    - name: Docker Build
-      run: docker build . --file Dockerfile --tag $DOCKER_USER/$REPO_NAME:latest
+    - name: Docker Build Manager
+      run: docker build . --file Dockerfile --tag $DOCKER_USER/manager:latest
     
-    - name: Docker Push
-      run: docker push $DOCKER_USER/$REPO_NAME:latest
+    - name: Docker Build Sitegen
+      run: docker build ./sitegen --tag $DOCKER_USER/sitegen:latest
+    
+    - name: Docker Push Manager
+      run: docker push $DOCKER_USER/manager:latest
+    
+    - name: Docker Push Sitegen
+      run: docker push $DOCKER_USER/sitegen:latest
