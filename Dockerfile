@@ -24,8 +24,7 @@ COPY . .
 ENV NEXT_TELEMETRY_DISABLED 1
 
 # Generate prisma client
-# RUN npx prisma generate
-RUN yarn prisma:push
+RUN npx prisma generate
 
 RUN yarn next:build
 
@@ -59,4 +58,4 @@ EXPOSE 3000
 
 ENV PORT 3000
 
-CMD ["node", "server.js"]
+CMD ["yarn", "docker:manager:entrypoint"]

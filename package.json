@@ -13,6 +13,7 @@
     "gql:generate": "graphql-codegen --config ./graphql/codegen.yml",
     "docker:manager": "docker compose up manager",
     "docker:manager:build": "docker compose up --no-deps --build manager",
+    "docker:manager:entrypoint": "npx prisma db push && node server.js",
     "docker:db": "docker compose up db",
     "docker:sitegen": "docker compose up sitegen",
     "docker:sitegen:build": "docker compose up --no-deps --build sitegen",
