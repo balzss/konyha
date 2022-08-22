@@ -9,9 +9,10 @@
 - [ ] basic db import/export
   - [ ] export to json
   - [ ] import from json
-- [ ] deploy (digitalocean + docker + github actions/registry)
-  - [ ] pull and run docker image from github registry to digitalocean vps
-  - [ ] configure domain + ssl + routing on vps
+- [ ] hosting + docker images
+  - [ ] publish sitegen image to docker hub
+  - [ ] create repo for hosting with docker compose file
+  - [ ] add docs for running the official docker images
 
 ## Alpha release:
 
@@ -24,8 +25,7 @@
 
 ## Beta release:
 
-- [ ] public repo
-- [ ] feature branch szabály beállítása githubon
+- [ ] feature branch rule on github
 - [ ] lint rules, tests and CI
 - [ ] ory kratos user management (+investigate)
 - [ ] improved desktop view (sidebar)

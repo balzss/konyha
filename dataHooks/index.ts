@@ -8,6 +8,7 @@ import type {
 } from '@apollo/client'
 import {
   useGetRecipesQuery,
+  useGetRecipesLazyQuery,
   useGetTagsQuery,
   useGetMeQuery,
   useDeleteRecipeMutation,
@@ -19,6 +20,12 @@ import {
 
 export function useRecipes() {
   return useGetRecipesQuery();
+}
+
+export function useLazyRecipes(callback: Function) {
+  return useGetRecipesLazyQuery({
+    onCompleted: (data) => callback(data)
+  });
 }
 
 export function useSingleRecipe(recipeSlug: string) {

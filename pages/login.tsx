@@ -38,14 +38,14 @@ export default function LoginPage() {
         pt: 4,
       }}
     >
-      <Head title="Bejelentkezés"/>
+      <Head title="Login"/>
       <Container maxWidth="sm">
         <BrandHero/>
         <Card variant="outlined" sx={{bgcolor: 'background.paper', mt: 4}}>
           <CardContent>
             <Stack direction="column" spacing={2}>
               <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
-                Bejelentkezés
+                Login
               </Typography>
               <TextField
                 disabled

@@ -15,11 +15,21 @@ import {
   ConfirmModal,
 } from '../components/';
 import { propsWithAuth } from '../utils/propsWithAuth';
-import { useGetMe, useUpdateUserPreferences } from '../dataHooks';
+import { useGetMe, useLazyRecipes, useUpdateUserPreferences } from '../dataHooks';
 
 type ProfilePageArgs = {
   session: Session,
 }
+
+function handleDownloadRecipes(recipesData: any) {
+  const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
+    JSON.stringify(recipesData, null, 2)
+  )}`;
+  const link = document.createElement('a');
+  link.href = jsonString;
+  link.download = `konyha-data-export_${new Date().toLocaleDateString('sv')}.json`;
+  link.click();
+};
 
 export default function ProfilePage({session}: ProfilePageArgs) {
   const router = useRouter();
@@ -28,9 +38,10 @@ export default function ProfilePage({session}: ProfilePageArgs) {
   const { data: meData } = useGetMe();
   const email = meData?.me.email;
   const publishId = meData?.me.publishid;
-
+  const [getRecipes, {error: getRecipesError, data: recipesData}] = useLazyRecipes(handleDownloadRecipes);
   const [updatePreferences] = useUpdateUserPreferences();
   const [darkMode, setDarkMode] = useState<boolean>(userThemePreference === 'dark');
+  const [downloadConfirmOpen, setDownloadConfirmOpen] = useState<boolean>(false);
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState<boolean>(false);
 
   const handleSignOut = () => {
@@ -57,7 +68,17 @@ export default function ProfilePage({session}: ProfilePageArgs) {
           <ListItemText primary="Email" secondary={email || 'n/a'}/>
         </ListItem>
         <ListItem>
-          <ListItemText primary="Publish ID" secondary={publishId || '<not published>'}/>
+          <ListItemText primary="Public site" secondary={publishId ? `Published at ${publishId}`: '<not published>'}/>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => {}}>
+            <ListItemText primary="Import from json" />
+          </ListItemButton>
+        </ListItem>
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => setDownloadConfirmOpen(true)}>
+            <ListItemText primary="Export data" />
+          </ListItemButton>
         </ListItem>
         <ListItem>
           <ListItemText id="switch-list-label-wifi" primary="Dark mode" />
@@ -83,6 +104,14 @@ export default function ProfilePage({session}: ProfilePageArgs) {
         handleClose={() => setLogoutConfirmOpen(false)}
         handleConfirm={handleSignOut}
         confirmText={'Log out'}
+      />
+      <ConfirmModal
+        open={downloadConfirmOpen}
+        title={'Export'}
+        description={'Export all data to json'}
+        handleClose={() => setDownloadConfirmOpen(false)}
+        handleConfirm={() => getRecipes()}
+        confirmText={'Download'}
       />
     </div>
   );
