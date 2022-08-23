@@ -17,7 +17,7 @@
 
 ## Features:
 
-- **Browse and store recipes** from any device, filter by tags or search by text
+- **Manage your recipe collection** from any device, filter by tags, use text search, export your data
 - **Open source** and easy to self host without trackers or ads
 - **Responsive UI** with dark and light themes
 - **Multiple users** can use the same instance, login with Google or Github accounts
@@ -26,7 +26,7 @@
 ### Planned features
 
 - Email login
-- Import from and export to json
+- Import from json
 - Offline mode
 - More themes
 - i18n
@@ -45,98 +45,48 @@
 ## Static site generator
 
 There is a [demo site](https://konyha.xyz/demo) generated from [this json](/sitegen/demo.json) file and is identical 
-to the output of the site generator in Konyha.
+to the output of the site generator in Konyha. [Read more >>](http://localhost:5000/docs/usage/static-site-generator)
 
 ## Getting started
+
+Run the [official images](https://hub.docker.com/u/konyha) from Docker Hub. This is the recommended way of
+running Konyha. Other install methods are described [in the docs](https://konyha/xyz/docs/category/setup).
 
 ### Prerequisites:
 
 - Docker and Docker Compose
-- Node
 
-### Running locally:
+### Running Konyha
 
-1. Clone the project:
-
-```
-git clone https://github.com/balzss/konyha.git && cd konyha
-```
-
-2. Install dependencies:
+1. Clone the [konyha-hosting](https://github.com/balzss/konyha-hosting) repository to your local machine or server
 
 ```
-yarn install
+git clone https://github.com/balzss/konyha-hosting && cd konyha-hosting
 ```
 
-3. Create an `.env.local` file in the project root by copying `.env.example` and adding your variables and configuring
-   at least one next auth provider.
+2. Copy the `.env.example` file to `.env` and add your variables
 
-4. Start the database:
-
-```
-yarn docker:db
-```
-
-5. Push the prisma schema to the running db:
+3. Start containers with docker compose
 
 ```
-yarn prisma:push
+docker compose up
 ```
 
-6. Start the manager app:
+### Reverse proxy
+
+Use the `reverse-proxy` profile to run with traefik:
 
 ```
-yarn next:dev
+docker compose --profile reverse-proxy up
 ```
 
-7. Start the site generator:
+## Usage
 
-```
-yarn sitegen:dev
-```
-
-8. You can now access the manager at `localhost:3000` and the generated sites at `localhost:7777/<username>`
-
-9. Optionally you can inspect the db with [prisma studio](https://www.prisma.io/studio):
-
-```
-yarn prisma:studio
-```
-
-### Running with Docker
-
-1. Clone the project:
-
-```
-git clone https://github.com/balzss/konyha.git && cd konyha
-```
-
-2. Create an `.env` file in the project root by copying `.env.example` and adding your variables.
-
-3. Run the db
-
-```
-yarn docker:db
-```
-
-4. Build and run the manager app:
-
-```
-yarn docker:manager:build
-```
-
-5. Build and run the site generator:
-
-```
-yarn docker:sitegen:build
-```
-
-6. You can now access the manager at `localhost:3000` and the generated sites at `localhost:7777/<username>`
-
+Read about how to use Konyha [here](https://konyha/xyz/docs/category/usage).
 
 ## Development
 
-Read about development in the [docs](https://konyha/xyz/docs/category/development).
+Read about development [here](https://konyha/xyz/docs/category/development).
 
 ## Tools and assets used
 
@@ -160,6 +110,6 @@ Read about development in the [docs](https://konyha/xyz/docs/category/developmen
   - [Docusaurus](https://docusaurus.io/)
   - [Tabler Icons](https://tabler-icons.io/)
 
-## Licence
+## License
 
 The project is [licensed under GPLv3](/LICENSE).

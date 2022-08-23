@@ -2,9 +2,16 @@
 sidebar_position: 2
 ---
 
-# Running locally
+# Install from source
 
-Running without containers for development or testing
+Running without containers for development or testing.
+
+### Prerequisites
+
+- Docker and Docker Compose (for the postgres db)
+- Node
+
+## Setup
 
 1. Clone the project:
 
@@ -47,7 +54,7 @@ yarn sitegen:dev
 
 8. You can now access the manager at `localhost:3000` and the generated sites at `localhost:7777/<username>`
 
-9. Optionally you can inspect the db with [prisma studio](https://www.prisma.io/studio):
+9. Optionally you can inspect the db with [Prisma Studio](https://www.prisma.io/studio):
 
 ```
 yarn prisma:studio

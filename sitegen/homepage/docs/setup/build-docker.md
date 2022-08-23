@@ -2,9 +2,15 @@
 sidebar_position: 2
 ---
 
-# Running with Docker
+# Build the Docker images
 
-Running the app in containers
+Build the containers from source.
+
+### Prerequisites
+
+- Docker and Docker Compose
+
+## Setup
 
 1. Clone the project:
 
