@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Official Docker images
 
-Run the [official images](https://hub.docker.com/u/konyha) from Docker Hub.
+Use the [official Docker images](https://hub.docker.com/u/konyha).
 This is the recommended way of running Konyha.
 
 ### Prerequisites
