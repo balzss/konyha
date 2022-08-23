@@ -3,12 +3,9 @@
 ## In progress:
 
 - [ ] publish
-  - [ ] configure options
-  - [ ] publish/unpublish recipes
+  - [ ] configure publish id
+  - [ ] publish/unpublish recipes separately
   - [ ] check for name collision
-- [ ] hosting + docker images
-  - [ ] create repo for hosting with docker compose file
-  - [ ] add docs for running the official docker images
 
 ## Alpha release:
 
@@ -24,14 +21,14 @@
 
 - [ ] feature branch rule on github
 - [ ] lint rules, tests and CI
-- [ ] ory kratos user management (+investigate)
 - [ ] improved desktop view (sidebar)
 - [ ] i18n (EN/HU)
 - [ ] offline mode
+- [ ] ory kratos user management (+investigate)
 - [ ] portion calculator
 - [ ] change page transitions (open card, edit recipe, etc)
 - [ ] Profile page
-  - [ ] trachcan/archive and restore option
+  - [ ] trash-can/archive and restore option
   - [ ] language selection
   - [ ] connect to git repo
 - [ ] Groceries page
