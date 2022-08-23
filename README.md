@@ -45,11 +45,11 @@
 ## Static site generator
 
 There is a [demo site](https://konyha.xyz/demo) generated from [this json](/sitegen/demo.json) file and is identical 
-to the output of the site generator in Konyha. [Read more >>](http://localhost:5000/docs/usage/static-site-generator)
+to the output of the site generator in Konyha. [More info about the site generator.](http://localhost:5000/docs/usage/static-site-generator)
 
 ## Getting started
 
-Run the [official images](https://hub.docker.com/u/konyha) from Docker Hub. This is the recommended way of
+Use the [official Docker images](https://hub.docker.com/u/konyha). This is the recommended way of
 running Konyha. Other install methods are described [in the docs](https://konyha/xyz/docs/category/setup).
 
 ### Prerequisites:
