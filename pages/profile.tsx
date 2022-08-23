@@ -13,6 +13,8 @@ import {
   Head,
   Layout,
   ConfirmModal,
+  PublishSettingsModal,
+  Link,
 } from '../components/';
 import { propsWithAuth } from '../utils/propsWithAuth';
 import { useGetMe, useLazyRecipes, useUpdateUserPreferences } from '../dataHooks';
@@ -42,6 +44,7 @@ export default function ProfilePage({session}: ProfilePageArgs) {
   const [updatePreferences] = useUpdateUserPreferences();
   const [darkMode, setDarkMode] = useState<boolean>(userThemePreference === 'dark');
   const [downloadConfirmOpen, setDownloadConfirmOpen] = useState<boolean>(false);
+  const [publishSettingsOpen, setPublishSettingsOpen] = useState<boolean>(false);
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState<boolean>(false);
 
   const handleSignOut = () => {
@@ -67,11 +70,13 @@ export default function ProfilePage({session}: ProfilePageArgs) {
         <ListItem>
           <ListItemText primary="Email" secondary={email || 'n/a'}/>
         </ListItem>
-        <ListItem>
-          <ListItemText primary="Public site" secondary={publishId ? `Published at ${publishId}`: '<not published>'}/>
+        <ListItem disablePadding>
+          <ListItemButton onClick={() => setPublishSettingsOpen(true)}>
+            <ListItemText primary="Public site" secondary={publishId ? `Published at ${publishId}`: '<not published>'}/>
+          </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton onClick={() => {}}>
+          <ListItemButton onClick={() => alert('Importing is not yet implemented')}>
             <ListItemText primary="Import from json" />
           </ListItemButton>
         </ListItem>
@@ -112,6 +117,13 @@ export default function ProfilePage({session}: ProfilePageArgs) {
         handleClose={() => setDownloadConfirmOpen(false)}
         handleConfirm={() => getRecipes()}
         confirmText={'Download'}
+      />
+      <PublishSettingsModal 
+        open={publishSettingsOpen}
+        handleClose={() => setPublishSettingsOpen(false)}
+        publishStatus={'LOADING'}
+        message={<>Site published at{'\u00A0'}<Link href="/r/add">konyha.xyz/bazsi</Link></>}
+        handlePublish={() => {}}
       />
     </div>
   );

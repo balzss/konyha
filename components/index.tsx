@@ -10,3 +10,4 @@ export { default as HomeTopBar } from './HomeTopBar';
 export { default as CustomThemeProvider } from './CustomThemeProvider';
 export { default as Head } from './Head';
 export { default as EmptyTagWarning } from './EmptyTagWarning';
+export { default as PublishSettingsModal } from './PublishSettingsModal';
