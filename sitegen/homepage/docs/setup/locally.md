@@ -1,10 +1,10 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 # Running locally
 
-Running the app on your local machine for testing or development
+Running without containers for development or testing
 
 1. Clone the project:
 
