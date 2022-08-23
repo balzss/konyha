@@ -93,7 +93,6 @@ Read about development [here](https://konyha/xyz/docs/category/development).
 
 - [Logo](https://www.flaticon.com/premium-icon/recipe-book_5402878)
 - Fonts: [Roboto](https://fonts.google.com/specimen/Roboto), [Roboto Slab](https://fonts.google.com/specimen/Roboto+Slab)
-- [Docker Hub](https://hub.docker.com/)
 - For the manager:
   - [Next.js](https://nextjs.org/)
   - [PostgreSQL](https://www.postgresql.org/)
