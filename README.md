@@ -45,7 +45,8 @@
 ## Static site generator
 
 There is a [demo site](https://konyha.xyz/demo) generated from [this json](/sitegen/demo.json) file and is identical 
-to the output of the site generator in Konyha. [More info about the site generator.](http://localhost:5000/docs/usage/static-site-generator)
+to the output of the site generator in Konyha. [More info](http://localhost:5000/docs/usage/static-site-generator) in
+the docs.
 
 ## Getting started
 
