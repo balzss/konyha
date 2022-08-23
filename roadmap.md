@@ -3,7 +3,7 @@
 ## In progress:
 
 - [ ] publish
-  - [ ] configure publish id
+  - [ ] create publish options modal: set publish status and publish id
   - [ ] publish/unpublish recipes separately
   - [ ] check for name collision
 
@@ -13,25 +13,24 @@
 - [ ] email login
 - [ ] error handling
 - [ ] improve login screen
-- [ ] better slug collision handling
+- [ ] better slug management (collision and removing special characters)
 - [ ] fix theming
-- [ ] 404 page
+- [ ] 404 pages
+- [ ] add footer for generated static sites
 
 ## Beta release:
 
-- [ ] feature branch rule on github
-- [ ] lint rules, tests and CI
-- [ ] improved desktop view (sidebar)
+- [ ] Feature branch rule on github + use db migrations
+- [ ] Lint rules, tests and CI
+- [ ] Desktop view (with sidebar)
 - [ ] i18n (EN/HU)
-- [ ] offline mode
-- [ ] ory kratos user management (+investigate)
-- [ ] portion calculator
-- [ ] change page transitions (open card, edit recipe, etc)
-- [ ] Profile page
-  - [ ] trash-can/archive and restore option
-  - [ ] language selection
-  - [ ] connect to git repo
-- [ ] Groceries page
+- [ ] Offline mode (localStorage without db connection)
+- [ ] Ory Kratos user management (+investigate)
+- [ ] Portion calculator
+- [ ] Page transitions (open card, edit recipe, etc)
+- [ ] Archive: restore deleted recipes
+- [ ] Connect/sync to git repo (or other options like drive, dropbox, etc?)
+- [ ] Groceries list
   - [ ] add items manually
   - [ ] add items from recipe page
 
@@ -40,4 +39,5 @@
 - [ ] Timers page
   - [ ] link to timers from recipes
 - [ ] presentation mode
+- [ ] history
 - [ ] report

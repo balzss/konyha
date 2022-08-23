@@ -27,6 +27,10 @@ git clone https://github.com/balzss/konyha-hosting && cd konyha-hosting
 docker compose up
 ```
 
+4. If everything went right the manager app should be live at `$MANAGER_DOMAIN`, the home page and docs at
+   `$SITEGEN_DOMAIN` and the published recipes at `$SITEGEN_DOMAIN/<user id>`. Read about usage
+   [here](/docs/category/usage).
+
 ### Reverse proxy
 
 Use the `reverse-proxy` profile to run with traefik:
