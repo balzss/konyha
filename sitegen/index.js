@@ -25,12 +25,21 @@ fastify.register(require('@fastify/static'), {
   root: path.join(__dirname, 'public'),
 });
 
-fastify.setNotFoundHandler(function (req, reply) {
+fastify.setNotFoundHandler(function (_req, reply) {
   reply.code(404).send({ error: 'Not Found', message: 'Recipe page not found', statusCode: 404 })
 })
 
-fastify.get('/', function (req, reply) {
+fastify.get('/', function (_req, reply) {
   return reply.sendFile('index.html');
+});
+
+fastify.get('/:userId/health', function (req, reply) {
+  const { userId } = req.params;
+  fs.stat(`public/${userId}/index.html`).then(() => {
+    return reply.send({status: 'up'});
+  }).catch((_error) => {
+    return reply.send({message: 'error', error: 'Site not found'});
+  });
 });
 
 fastify.post('/:userId', async function (req, reply) {

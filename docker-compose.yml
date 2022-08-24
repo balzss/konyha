@@ -29,9 +29,6 @@ services:
       context: ./sitegen
       dockerfile: ./Dockerfile
     container_name: sitegen
-    depends_on:
-      - db
-      - manager
     ports:
       - "7777:7777"
     restart: unless-stopped

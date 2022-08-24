@@ -34,6 +34,20 @@ fragment recipeFields on Recipe {
   }
 }
 
+type RecipeResponse {
+  message: String!
+  data: Recipe
+  error: String
+}
+
+fragment recipeResponseFields on RecipeResponse {
+  message
+  error
+  data {
+    ...recipeFields
+  }
+}
+
 type UserPreferences {
   theme: String
 }
@@ -91,8 +105,7 @@ input RecipeUpsertInput {
 
 mutation UpsertRecipe ($recipeId: String, $recipeData: RecipeUpsertInput!, $tagsConnect: [String!]!, $tagsCreate: [String!]!) {
   upsertRecipe(id: $recipeId, data: $recipeData, tagsConnect: $tagsConnect, tagsCreate: $tagsCreate) {
-    id
-    slug
+    ...recipeResponseFields
   }
 }
 
@@ -120,6 +133,6 @@ type Query {
 type Mutation {
   deleteRecipe(slug: String!): Boolean
   deleteTags(ids: [String!]!): Boolean
-  upsertRecipe(id: String, data: RecipeUpsertInput!, tagsConnect: [String!]!, tagsCreate: [String!]!): Recipe
+  upsertRecipe(id: String, data: RecipeUpsertInput!, tagsConnect: [String!]!, tagsCreate: [String!]!): RecipeResponse
   updateUserPreferences(preferences: UpdateUserPreferencesInput): UserPreferences
 }

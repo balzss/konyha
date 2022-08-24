@@ -25,17 +25,20 @@ async function publishSite(userId: string, prisma: any) {
   if (!userData?.publishid || !recipes) {
     return;
   }
-  const response = await fetch(`http://${process.env.HOST}:7777/${userData.publishid}`, {
-    method: 'post',
-    body: JSON.stringify({
-      recipes,
-      title: userData.publishid,
-    }),
-    headers: {'Content-Type': 'application/json'},
-  });
-  const responseData = await response.json();
-  console.log(responseData);
-  return responseData;
+  try {
+    const response = await fetch(`http://${process.env.HOST}:7777/${userData.publishid}`, {
+      method: 'post',
+      body: JSON.stringify({
+        recipes,
+        title: userData.publishid,
+      }),
+      headers: {'Content-Type': 'application/json'},
+    });
+    const responseData = await response.json();
+    return responseData;
+  } catch (e) {
+    throw e;
+  }
 }
 
 const resolvers: Resolvers = {
@@ -189,9 +192,19 @@ const resolvers: Resolvers = {
       };
       const upsertRecipe = await prisma.recipe.upsert(options);
 
-      await publishSite(userId, prisma);
+      try {
+        await publishSite(userId, prisma);
+      } catch (e) {
+        return {
+          message: 'error',
+          error: e as string,
+        };
+      }
 
-      return upsertRecipe;
+      return {
+        message: 'success',
+        data: upsertRecipe,
+      };
     },
     updateUserPreferences: async (_, {preferences}, {prisma, session}) => {
       if (!session) {
