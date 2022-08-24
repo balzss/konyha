@@ -1,0 +1,7 @@
+{
+  "label": "Static Site Generator",
+  "position": 3,
+  "link": {
+    "type": "generated-index"
+  }
+}

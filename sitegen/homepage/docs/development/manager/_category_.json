@@ -1,0 +1,8 @@
+{
+  "label": "Recipe Manager",
+  "position": 2,
+  "link": {
+    "type": "generated-index",
+    "description": "For local development install Konyha from source."
+  }
+}
