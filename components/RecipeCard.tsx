@@ -30,11 +30,11 @@ export default function RecipeCard({
         </CardContent>
       </CardActionArea>
       { tags && tags.length > 0 && (
-        <CardActions sx={{px: 2, pb: 2}}>
+        <div style={{display: 'flex', flexWrap: 'wrap', gap: '8px', padding: '12px 16px', marginTop: 'auto'}}>
           {tags.map((tag) => (
             <Chip key={tag.id} label={`${tag.name}`} size="small" onClick={() => handleClickTag(tag.slug as string)}/>
           ))}
-        </CardActions>
+        </div>
       )}
     </Card>
   );
