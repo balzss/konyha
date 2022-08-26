@@ -3,7 +3,7 @@
 ## In progress:
 
 - [ ] publish
-  - [ ] create publish options modal: set publish status and publish id
+  - [ ] publish modal: set publish status and publish id
   - [ ] publish/unpublish recipes separately
   - [ ] check for name collision
 
@@ -20,7 +20,7 @@
 
 ## Beta release:
 
-- [ ] Feature branch rule on github + use db migrations
+- [ ] Feature branch rule on github + use db migrations + use github releases
 - [ ] Lint rules, tests and CI
 - [ ] Desktop view (with sidebar)
 - [ ] i18n (EN/HU)

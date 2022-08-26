@@ -52,11 +52,22 @@ type UserPreferences {
   theme: String
 }
 
+type PublishOptions {
+  publishId: String
+  published: Boolean
+}
+
+fragment publishOptionsFields on PublishOptions {
+  publishId
+  published
+}
+
 type Me {
   id: String!
   name: String!
   email: String!
   publishid: String!
+  publishOptions: PublishOptions
 }
 
 query GetRecipes($where: RecipesWhereInput) {
@@ -83,6 +94,9 @@ query GetMe {
     name
     email
     publishid
+    publishOptions {
+      ...publishOptionsFields
+    }
   }
 }
 

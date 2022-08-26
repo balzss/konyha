@@ -18,6 +18,7 @@ import {
 } from '../components/';
 import { propsWithAuth } from '../utils/propsWithAuth';
 import { useGetMe, useLazyRecipes, useUpdateUserPreferences } from '../dataHooks';
+import type { PublishOptions } from '../components/PublishSettingsModal';
 
 type ProfilePageArgs = {
   session: Session,
@@ -59,6 +60,16 @@ export default function ProfilePage({session}: ProfilePageArgs) {
       }
     }});
     router.reload();
+  };
+
+  const handleSitePublish = (siteOptions: PublishOptions) => {
+    console.log(siteOptions);
+  };
+
+  const publishOptions = {
+    status: 'ERROR',
+    publishId,
+    message: <>Site published at{'\u00A0'}<Link href="/r/add">konyha.xyz/bazsi</Link></>,
   };
 
   return (
@@ -118,13 +129,13 @@ export default function ProfilePage({session}: ProfilePageArgs) {
         handleConfirm={() => getRecipes()}
         confirmText={'Download'}
       />
-      <PublishSettingsModal 
-        open={publishSettingsOpen}
-        handleClose={() => setPublishSettingsOpen(false)}
-        publishStatus={'LOADING'}
-        message={<>Site published at{'\u00A0'}<Link href="/r/add">konyha.xyz/bazsi</Link></>}
-        handlePublish={() => {}}
-      />
+      {publishSettingsOpen && (
+        <PublishSettingsModal 
+          publishOptions={publishOptions}
+          handleClose={() => setPublishSettingsOpen(false)}
+          handlePublish={handleSitePublish}
+        />
+      )}
     </div>
   );
 };

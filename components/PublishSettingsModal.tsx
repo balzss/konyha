@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import {
   Modal,
   Box,
@@ -27,24 +28,44 @@ const modalStyle = {
   p: 3,
 };
 
+export type PublishOptions = {
+  publishId: string;
+  publishState: boolean;
+}
+
 type PublishSettingsModalProps = {
-  open: boolean;
+  publishOptions: {
+    status: 'PUBLISHED' | 'LOADING' | 'ERROR';
+    publishId?: string;
+    message: React.ReactNode;
+  };
   handleClose: () => void;
-  publishStatus: 'SUCCESS' | 'LOADING' | 'ERROR';
-  message: React.ReactNode;
-  handlePublish: (e: React.SyntheticEvent) => void;
+  handlePublish: (publishOptions: PublishOptions) => void;
 };
 
 export default function PublishSettingsModal({
-  open,
+  publishOptions,
   handleClose,
-  publishStatus,
-  message,
   handlePublish,
 }: PublishSettingsModalProps) {
+  const [publishIdValue, setPublishIdValue] = useState<string>(publishOptions.publishId || '');
+  const [publishStateSwitch, setPublishStateSwitch] = useState<boolean>(publishOptions.status === 'PUBLISHED');
+
+  const handleSwitch = (e: any) => {
+    setPublishStateSwitch(e.target.checked);
+    publish();
+  };
+
+  const publish = () => {
+    handlePublish({
+      publishId: publishIdValue,
+      publishState: publishStateSwitch,
+    });
+  };
+
   return (
     <Modal
-      open={open}
+      open
       onClose={(_, reason) => reason === 'backdropClick' ? null : handleClose()}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
@@ -59,31 +80,41 @@ export default function PublishSettingsModal({
             <ListItemText primary="Publish static site" />
             <Switch
               edge="end"
-              onChange={() => {}}
-              checked={publishStatus === 'SUCCESS'}
+              disabled={publishOptions.status === 'LOADING'}
+              onChange={handleSwitch}
+              checked={publishStateSwitch}
             />
           </ListItem>
           <ListItem disablePadding>
           <TextField
             label="Publish ID"
             variant="outlined"
-            margin="dense"
+            margin="normal"
+            disabled={publishOptions.status === 'LOADING'}
+            value={publishIdValue}
+            onChange={(e: any) => setPublishIdValue(e.target.value)}
             sx={{width: '100%'}}
           />
           </ListItem>
         </List>
         <Typography component="div" sx={{fontWeight: 400, fontSize: '14px', margin: '8px 0', display: 'flex' }}>
-          {publishStatus === 'SUCCESS' ? (
+          {publishOptions.status === 'PUBLISHED' ? (
             <CheckCircleIcon fontSize="small" sx={{mr: 0.5}}/>
-          ) : (publishStatus === 'LOADING') ? (
+          ) : (publishOptions.status === 'LOADING') ? (
             <RefreshIcon className="rotate" fontSize="small" sx={{mr: 0.5}}/>
           ) : (
             <CancelIcon fontSize="small" sx={{mr: 0.5}}/>
           )}
-          {message}
+          {publishOptions.message}
         </Typography>
         <Stack direction="row-reverse" spacing={3} sx={{mt: 3}}>
-          <Button onClick={handlePublish} variant="outlined">Save</Button>
+          <Button 
+            onClick={publish} 
+            variant="outlined"
+            disabled={publishOptions.status === 'LOADING'}
+          >
+            Save
+          </Button>
           <Button onClick={handleClose}>Close</Button>
         </Stack>
       </Box>
