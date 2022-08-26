@@ -3,7 +3,7 @@
 ## In progress:
 
 - [ ] publish
-  - [ ] publish modal: set publish status and publish id
+  - [ ] extend publish api: change publishId, unpublish site
   - [ ] publish/unpublish recipes separately
   - [ ] check for name collision
 

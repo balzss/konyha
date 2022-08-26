@@ -22,6 +22,7 @@ type Recipe {
 }
 
 fragment recipeFields on Recipe {
+  __typename
   id
   name
   slug
@@ -34,17 +35,28 @@ fragment recipeFields on Recipe {
   }
 }
 
-type RecipeResponse {
+union ResponseData = Me | Recipe | Tag
+
+type Response {
   message: String!
-  data: Recipe
+  data: ResponseData
   error: String
 }
 
-fragment recipeResponseFields on RecipeResponse {
+fragment responseFields on Response {
+  __typename
   message
   error
   data {
-    ...recipeFields
+    __typename
+    ... on Recipe {
+      __typename
+      ...recipeFields
+    }
+    ... on Me {
+      __typename
+      ...userFields
+    }
   }
 }
 
@@ -70,6 +82,17 @@ type Me {
   publishOptions: PublishOptions
 }
 
+fragment userFields on Me {
+  __typename
+  id
+  name
+  email
+  publishid
+  publishOptions {
+    ...publishOptionsFields
+  }
+}
+
 query GetRecipes($where: RecipesWhereInput) {
   recipes(where: $where) {
     ...recipeFields
@@ -90,13 +113,7 @@ query SearchRecipes($searchQuery: String!) {
 
 query GetMe {
   me {
-    id
-    name
-    email
-    publishid
-    publishOptions {
-      ...publishOptionsFields
-    }
+    ...userFields
   }
 }
 
@@ -124,7 +141,7 @@ input PublishOptionsInput {
 
 mutation UpsertRecipe ($recipeId: String, $recipeData: RecipeUpsertInput!, $tagsConnect: [String!]!, $tagsCreate: [String!]!) {
   upsertRecipe(id: $recipeId, data: $recipeData, tagsConnect: $tagsConnect, tagsCreate: $tagsCreate) {
-    ...recipeResponseFields
+    ...responseFields
   }
 }
 
@@ -144,8 +161,8 @@ mutation DeleteTags ($tagIds: [String!]!) {
 
 mutation PublishSite ($publishOptions: PublishOptionsInput) {
   publishSite(publishOptions: $publishOptions) {
-    publishId
-    published
+    __typename
+    ...responseFields
   }
 }
 
@@ -159,7 +176,7 @@ type Query {
 type Mutation {
   deleteRecipe(slug: String!): Boolean
   deleteTags(ids: [String!]!): Boolean
-  upsertRecipe(id: String, data: RecipeUpsertInput!, tagsConnect: [String!]!, tagsCreate: [String!]!): RecipeResponse
+  upsertRecipe(id: String, data: RecipeUpsertInput!, tagsConnect: [String!]!, tagsCreate: [String!]!): Response
   updateUserPreferences(preferences: UpdateUserPreferencesInput): UserPreferences
-  publishSite(publishOptions: PublishOptionsInput): PublishOptions
+  publishSite(publishOptions: PublishOptionsInput): Response
 }

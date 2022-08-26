@@ -42,6 +42,17 @@ async function publishSite(userId: string, prisma: any) {
 }
 
 const resolvers: Resolvers = {
+  ResponseData: {
+    __resolveType: (response) => {
+      // TODO why doesn't `response.__typename` work?
+      if ('email' in response) {
+        return 'Me';
+      } else if ('ingredients' in response) {
+        return 'Recipe';
+      }
+      return null;
+    },
+  },
   Query: {
     recipes: async (_, {where}, {prisma, session}) => {
       if (!session) {
@@ -252,7 +263,20 @@ const resolvers: Resolvers = {
         }
       };
       const updatedPreferences = await prisma.user.update(options);
-      return updatedPreferences;
+
+      try {
+        await publishSite(userId, prisma);
+      } catch (e) {
+        return {
+          message: 'error',
+          error: e as string,
+        };
+      }
+
+      return {
+        message: 'success',
+        data: updatedPreferences,
+      };
     },
   }
 };

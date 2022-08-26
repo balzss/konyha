@@ -6,6 +6,7 @@ export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type RequireFields<T, K extends keyof T> = Omit<T, K> & { [P in K]-?: NonNullable<T[P]> };
 const defaultOptions = {} as const;
 /** All built-in and custom scalars, mapped to their actual values */
@@ -30,9 +31,9 @@ export type Mutation = {
   __typename?: 'Mutation';
   deleteRecipe?: Maybe<Scalars['Boolean']>;
   deleteTags?: Maybe<Scalars['Boolean']>;
-  publishSite?: Maybe<PublishOptions>;
+  publishSite?: Maybe<Response>;
   updateUserPreferences?: Maybe<UserPreferences>;
-  upsertRecipe?: Maybe<RecipeResponse>;
+  upsertRecipe?: Maybe<Response>;
 };
 
 
@@ -104,13 +105,6 @@ export type Recipe = {
   tags: Array<Tag>;
 };
 
-export type RecipeResponse = {
-  __typename?: 'RecipeResponse';
-  data?: Maybe<Recipe>;
-  error?: Maybe<Scalars['String']>;
-  message: Scalars['String'];
-};
-
 export type RecipeUpsertInput = {
   authorId: Scalars['String'];
   description?: InputMaybe<Scalars['String']>;
@@ -123,6 +117,15 @@ export type RecipesWhereInput = {
   slug?: InputMaybe<Scalars['String']>;
   tags?: InputMaybe<Array<Scalars['String']>>;
 };
+
+export type Response = {
+  __typename?: 'Response';
+  data?: Maybe<ResponseData>;
+  error?: Maybe<Scalars['String']>;
+  message: Scalars['String'];
+};
+
+export type ResponseData = Me | Recipe | Tag;
 
 export type Tag = {
   __typename?: 'Tag';
@@ -142,18 +145,20 @@ export type UserPreferences = {
 
 export type TagFieldsFragment = { __typename?: 'Tag', id: string, name: string, slug: string };
 
-export type RecipeFieldsFragment = { __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, published: boolean, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> };
+export type RecipeFieldsFragment = { __typename: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, published: boolean, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> };
 
-export type RecipeResponseFieldsFragment = { __typename?: 'RecipeResponse', message: string, error?: string | null, data?: { __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, published: boolean, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> } | null };
+export type ResponseFieldsFragment = { __typename: 'Response', message: string, error?: string | null, data?: { __typename: 'Me', id: string, name: string, email: string, publishid: string, publishOptions?: { __typename?: 'PublishOptions', publishId?: string | null, published?: boolean | null } | null } | { __typename: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, published: boolean, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> } | { __typename: 'Tag' } | null };
 
 export type PublishOptionsFieldsFragment = { __typename?: 'PublishOptions', publishId?: string | null, published?: boolean | null };
+
+export type UserFieldsFragment = { __typename: 'Me', id: string, name: string, email: string, publishid: string, publishOptions?: { __typename?: 'PublishOptions', publishId?: string | null, published?: boolean | null } | null };
 
 export type GetRecipesQueryVariables = Exact<{
   where?: InputMaybe<RecipesWhereInput>;
 }>;
 
 
-export type GetRecipesQuery = { __typename?: 'Query', recipes: Array<{ __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, published: boolean, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> }> };
+export type GetRecipesQuery = { __typename?: 'Query', recipes: Array<{ __typename: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, published: boolean, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> }> };
 
 export type GetTagsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -165,12 +170,12 @@ export type SearchRecipesQueryVariables = Exact<{
 }>;
 
 
-export type SearchRecipesQuery = { __typename?: 'Query', searchRecipes: Array<{ __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, published: boolean, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> }> };
+export type SearchRecipesQuery = { __typename?: 'Query', searchRecipes: Array<{ __typename: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, published: boolean, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> }> };
 
 export type GetMeQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetMeQuery = { __typename?: 'Query', me: { __typename?: 'Me', id: string, name: string, email: string, publishid: string, publishOptions?: { __typename?: 'PublishOptions', publishId?: string | null, published?: boolean | null } | null } };
+export type GetMeQuery = { __typename?: 'Query', me: { __typename: 'Me', id: string, name: string, email: string, publishid: string, publishOptions?: { __typename?: 'PublishOptions', publishId?: string | null, published?: boolean | null } | null } };
 
 export type DeleteRecipeMutationVariables = Exact<{
   recipeSlug: Scalars['String'];
@@ -187,7 +192,7 @@ export type UpsertRecipeMutationVariables = Exact<{
 }>;
 
 
-export type UpsertRecipeMutation = { __typename?: 'Mutation', upsertRecipe?: { __typename?: 'RecipeResponse', message: string, error?: string | null, data?: { __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, published: boolean, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> } | null } | null };
+export type UpsertRecipeMutation = { __typename?: 'Mutation', upsertRecipe?: { __typename: 'Response', message: string, error?: string | null, data?: { __typename: 'Me', id: string, name: string, email: string, publishid: string, publishOptions?: { __typename?: 'PublishOptions', publishId?: string | null, published?: boolean | null } | null } | { __typename: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, published: boolean, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> } | { __typename: 'Tag' } | null } | null };
 
 export type UpdateUserPreferencesMutationVariables = Exact<{
   preferences?: InputMaybe<UpdateUserPreferencesInput>;
@@ -208,7 +213,7 @@ export type PublishSiteMutationVariables = Exact<{
 }>;
 
 
-export type PublishSiteMutation = { __typename?: 'Mutation', publishSite?: { __typename?: 'PublishOptions', publishId?: string | null, published?: boolean | null } | null };
+export type PublishSiteMutation = { __typename?: 'Mutation', publishSite?: { __typename: 'Response', message: string, error?: string | null, data?: { __typename: 'Me', id: string, name: string, email: string, publishid: string, publishOptions?: { __typename?: 'PublishOptions', publishId?: string | null, published?: boolean | null } | null } | { __typename: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, published: boolean, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> } | { __typename: 'Tag' } | null } | null };
 
 
 
@@ -286,9 +291,10 @@ export type ResolversTypes = {
   PublishOptionsInput: PublishOptionsInput;
   Query: ResolverTypeWrapper<{}>;
   Recipe: ResolverTypeWrapper<Recipe>;
-  RecipeResponse: ResolverTypeWrapper<RecipeResponse>;
   RecipeUpsertInput: RecipeUpsertInput;
   RecipesWhereInput: RecipesWhereInput;
+  Response: ResolverTypeWrapper<Omit<Response, 'data'> & { data?: Maybe<ResolversTypes['ResponseData']> }>;
+  ResponseData: ResolversTypes['Me'] | ResolversTypes['Recipe'] | ResolversTypes['Tag'];
   String: ResolverTypeWrapper<Scalars['String']>;
   Tag: ResolverTypeWrapper<Tag>;
   UpdateUserPreferencesInput: UpdateUserPreferencesInput;
@@ -304,9 +310,10 @@ export type ResolversParentTypes = {
   PublishOptionsInput: PublishOptionsInput;
   Query: {};
   Recipe: Recipe;
-  RecipeResponse: RecipeResponse;
   RecipeUpsertInput: RecipeUpsertInput;
   RecipesWhereInput: RecipesWhereInput;
+  Response: Omit<Response, 'data'> & { data?: Maybe<ResolversParentTypes['ResponseData']> };
+  ResponseData: ResolversParentTypes['Me'] | ResolversParentTypes['Recipe'] | ResolversParentTypes['Tag'];
   String: Scalars['String'];
   Tag: Tag;
   UpdateUserPreferencesInput: UpdateUserPreferencesInput;
@@ -325,9 +332,9 @@ export type MeResolvers<ContextType = any, ParentType extends ResolversParentTyp
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   deleteRecipe?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteRecipeArgs, 'slug'>>;
   deleteTags?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteTagsArgs, 'ids'>>;
-  publishSite?: Resolver<Maybe<ResolversTypes['PublishOptions']>, ParentType, ContextType, Partial<MutationPublishSiteArgs>>;
+  publishSite?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, Partial<MutationPublishSiteArgs>>;
   updateUserPreferences?: Resolver<Maybe<ResolversTypes['UserPreferences']>, ParentType, ContextType, Partial<MutationUpdateUserPreferencesArgs>>;
-  upsertRecipe?: Resolver<Maybe<ResolversTypes['RecipeResponse']>, ParentType, ContextType, RequireFields<MutationUpsertRecipeArgs, 'data' | 'tagsConnect' | 'tagsCreate'>>;
+  upsertRecipe?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<MutationUpsertRecipeArgs, 'data' | 'tagsConnect' | 'tagsCreate'>>;
 };
 
 export type PublishOptionsResolvers<ContextType = any, ParentType extends ResolversParentTypes['PublishOptions'] = ResolversParentTypes['PublishOptions']> = {
@@ -355,11 +362,15 @@ export type RecipeResolvers<ContextType = any, ParentType extends ResolversParen
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
-export type RecipeResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['RecipeResponse'] = ResolversParentTypes['RecipeResponse']> = {
-  data?: Resolver<Maybe<ResolversTypes['Recipe']>, ParentType, ContextType>;
+export type ResponseResolvers<ContextType = any, ParentType extends ResolversParentTypes['Response'] = ResolversParentTypes['Response']> = {
+  data?: Resolver<Maybe<ResolversTypes['ResponseData']>, ParentType, ContextType>;
   error?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
+export type ResponseDataResolvers<ContextType = any, ParentType extends ResolversParentTypes['ResponseData'] = ResolversParentTypes['ResponseData']> = {
+  __resolveType: TypeResolveFn<'Me' | 'Recipe' | 'Tag', ParentType, ContextType>;
 };
 
 export type TagResolvers<ContextType = any, ParentType extends ResolversParentTypes['Tag'] = ResolversParentTypes['Tag']> = {
@@ -380,7 +391,8 @@ export type Resolvers<ContextType = any> = {
   PublishOptions?: PublishOptionsResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   Recipe?: RecipeResolvers<ContextType>;
-  RecipeResponse?: RecipeResponseResolvers<ContextType>;
+  Response?: ResponseResolvers<ContextType>;
+  ResponseData?: ResponseDataResolvers<ContextType>;
   Tag?: TagResolvers<ContextType>;
   UserPreferences?: UserPreferencesResolvers<ContextType>;
 };
@@ -395,6 +407,7 @@ export const TagFieldsFragmentDoc = gql`
     `;
 export const RecipeFieldsFragmentDoc = gql`
     fragment recipeFields on Recipe {
+  __typename
   id
   name
   slug
@@ -407,21 +420,43 @@ export const RecipeFieldsFragmentDoc = gql`
   }
 }
     ${TagFieldsFragmentDoc}`;
-export const RecipeResponseFieldsFragmentDoc = gql`
-    fragment recipeResponseFields on RecipeResponse {
-  message
-  error
-  data {
-    ...recipeFields
-  }
-}
-    ${RecipeFieldsFragmentDoc}`;
 export const PublishOptionsFieldsFragmentDoc = gql`
     fragment publishOptionsFields on PublishOptions {
   publishId
   published
 }
     `;
+export const UserFieldsFragmentDoc = gql`
+    fragment userFields on Me {
+  __typename
+  id
+  name
+  email
+  publishid
+  publishOptions {
+    ...publishOptionsFields
+  }
+}
+    ${PublishOptionsFieldsFragmentDoc}`;
+export const ResponseFieldsFragmentDoc = gql`
+    fragment responseFields on Response {
+  __typename
+  message
+  error
+  data {
+    __typename
+    ... on Recipe {
+      __typename
+      ...recipeFields
+    }
+    ... on Me {
+      __typename
+      ...userFields
+    }
+  }
+}
+    ${RecipeFieldsFragmentDoc}
+${UserFieldsFragmentDoc}`;
 export const GetRecipesDocument = gql`
     query GetRecipes($where: RecipesWhereInput) {
   recipes(where: $where) {
@@ -529,16 +564,10 @@ export type SearchRecipesQueryResult = Apollo.QueryResult<SearchRecipesQuery, Se
 export const GetMeDocument = gql`
     query GetMe {
   me {
-    id
-    name
-    email
-    publishid
-    publishOptions {
-      ...publishOptionsFields
-    }
+    ...userFields
   }
 }
-    ${PublishOptionsFieldsFragmentDoc}`;
+    ${UserFieldsFragmentDoc}`;
 
 /**
  * __useGetMeQuery__
@@ -605,10 +634,10 @@ export const UpsertRecipeDocument = gql`
     tagsConnect: $tagsConnect
     tagsCreate: $tagsCreate
   ) {
-    ...recipeResponseFields
+    ...responseFields
   }
 }
-    ${RecipeResponseFieldsFragmentDoc}`;
+    ${ResponseFieldsFragmentDoc}`;
 export type UpsertRecipeMutationFn = Apollo.MutationFunction<UpsertRecipeMutation, UpsertRecipeMutationVariables>;
 
 /**
@@ -705,11 +734,11 @@ export type DeleteTagsMutationOptions = Apollo.BaseMutationOptions<DeleteTagsMut
 export const PublishSiteDocument = gql`
     mutation PublishSite($publishOptions: PublishOptionsInput) {
   publishSite(publishOptions: $publishOptions) {
-    publishId
-    published
+    __typename
+    ...responseFields
   }
 }
-    `;
+    ${ResponseFieldsFragmentDoc}`;
 export type PublishSiteMutationFn = Apollo.MutationFunction<PublishSiteMutation, PublishSiteMutationVariables>;
 
 /**
