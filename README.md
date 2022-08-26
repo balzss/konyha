@@ -83,11 +83,11 @@ docker compose --profile reverse-proxy up
 
 ## Usage
 
-Read about how to use Konyha [here](https://konyha/xyz/docs/category/usage).
+Read about how to use Konyha [here](https://konyha.xyz/docs/category/usage).
 
 ## Development
 
-Read about development [here](https://konyha/xyz/docs/category/development).
+Read about development [here](https://konyha.xyz/docs/category/development).
 
 ## Tools and assets used
 
