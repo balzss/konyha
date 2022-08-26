@@ -238,6 +238,22 @@ const resolvers: Resolvers = {
       const deletedTag = await prisma.tag.deleteMany(options);
       return !!deletedTag;
     },
+    publishSite: async (_, {publishOptions}, {prisma, session}) => {
+      if (!session) {
+        throw new AuthenticationError('No session found, please log in!');
+      }
+      const { userId } = session;
+      const options = {
+        where: {
+          id: userId,
+        },
+        data: {
+          publishOptions,
+        }
+      };
+      const updatedPreferences = await prisma.user.update(options);
+      return updatedPreferences;
+    },
   }
 };
 

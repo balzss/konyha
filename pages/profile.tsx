@@ -17,7 +17,12 @@ import {
   Link,
 } from '../components/';
 import { propsWithAuth } from '../utils/propsWithAuth';
-import { useGetMe, useLazyRecipes, useUpdateUserPreferences } from '../dataHooks';
+import { 
+  useGetMe,
+  useLazyRecipes,
+  useUpdateUserPreferences,
+  usePublishSite,
+} from '../dataHooks';
 import type { PublishOptions } from '../components/PublishSettingsModal';
 
 type ProfilePageArgs = {
@@ -34,15 +39,32 @@ function handleDownloadRecipes(recipesData: any) {
   link.click();
 };
 
+function getPublishModalMessage({publishLoading, publishId, published, publishSiteError}: any) {
+  if (publishSiteError) {
+    return publishSiteError.toString();
+  } else if (publishLoading && published) {
+    return 'Unpublishing site...'
+  } else if (publishLoading && !published) {
+    return 'Publishing site...';
+  } else if (!publishLoading && published) {
+    return <>Site published at{'\u00A0'}<Link href="/r/add">konyha.xyz/{publishId}</Link></>;
+  } else if (!publishLoading && !published) {
+    return 'Site not published';
+  } else {
+    return '';
+  }
+}
+
 export default function ProfilePage({session}: ProfilePageArgs) {
   const router = useRouter();
   const { data: sessionData } = useSession();
   const userThemePreference = sessionData?.theme;
   const { data: meData } = useGetMe();
   const email = meData?.me.email;
-  const publishId = meData?.me.publishid;
+  const publishOptions = meData?.me.publishOptions;
   const [getRecipes, {error: getRecipesError, data: recipesData}] = useLazyRecipes(handleDownloadRecipes);
   const [updatePreferences] = useUpdateUserPreferences();
+  const [publishSite, {error: publishSiteError, loading: publishLoading}] = usePublishSite();
   const [darkMode, setDarkMode] = useState<boolean>(userThemePreference === 'dark');
   const [downloadConfirmOpen, setDownloadConfirmOpen] = useState<boolean>(false);
   const [publishSettingsOpen, setPublishSettingsOpen] = useState<boolean>(false);
@@ -64,13 +86,18 @@ export default function ProfilePage({session}: ProfilePageArgs) {
 
   const handleSitePublish = (siteOptions: PublishOptions) => {
     console.log(siteOptions);
+    const { published, publishId } = siteOptions;
+    publishSite({variables: {
+      publishOptions: {
+        published,
+        publishId,
+      }
+    }});
   };
 
-  const publishOptions = {
-    status: 'ERROR',
-    publishId,
-    message: <>Site published at{'\u00A0'}<Link href="/r/add">konyha.xyz/bazsi</Link></>,
-  };
+  const publishModalStatus = publishLoading ? 'LOADING' : publishOptions?.published && !publishSiteError ? 'PUBLISHED' : 'ERROR';
+  const publishId = publishOptions?.publishId || '';
+  const publishModalMessage = getPublishModalMessage({publishLoading, publishId, published: publishOptions?.published, publishSiteError});
 
   return (
     <div style={{maxWidth: '900px', margin: '0 auto'}}>
@@ -83,7 +110,7 @@ export default function ProfilePage({session}: ProfilePageArgs) {
         </ListItem>
         <ListItem disablePadding>
           <ListItemButton onClick={() => setPublishSettingsOpen(true)}>
-            <ListItemText primary="Public site" secondary={publishId ? `Published at ${publishId}`: '<not published>'}/>
+            <ListItemText primary="Public site" secondary={publishOptions?.publishId ? `Published at ${publishOptions.publishId}`: '<not published>'}/>
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -131,7 +158,9 @@ export default function ProfilePage({session}: ProfilePageArgs) {
       />
       {publishSettingsOpen && (
         <PublishSettingsModal 
-          publishOptions={publishOptions}
+          publishId={publishId}
+          message={publishModalMessage}
+          status={publishModalStatus}
           handleClose={() => setPublishSettingsOpen(false)}
           handlePublish={handleSitePublish}
         />

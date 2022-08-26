@@ -117,6 +117,11 @@ input RecipeUpsertInput {
   instructions: [String!]
 }
 
+input PublishOptionsInput {
+  publishId: String!
+  published: Boolean!
+}
+
 mutation UpsertRecipe ($recipeId: String, $recipeData: RecipeUpsertInput!, $tagsConnect: [String!]!, $tagsCreate: [String!]!) {
   upsertRecipe(id: $recipeId, data: $recipeData, tagsConnect: $tagsConnect, tagsCreate: $tagsCreate) {
     ...recipeResponseFields
@@ -137,6 +142,13 @@ mutation DeleteTags ($tagIds: [String!]!) {
   deleteTags(ids: $tagIds)
 }
 
+mutation PublishSite ($publishOptions: PublishOptionsInput) {
+  publishSite(publishOptions: $publishOptions) {
+    publishId
+    published
+  }
+}
+
 type Query {
   recipes(where: RecipesWhereInput): [Recipe!]!
   tags: [Tag!]!
@@ -149,4 +161,5 @@ type Mutation {
   deleteTags(ids: [String!]!): Boolean
   upsertRecipe(id: String, data: RecipeUpsertInput!, tagsConnect: [String!]!, tagsCreate: [String!]!): RecipeResponse
   updateUserPreferences(preferences: UpdateUserPreferencesInput): UserPreferences
+  publishSite(publishOptions: PublishOptionsInput): PublishOptions
 }

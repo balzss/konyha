@@ -30,36 +30,33 @@ const modalStyle = {
 
 export type PublishOptions = {
   publishId: string;
-  publishState: boolean;
+  published: boolean;
 }
 
 type PublishSettingsModalProps = {
-  publishOptions: {
-    status: 'PUBLISHED' | 'LOADING' | 'ERROR';
-    publishId?: string;
-    message: React.ReactNode;
-  };
+  status: 'PUBLISHED' | 'LOADING' | 'ERROR';
+  publishId: string;
+  message: React.ReactNode;
   handleClose: () => void;
   handlePublish: (publishOptions: PublishOptions) => void;
 };
 
 export default function PublishSettingsModal({
-  publishOptions,
+  status,
+  publishId,
+  message,
   handleClose,
   handlePublish,
 }: PublishSettingsModalProps) {
-  const [publishIdValue, setPublishIdValue] = useState<string>(publishOptions.publishId || '');
-  const [publishStateSwitch, setPublishStateSwitch] = useState<boolean>(publishOptions.status === 'PUBLISHED');
+  const [publishIdValue, setPublishIdValue] = useState<string>(publishId || '');
+  const [publishStateSwitch, setPublishStateSwitch] = useState<boolean>(status === 'PUBLISHED');
 
   const handleSwitch = (e: any) => {
-    setPublishStateSwitch(e.target.checked);
-    publish();
-  };
-
-  const publish = () => {
+    const published = e.target.checked;
+    setPublishStateSwitch(published);
     handlePublish({
       publishId: publishIdValue,
-      publishState: publishStateSwitch,
+      published: published,
     });
   };
 
@@ -80,7 +77,7 @@ export default function PublishSettingsModal({
             <ListItemText primary="Publish static site" />
             <Switch
               edge="end"
-              disabled={publishOptions.status === 'LOADING'}
+              disabled={status === 'LOADING'}
               onChange={handleSwitch}
               checked={publishStateSwitch}
             />
@@ -90,7 +87,7 @@ export default function PublishSettingsModal({
             label="Publish ID"
             variant="outlined"
             margin="normal"
-            disabled={publishOptions.status === 'LOADING'}
+            disabled={status === 'LOADING'}
             value={publishIdValue}
             onChange={(e: any) => setPublishIdValue(e.target.value)}
             sx={{width: '100%'}}
@@ -98,20 +95,23 @@ export default function PublishSettingsModal({
           </ListItem>
         </List>
         <Typography component="div" sx={{fontWeight: 400, fontSize: '14px', margin: '8px 0', display: 'flex' }}>
-          {publishOptions.status === 'PUBLISHED' ? (
+          {status === 'PUBLISHED' ? (
             <CheckCircleIcon fontSize="small" sx={{mr: 0.5}}/>
-          ) : (publishOptions.status === 'LOADING') ? (
+          ) : (status === 'LOADING') ? (
             <RefreshIcon className="rotate" fontSize="small" sx={{mr: 0.5}}/>
           ) : (
             <CancelIcon fontSize="small" sx={{mr: 0.5}}/>
           )}
-          {publishOptions.message}
+          {message}
         </Typography>
         <Stack direction="row-reverse" spacing={3} sx={{mt: 3}}>
           <Button 
-            onClick={publish} 
+            onClick={() => handlePublish({
+              publishId: publishIdValue,
+              published: publishStateSwitch,
+            })} 
             variant="outlined"
-            disabled={publishOptions.status === 'LOADING'}
+            disabled={status === 'LOADING'}
           >
             Save
           </Button>
