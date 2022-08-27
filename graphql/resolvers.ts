@@ -181,6 +181,7 @@ const resolvers: Resolvers = {
       });
 
       const options = {
+        include: {tags: true},
         where: {
           id: id ?? '',
         },
@@ -202,7 +203,6 @@ const resolvers: Resolvers = {
         },
       };
       const upsertRecipe = await prisma.recipe.upsert(options);
-
       try {
         await publishSite(userId, prisma);
       } catch (e) {

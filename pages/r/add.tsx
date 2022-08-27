@@ -83,7 +83,7 @@ export default function EditRecipePage() {
       tagsCreate: trimmedNewTags,
     };
 
-    const {data: {upsertRecipe: {slug}}} = await upsertRecipe(upsertOptions);
+    const {data: {upsertRecipe: {data: {slug}}}} = await upsertRecipe(upsertOptions);
     if (slug) {
       router.push(`/r/${slug}`);
     }

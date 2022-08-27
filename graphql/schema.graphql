@@ -22,7 +22,6 @@ type Recipe {
 }
 
 fragment recipeFields on Recipe {
-  __typename
   id
   name
   slug
@@ -44,18 +43,17 @@ type Response {
 }
 
 fragment responseFields on Response {
-  __typename
   message
   error
   data {
-    __typename
     ... on Recipe {
-      __typename
       ...recipeFields
     }
     ... on Me {
-      __typename
       ...userFields
+    }
+    ... on Tag {
+      ...tagFields
     }
   }
 }
@@ -83,7 +81,6 @@ type Me {
 }
 
 fragment userFields on Me {
-  __typename
   id
   name
   email
@@ -161,7 +158,6 @@ mutation DeleteTags ($tagIds: [String!]!) {
 
 mutation PublishSite ($publishOptions: PublishOptionsInput) {
   publishSite(publishOptions: $publishOptions) {
-    __typename
     ...responseFields
   }
 }

@@ -22,13 +22,14 @@
 
 - [ ] Feature branch rule on github + use db migrations + use github releases
 - [ ] Lint rules, tests and CI
-- [ ] Desktop view (with sidebar)
+- [ ] Desktop view (with sidebar) + shortcuts
 - [ ] i18n (EN/HU)
 - [ ] Offline mode (localStorage without db connection)
 - [ ] Ory Kratos user management (+investigate)
 - [ ] Portion calculator
 - [ ] Page transitions (open card, edit recipe, etc)
 - [ ] Archive: restore deleted recipes
+- [ ] bulk/batch edit
 - [ ] Connect/sync to git repo (or other options like drive, dropbox, etc?)
 - [ ] Groceries list
   - [ ] add items manually
