@@ -78,24 +78,22 @@ export default function HomeTopBar() {
           </ListItemIcon>
           All recipes
         </MenuItem>
-        { tags && tags.length > 0 && (
-          <>
-            <Divider />
-            { tags.map(({name, slug}) => (
-              <MenuItem key={slug} onClick={() => handleSelectTag(slug)}>
-                <ListItemIcon>
-                  <Checkbox
-                    edge="start"
-                    checked={selectedTags.includes(slug)}
-                    tabIndex={-1}
-                    disableRipple
-                  />
-                </ListItemIcon>
-                {name}
-              </MenuItem>
-            )) }
-          </>
-        )}
+        { tags && tags.length > 0 && ([
+          <Divider key="divider"/>,
+          ...tags.map(({name, slug}) => (
+            <MenuItem key={slug} onClick={() => handleSelectTag(slug)}>
+              <ListItemIcon>
+                <Checkbox
+                  edge="start"
+                  checked={selectedTags.includes(slug)}
+                  tabIndex={-1}
+                  disableRipple
+                />
+              </ListItemIcon>
+              {name}
+            </MenuItem>
+          ))
+        ])}
       </Menu>
     </>
   )

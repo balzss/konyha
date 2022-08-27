@@ -102,7 +102,9 @@ export default function PublishSettingsModal({
           ) : (
             <CancelIcon fontSize="small" sx={{mr: 0.5}}/>
           )}
-          {message}
+          <span style={{display: 'flex', flexWrap: 'wrap'}}>
+            {message}
+          </span>
         </Typography>
         <Stack direction="row-reverse" spacing={3} sx={{mt: 3}}>
           <Button 

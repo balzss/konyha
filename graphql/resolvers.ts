@@ -22,7 +22,7 @@ async function publishSite(userId: string, prisma: any) {
   }
   const recipes = await prisma.recipe.findMany(recipesOptions);
 
-  if (!userData?.publishid || !recipes) {
+  if (!userData?.publishOptions.published || !recipes) {
     return;
   }
   try {

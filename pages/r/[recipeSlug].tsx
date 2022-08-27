@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import {
   Alert,
   Box,
-  Container,
   Typography,
   Checkbox,
   Radio,
@@ -24,7 +23,7 @@ import {
   Head,
   ConfirmModal,
 } from '../../components';
-import { useSingleRecipe, useDeleteRecipe } from '../../dataHooks';
+import { useSingleRecipe, useDeleteRecipe, useGetMe } from '../../dataHooks';
 import { propsWithAuth } from '../../utils/propsWithAuth';
 
 function RecipeIngredients({ingredients}: {ingredients: string[]}) {
@@ -61,6 +60,8 @@ export default function RecipeDetailsPage() {
   const router = useRouter();
   const recipeSlug = router.query.recipeSlug as string;
   const { data: recipesData, error: recipeError } = useSingleRecipe(recipeSlug);
+  const { data: meData, error: getMeError } = useGetMe();
+  console.log({meData})
   const recipe = recipesData?.recipes[0];
   const [ deleteRecipe, { error: deleteError } ] = useDeleteRecipe();
   const tags = recipe?.tags;

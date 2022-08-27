@@ -40,12 +40,18 @@ function handleDownloadRecipes(recipesData: any) {
 };
 
 function getPublishModalMessage({publishLoading, publishId, published, publishSiteError}: any) {
+  const publishDomain = process.env.NEXT_PUBLIC_SITEGEN_DOMAIN;
   if (publishSiteError) {
     return publishSiteError.toString();
   } else if (publishLoading) {
     return 'Updating site...'
   } else if (published) {
-    return <>Site published at{'\u00A0'}<Link blank href={`http://${process.env.NEXT_PUBLIC_SITEGEN_DOMAIN}/${publishId}`}>konyha.xyz/{publishId}</Link></>;
+    return <>
+      Site published at{'\u00A0'}
+      <Link blank href={`http://${publishDomain}/${publishId}`}>
+        {publishDomain}/{publishId}
+      </Link>
+    </>;
   } else if (!publishLoading && !published) {
     return 'Site not published';
   } else {
