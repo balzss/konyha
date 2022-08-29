@@ -1,0 +1,19 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("SITEGEN_DB_URL")
+}
+
+model Site {
+  id          String    @id @default(uuid())
+  publishId   String    @unique
+  ownerId     String    @unique
+  title       String?
+  data        String      @default("{}")
+}

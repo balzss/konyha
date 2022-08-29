@@ -76,7 +76,6 @@ type Me {
   id: String!
   name: String!
   email: String!
-  publishid: String!
   publishOptions: PublishOptions
 }
 
@@ -84,7 +83,6 @@ fragment userFields on Me {
   id
   name
   email
-  publishid
   publishOptions {
     ...publishOptionsFields
   }

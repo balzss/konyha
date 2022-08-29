@@ -26,11 +26,12 @@ async function publishSite(userId: string, prisma: any) {
     return;
   }
   try {
-    const response = await fetch(`http://${process.env.HOST}:7777/${userData.publishid}`, {
+    const response = await fetch(`http://${process.env.HOST}:7777/publish`, {
       method: 'post',
       body: JSON.stringify({
+        publishId: userData.publishOptions.publishId,
+        ownerId: userId,
         recipes,
-        title: userData.publishid,
       }),
       headers: {'Content-Type': 'application/json'},
     });
