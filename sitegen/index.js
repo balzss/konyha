@@ -4,7 +4,7 @@ const Eleventy = require('@11ty/eleventy');
 const fastify = require('fastify')({
   logger: true,
 });
-const { PrismaClient } = require('@prisma/client');
+const { PrismaClient } = require('./prisma/client');
 const prisma = new PrismaClient()
 
 const USER_ID_BLACKLIST = [
@@ -37,37 +37,9 @@ fastify.get('/', function (_req, reply) {
   return reply.sendFile('index.html');
 });
 
-fastify.get('/r/:publishId', async function (req, reply) {
-  const { publishId } = req.params;
-  const site = await prisma.site.findUnique({
-    where: {
-      publishId,
-    }
-  })
-
-  if (!site?.ownerId) {
-    return reply.send({message: 'error', error: 'site not exists'});
-  }
-
-  try {
-    const fStat = await fs.stat(`public/r/${site.ownerId}/index.html`);
-    return reply.sendFile('index.html', path.join(__dirname, `public/r/${site.ownerId}`));
-  } catch (error) {
-    return reply.send({message: 'error', error: error.message});
-  }
-
-  // fs.stat(`public/r/${publishId}/index.html`).then(() => {
-  //   // return reply.sendFile(`r/${publishId}/index.html`);
-  //   return reply.send({message: 'success'});
-  // }).catch((_error) => {
-  //   return reply.send({message: 'error', error: 'index.html is missing'});
-  // });
-});
-
 fastify.get('/dashboard', async function (req, reply) {
   try {
     const sites = await prisma.site.findMany()
-    console.log(sites)
     return reply.send({sites});
   } catch (error) {
     return reply.send({message: 'error', error});
@@ -85,7 +57,19 @@ fastify.get('/:userId/health', function (req, reply) {
 
 fastify.post('/publish', async function (req, reply) {
   const { publishId, ownerId, recipes } = req.body;
-  console.log(req.body)
+
+  const previousSiteOptions = {
+    where: {
+      ownerId: ownerId ?? '',
+    },
+  };
+  let previousSite;
+  try {
+    previousSite = await prisma.site.findUnique(previousSiteOptions);
+  } catch (error) {
+    // TODO check if new users get this error
+    return reply.send({message: 'error', error, published: false});
+  }
 
   const options = {
     where: {
@@ -105,7 +89,19 @@ fastify.post('/publish', async function (req, reply) {
   try {
     const upsertSite = await prisma.site.upsert(options);
   } catch (error) {
-    return reply.send({message: 'error', error});
+    return reply.send({
+      message: 'error',
+      error: error.code === 'P2002' ? 'publishId already in use' : error.message,
+      published: !!previousSite,
+    });
+  }
+
+  if (previousSite?.publishId && previousSite.publishId !== publishId) {
+    try {
+      await fs.rename(`public/r/${previousSite.publishId}`, `public/r/${publishId}`);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const Recipes = recipes.map(r => ({
@@ -119,12 +115,12 @@ fastify.post('/publish', async function (req, reply) {
 
   const Tags = getTags(Recipes);
 
-  const elev = new Eleventy('src', `public/r/${ownerId}`, {
+  const elev = new Eleventy('src', `public/r/${publishId}`, {
     config: async function (eleventyConfig) {
       eleventyConfig.addGlobalData('Data',
         {
           Site: {
-            BaseUrl: `/r/${ownerId}`,
+            BaseUrl: `/r/${publishId}`,
             Title: publishId,
           },
           Recipes,
@@ -135,46 +131,10 @@ fastify.post('/publish', async function (req, reply) {
   });
   try {
     await elev.write();
-    return reply.send({message: 'success'});
+    return reply.send({message: 'success', published: true});
   } catch (error) {
-    console.log(error)
-    return reply.send({message: 'error', error});
+    return reply.send({message: 'error', error, published: false});
   }
-});
-
-fastify.post('/:userId', async function (req, reply) {
-  const { userId } = req.params;
-  const { recipes, title } = req.body;
-
-  // fs.writeFile('./demo.json', JSON.stringify(req.body), 'utf8', () => console.log('\n\n\nfile written\n\n\n'));
-
-  const Recipes = recipes.map(r => ({
-      Title: r.name,
-      Slug: r.slug,
-      Description: r.description,
-      Ingredients: r.ingredients,
-      Instructions: r.instructions,
-      Tags: r.tags.map(t => t.name),
-    }));
-
-  const Tags = getTags(Recipes);
-
-  const elev = new Eleventy('src', `public/${userId}`, {
-    config: async function (eleventyConfig) {
-      eleventyConfig.addGlobalData('Data',
-        {
-          Site: {
-            BaseUrl: `/${userId}`,
-            Title: title,
-          },
-          Recipes,
-          Tags,
-        }
-      );
-    }
-  });
-  await elev.write();
-  return reply.send({message: 'done'});
 });
 
 fastify.delete('/:userId', function (req, reply) {

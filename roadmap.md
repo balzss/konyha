@@ -3,9 +3,9 @@
 ## In progress:
 
 - [ ] publish
-  - [ ] extend publish api: change publishId, unpublish site
-  - [ ] publish/unpublish recipes separately
-  - [ ] check for name collision
+  - [ ] error handling
+  - [ ] extend publish api: unpublish (delete) site
+  - [ ] publish/unpublish recipes individually
 
 ## Alpha release:
 

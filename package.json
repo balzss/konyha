@@ -20,6 +20,8 @@
     "sitegen:dev": "cd sitegen && yarn dev",
     "sitegen:watch": "cd sitegen && yarn watch",
     "sitegen:build": "cd sitegen && yarn build",
+    "sitegen:prisma:generate": "prisma generate --schema=./sitegen/prisma/schema.prisma",
+    "sitegen:prisma:studio": "prisma studio --schema=./sitegen/prisma/schema.prisma",
     "sitegen:demo": "cd sitegen && yarn demo",
     "homepage:dev": "cd sitegen/homepage && yarn start",
     "homepage:build": "cd sitegen/homepage && yarn build",

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Modal,
   Box,
@@ -50,6 +50,10 @@ export default function PublishSettingsModal({
 }: PublishSettingsModalProps) {
   const [publishIdValue, setPublishIdValue] = useState<string>(publishId || '');
   const [publishStateSwitch, setPublishStateSwitch] = useState<boolean>(status === 'PUBLISHED');
+
+  useEffect(() => {
+    setPublishStateSwitch(status === 'PUBLISHED');
+  }, [status]);
 
   const handleSwitch = (e: any) => {
     const published = e.target.checked;

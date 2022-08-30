@@ -6,14 +6,7 @@ import type { Resolvers, Tag } from './generated';
 import slugify from '../utils/slugify';
 import fetch from 'node-fetch';
 
-async function publishSite(userId: string, prisma: any) {
-  const userOptions = {
-    where: {
-      id: userId,
-    }
-  };
-  const userData = await prisma.user.findUnique(userOptions);
-
+async function publishSite(userId: string, prisma: any, publishOptions: any) {
   const recipesOptions = {
     include: {tags: true},
     where: {
@@ -22,23 +15,32 @@ async function publishSite(userId: string, prisma: any) {
   }
   const recipes = await prisma.recipe.findMany(recipesOptions);
 
-  if (!userData?.publishOptions.published || !recipes) {
-    return;
-  }
   try {
     const response = await fetch(`http://${process.env.HOST}:7777/publish`, {
       method: 'post',
       body: JSON.stringify({
-        publishId: userData.publishOptions.publishId,
+        publishId: publishOptions.publishId,
         ownerId: userId,
         recipes,
       }),
       headers: {'Content-Type': 'application/json'},
     });
     const responseData = await response.json();
-    return responseData;
-  } catch (e) {
-    throw e;
+    return {
+      publishOptions: {
+        ...(responseData.message === 'error' ? {error: responseData.error} : {}),
+        published: responseData.published,
+        publishId: publishOptions.publishId,
+      }
+    };
+  } catch (error) {
+    return {
+      error: error as string,
+      publishOptions: {
+        published: false,
+        publishId: publishOptions.publishId,
+      }
+    }
   }
 }
 
@@ -255,26 +257,25 @@ const resolvers: Resolvers = {
         throw new AuthenticationError('No session found, please log in!');
       }
       const { userId } = session;
+
+      const publishResponse = await publishSite(userId, prisma, publishOptions);
+
+      console.log({publishResponse})
+
       const options = {
         where: {
           id: userId,
         },
         data: {
-          publishOptions,
+          publishOptions: publishResponse.publishOptions,
         }
       };
       const updatedPreferences = await prisma.user.update(options);
 
-      try {
-        await publishSite(userId, prisma);
-      } catch (e) {
-        return {
-          message: 'error',
-          error: e as string,
-        };
-      }
-
-      return {
+      return publishResponse.error ? {
+        message: 'error',
+        error: publishResponse.error as string,
+      } : {
         message: 'success',
         data: updatedPreferences,
       };

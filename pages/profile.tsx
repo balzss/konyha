@@ -48,7 +48,7 @@ function getPublishModalMessage({publishLoading, publishId, published, publishSi
   } else if (published) {
     return <>
       Site published at{'\u00A0'}
-      <Link blank href={`http://${publishDomain}/${publishId}`}>
+      <Link blank href={`${publishDomain}/r/${publishId}`}>
         {publishDomain}/{publishId}
       </Link>
     </>;
@@ -88,17 +88,22 @@ export default function ProfilePage({session}: ProfilePageArgs) {
     router.reload();
   };
 
-  const handleSitePublish = (siteOptions: PublishOptions) => {
+  const handleSitePublish = async (siteOptions: PublishOptions) => {
     console.log(siteOptions);
     const { published, publishId } = siteOptions;
-    publishSite({variables: {
-      publishOptions: {
-        published,
-        publishId,
-      }
-    }});
+    try {
+      await publishSite({variables: {
+        publishOptions: {
+          published,
+          publishId,
+        }
+      }});
+    } catch (e) {
+      console.log({e})
+    }
   };
 
+  // TODO separate PUBLISHED and ERROR states so they can happen at the same time
   const publishModalStatus = publishLoading ? 'LOADING' : publishOptions?.published && !publishSiteError ? 'PUBLISHED' : 'ERROR';
   const publishId = publishOptions?.publishId || '';
   const publishModalMessage = getPublishModalMessage({publishLoading, publishId, published: publishOptions?.published, publishSiteError});
