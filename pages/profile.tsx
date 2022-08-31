@@ -22,6 +22,7 @@ import {
   useLazyRecipes,
   useUpdateUserPreferences,
   usePublishSite,
+  useUnpublishSite,
 } from '../dataHooks';
 import type { PublishOptions } from '../components/PublishSettingsModal';
 
@@ -66,9 +67,10 @@ export default function ProfilePage({session}: ProfilePageArgs) {
   const { data: meData } = useGetMe();
   const email = meData?.me.email;
   const publishOptions = meData?.me.publishOptions;
-  const [getRecipes, {error: getRecipesError, data: recipesData}] = useLazyRecipes(handleDownloadRecipes);
+  const [getRecipes] = useLazyRecipes(handleDownloadRecipes);
   const [updatePreferences] = useUpdateUserPreferences();
-  const [publishSite, {error: publishSiteError, loading: publishLoading}] = usePublishSite();
+  const [publishSite, {loading: publishLoading}] = usePublishSite();
+  const [unpublishSite] = useUnpublishSite();
   const [darkMode, setDarkMode] = useState<boolean>(userThemePreference === 'dark');
   const [publishMessage, setPublishMessage] = useState<string>('');
   const [downloadConfirmOpen, setDownloadConfirmOpen] = useState<boolean>(false);
@@ -91,6 +93,20 @@ export default function ProfilePage({session}: ProfilePageArgs) {
 
   const handleSitePublish = async (siteOptions: PublishOptions) => {
     const { published, publishId } = siteOptions;
+    if (!published) {
+      try {
+        const {data} = await unpublishSite();
+        if (data?.unpublishSite?.error) {
+          setPublishMessage(data.unpublishSite.error);
+        } else {
+          setPublishMessage('');
+        }
+      } catch (e) {
+        console.log({e})
+      }
+      return;
+    }
+
     try {
       const {data} = await publishSite({variables: {
         publishOptions: {
@@ -108,7 +124,7 @@ export default function ProfilePage({session}: ProfilePageArgs) {
     }
   };
 
-  const publishModalStatus = publishLoading ? 'LOADING' : publishOptions?.published && !publishMessage ? 'PUBLISHED' : 'ERROR';
+  const publishModalStatus : 'LOADING' | 'PUBLISHED' | 'ERROR' = publishLoading ? 'LOADING' : publishOptions?.published && !publishMessage ? 'PUBLISHED' : 'ERROR';
   const publishId = publishOptions?.publishId || '';
   const publishModalMessage = {
     status: publishModalStatus,

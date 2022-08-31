@@ -31,6 +31,7 @@ export type Mutation = {
   deleteRecipe?: Maybe<Scalars['Boolean']>;
   deleteTags?: Maybe<Scalars['Boolean']>;
   publishSite?: Maybe<Response>;
+  unpublishSite?: Maybe<Response>;
   updateUserPreferences?: Maybe<UserPreferences>;
   upsertRecipe?: Maybe<Response>;
 };
@@ -214,6 +215,11 @@ export type PublishSiteMutationVariables = Exact<{
 
 export type PublishSiteMutation = { __typename?: 'Mutation', publishSite?: { __typename?: 'Response', message: string, error?: string | null, data?: { __typename?: 'Me', id: string, name: string, email: string, publishOptions?: { __typename?: 'PublishOptions', publishId?: string | null, published?: boolean | null } | null } | { __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, published: boolean, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> } | { __typename?: 'Tag', id: string, name: string, slug: string } | null } | null };
 
+export type UnpublishSiteMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UnpublishSiteMutation = { __typename?: 'Mutation', unpublishSite?: { __typename?: 'Response', message: string, error?: string | null, data?: { __typename?: 'Me', id: string, name: string, email: string, publishOptions?: { __typename?: 'PublishOptions', publishId?: string | null, published?: boolean | null } | null } | { __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, published: boolean, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> } | { __typename?: 'Tag', id: string, name: string, slug: string } | null } | null };
+
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -331,6 +337,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteRecipe?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteRecipeArgs, 'slug'>>;
   deleteTags?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteTagsArgs, 'ids'>>;
   publishSite?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, Partial<MutationPublishSiteArgs>>;
+  unpublishSite?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType>;
   updateUserPreferences?: Resolver<Maybe<ResolversTypes['UserPreferences']>, ParentType, ContextType, Partial<MutationUpdateUserPreferencesArgs>>;
   upsertRecipe?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<MutationUpsertRecipeArgs, 'data' | 'tagsConnect' | 'tagsCreate'>>;
 };
@@ -759,3 +766,35 @@ export function usePublishSiteMutation(baseOptions?: Apollo.MutationHookOptions<
 export type PublishSiteMutationHookResult = ReturnType<typeof usePublishSiteMutation>;
 export type PublishSiteMutationResult = Apollo.MutationResult<PublishSiteMutation>;
 export type PublishSiteMutationOptions = Apollo.BaseMutationOptions<PublishSiteMutation, PublishSiteMutationVariables>;
+export const UnpublishSiteDocument = gql`
+    mutation UnpublishSite {
+  unpublishSite {
+    ...responseFields
+  }
+}
+    ${ResponseFieldsFragmentDoc}`;
+export type UnpublishSiteMutationFn = Apollo.MutationFunction<UnpublishSiteMutation, UnpublishSiteMutationVariables>;
+
+/**
+ * __useUnpublishSiteMutation__
+ *
+ * To run a mutation, you first call `useUnpublishSiteMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUnpublishSiteMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [unpublishSiteMutation, { data, loading, error }] = useUnpublishSiteMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUnpublishSiteMutation(baseOptions?: Apollo.MutationHookOptions<UnpublishSiteMutation, UnpublishSiteMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<UnpublishSiteMutation, UnpublishSiteMutationVariables>(UnpublishSiteDocument, options);
+      }
+export type UnpublishSiteMutationHookResult = ReturnType<typeof useUnpublishSiteMutation>;
+export type UnpublishSiteMutationResult = Apollo.MutationResult<UnpublishSiteMutation>;
+export type UnpublishSiteMutationOptions = Apollo.BaseMutationOptions<UnpublishSiteMutation, UnpublishSiteMutationVariables>;

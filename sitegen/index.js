@@ -55,7 +55,7 @@ fastify.get('/:userId/health', function (req, reply) {
   });
 });
 
-fastify.post('/publish', async function (req, reply) {
+fastify.post('/api/publish', async function (req, reply) {
   const { publishId: reqPublishId, ownerId, recipes } = req.body;
 
   const previousSiteOptions = {
@@ -144,9 +144,22 @@ fastify.post('/publish', async function (req, reply) {
   }
 });
 
-fastify.delete('/:userId', function (req, reply) {
-  const { userId } = req.params;
-  return reply.send({message: 'delete'});
+fastify.delete('/api/publish', async function (req, reply) {
+  const { ownerId } = req.body;
+
+  const siteOptions = {
+    where: {
+      ownerId: ownerId ?? '',
+    },
+  };
+
+  try {
+    const site = await prisma.site.findUnique(siteOptions);
+    await fs.rm(`public/r/${site.publishId}`, { recursive: true, force: true });
+    return reply.send({message: 'success', published: false});
+  } catch (error) {
+    return reply.send({message: 'error', error, published: !!site?.publishId});
+  }
 });
 
 fastify.listen({ port: 7777, host: '0.0.0.0' }, function (err, address) {

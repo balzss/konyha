@@ -160,6 +160,12 @@ mutation PublishSite ($publishOptions: PublishOptionsInput) {
   }
 }
 
+mutation UnpublishSite {
+  unpublishSite {
+    ...responseFields
+  }
+}
+
 type Query {
   recipes(where: RecipesWhereInput): [Recipe!]!
   tags: [Tag!]!
@@ -173,4 +179,5 @@ type Mutation {
   upsertRecipe(id: String, data: RecipeUpsertInput!, tagsConnect: [String!]!, tagsCreate: [String!]!): Response
   updateUserPreferences(preferences: UpdateUserPreferencesInput): UserPreferences
   publishSite(publishOptions: PublishOptionsInput): Response
+  unpublishSite: Response
 }

@@ -3,7 +3,7 @@
 ## In progress:
 
 - [ ] publish
-  - [ ] extend publish api: unpublish (delete) site
+  - [ ] store `published` state in sitegen db
   - [ ] publish/unpublish recipes individually
 
 ## Alpha release:

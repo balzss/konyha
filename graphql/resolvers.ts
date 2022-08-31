@@ -6,6 +6,26 @@ import type { Resolvers, Tag } from './generated';
 import slugify from '../utils/slugify';
 import fetch from 'node-fetch';
 
+async function unpublishSite(userId: string) {
+  try {
+    const response = await fetch(`http://${process.env.HOST}:7777/api/publish`, {
+      method: 'delete',
+      body: JSON.stringify({
+        ownerId: userId,
+      }),
+      headers: {'Content-Type': 'application/json'},
+    });
+    const responseData = await response.json();
+    return {
+      unpublishOptions: responseData,
+    };
+  } catch (error) {
+    return {
+      error: error as string,
+      unpublishOptions: {},
+    }
+  }
+}
 async function publishSite(userId: string, prisma: any, publishOptions: any = {}) {
   const recipesOptions = {
     include: {tags: true},
@@ -16,7 +36,7 @@ async function publishSite(userId: string, prisma: any, publishOptions: any = {}
   const recipes = await prisma.recipe.findMany(recipesOptions);
 
   try {
-    const response = await fetch(`http://${process.env.HOST}:7777/publish`, {
+    const response = await fetch(`http://${process.env.HOST}:7777/api/publish`, {
       method: 'post',
       body: JSON.stringify({
         publishId: publishOptions?.publishId || '',
@@ -273,6 +293,37 @@ const resolvers: Resolvers = {
         },
         data: {
           publishOptions: publishResponse.publishOptions,
+        }
+      };
+      const updatedPreferences = await prisma.user.update(options);
+
+      return  {
+        message: 'success',
+        data: updatedPreferences,
+      };
+    },
+    unpublishSite: async (_, {}, {prisma, session}) => {
+      if (!session) {
+        throw new AuthenticationError('No session found, please log in!');
+      }
+      const { userId } = session;
+
+      const unpublishResponse = await unpublishSite(userId);
+
+      if (unpublishResponse.unpublishOptions.message === 'error') {
+        console.log('error')
+        return {
+          message: 'error',
+          error: unpublishResponse.unpublishOptions.error,
+        }
+      }
+
+      const options = {
+        where: {
+          id: userId,
+        },
+        data: {
+          publishOptions: unpublishResponse.unpublishOptions,
         }
       };
       const updatedPreferences = await prisma.user.update(options);
