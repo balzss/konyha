@@ -333,6 +333,36 @@ const resolvers: Resolvers = {
         data: updatedPreferences,
       };
     },
+    publishRecipe: async (_, {recipeSlug, publishState}, {prisma, session}) => {
+      if (!session) {
+        throw new AuthenticationError('No session found, please log in!');
+      }
+      const { userId } = session;
+
+      const options = {
+        where: {
+          authorId: userId,
+          slug: recipeSlug ?? '',
+        },
+        data: {
+          published: publishState,
+        },
+      };
+      const updateRecipe = await prisma.recipe.updateMany(options);
+      try {
+        await publishSite(userId, prisma);
+      } catch (e) {
+        return {
+          message: 'error',
+          error: e as string,
+        };
+      }
+
+      return {
+        message: 'success',
+      };
+
+    },
   }
 };
 

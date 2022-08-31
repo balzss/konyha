@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import {
   Alert,
@@ -23,7 +23,7 @@ import {
   Head,
   ConfirmModal,
 } from '../../components';
-import { useSingleRecipe, useDeleteRecipe, useGetMe } from '../../dataHooks';
+import { useSingleRecipe, useDeleteRecipe, useGetMe, usePublishRecipe } from '../../dataHooks';
 import { propsWithAuth } from '../../utils/propsWithAuth';
 
 function RecipeIngredients({ingredients}: {ingredients: string[]}) {
@@ -62,11 +62,18 @@ export default function RecipeDetailsPage() {
   const { data: recipesData, error: recipeError } = useSingleRecipe(recipeSlug);
   const { data: meData, error: getMeError } = useGetMe();
   const recipe = recipesData?.recipes[0];
-  const [ deleteRecipe, { error: deleteError } ] = useDeleteRecipe();
   const tags = recipe?.tags;
+  const recipePublished = recipe?.published as boolean;
+  const [ deleteRecipe, { error: deleteError } ] = useDeleteRecipe();
+  const [ publishRecipe, { error: publishError } ] = usePublishRecipe();
 
   const [errorConfirmOpen, setErrorConfirmOpen] = useState<boolean>(false);
-  const [checkRecipePublished, setCheckRecipePublished] = useState<boolean>(!!recipe?.published);
+  const [publishConfirmOpen, setPublishConfirmOpen] = useState<boolean>(false);
+  const [checkRecipePublished, setCheckRecipePublished] = useState<boolean>(recipePublished);
+
+  useEffect(() => {
+    setCheckRecipePublished(recipePublished);
+  }, [recipePublished]);
 
   const handleClickBack = () => {
     router.push('/');
@@ -89,6 +96,14 @@ export default function RecipeDetailsPage() {
     router.push(`/?tags=${tagSlug}`);
   }
 
+  const handlePublishRecipe = async (_e: React.SyntheticEvent) => {
+    await publishRecipe({variables: {recipeSlug, publishState: !recipe?.published}});
+    if (!publishError) {
+      setCheckRecipePublished(prevState => !prevState);
+      setPublishConfirmOpen(false);
+    }
+  };
+
   return (
     <Box
       sx={{
@@ -110,17 +125,9 @@ export default function RecipeDetailsPage() {
                   edge="start"
                   checked={checkRecipePublished}
                   tabIndex={-1}
-                />), action: () => setCheckRecipePublished((prevState) => !prevState), label: 'Published'}] : [],
+                />), action: () => setPublishConfirmOpen(true), label: 'Published'}] : [],
           {icon: <DeleteIcon fontSize="small"/>, action: () => setErrorConfirmOpen(true), label: 'Delete recipe'},
         ]}
-      />
-      <ConfirmModal
-        open={errorConfirmOpen}
-        title={'Delete recipe'}
-        description={'Are you sure to delete this recipe?'}
-        handleClose={() => setErrorConfirmOpen(false)}
-        handleConfirm={handleDeleteRecipe}
-        confirmText={'Delete'}
       />
       <div style={{maxWidth: '900px', margin: '0 auto', padding: '1rem'}}>
         { recipe?.description && (
@@ -142,6 +149,22 @@ export default function RecipeDetailsPage() {
           <Alert severity="error">{deleteError.message}</Alert>
         )}
       </div>
+      <ConfirmModal
+        open={errorConfirmOpen}
+        title={'Delete recipe'}
+        description={'Are you sure to delete this recipe?'}
+        handleClose={() => setErrorConfirmOpen(false)}
+        handleConfirm={handleDeleteRecipe}
+        confirmText={'Delete'}
+      />
+      <ConfirmModal
+        open={publishConfirmOpen}
+        title={recipe?.published ? 'Unpublish recipe' : 'Publish recipe'}
+        description={`Are you sure to ${recipe?.published ? 'unpublish' : 'publish'} this recipe?`}
+        handleClose={() => setPublishConfirmOpen(false)}
+        handleConfirm={handlePublishRecipe}
+        confirmText={'Confirm'}
+      />
     </Box>
   );
 }

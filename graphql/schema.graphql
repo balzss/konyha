@@ -127,6 +127,7 @@ input RecipeUpsertInput {
   description: String
   ingredients: [String!]
   instructions: [String!]
+  published: Boolean
 }
 
 input PublishOptionsInput {
@@ -166,6 +167,12 @@ mutation UnpublishSite {
   }
 }
 
+mutation PublishRecipe ($recipeSlug: String!, $publishState: Boolean!) {
+  publishRecipe(recipeSlug: $recipeSlug, publishState: $publishState) {
+    ...responseFields
+  }
+}
+
 type Query {
   recipes(where: RecipesWhereInput): [Recipe!]!
   tags: [Tag!]!
@@ -180,4 +187,5 @@ type Mutation {
   updateUserPreferences(preferences: UpdateUserPreferencesInput): UserPreferences
   publishSite(publishOptions: PublishOptionsInput): Response
   unpublishSite: Response
+  publishRecipe(recipeSlug: String!, publishState: Boolean!): Response
 }

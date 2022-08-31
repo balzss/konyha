@@ -113,7 +113,7 @@ fastify.post('/api/publish', async function (req, reply) {
     }
   }
 
-  const Recipes = recipes.map(r => ({
+  const Recipes = recipes.filter(r => r.published).map(r => ({
       Title: r.name,
       Slug: r.slug,
       Description: r.description,

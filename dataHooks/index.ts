@@ -18,6 +18,7 @@ import {
   useDeleteTagsMutation,
   usePublishSiteMutation,
   useUnpublishSiteMutation,
+  usePublishRecipeMutation,
 } from '../graphql/generated';
 
 export function useRecipes() {
@@ -88,6 +89,10 @@ export function usePublishSite() {
 
 export function useUnpublishSite() {
   return useUnpublishSiteMutation({refetchQueries: ['GetMe']});
+}
+
+export function usePublishRecipe() {
+  return usePublishRecipeMutation({refetchQueries: ['GetRecipes']});
 }
 
 export function useSearchRecipes(): [Function, { error: ApolloError | undefined, data: Recipe[] | undefined, loading: boolean}] {
