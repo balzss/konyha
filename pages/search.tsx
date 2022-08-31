@@ -4,6 +4,7 @@ import {
   Alert,
   Container,
   Grid,
+  Skeleton,
 } from '@mui/material';
 import {
   Head,
@@ -16,7 +17,7 @@ import {
 
 export default function SearchPage() {
   const router = useRouter();
-  const [searchRecipes, {data: searchResults, error: searchRecipesError}] = useSearchRecipes();
+  const [searchRecipes, {data: searchResults, error: searchRecipesError, loading}] = useSearchRecipes();
   const handleQueryChange = (query: string) => {
     searchRecipes(query);
   };
@@ -39,7 +40,17 @@ export default function SearchPage() {
       <Container maxWidth="md" sx={{px: 2}} disableGutters>
         <Grid container spacing={1}>
           <>
-            {searchRecipesError && (
+            {loading && (
+              <>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
+                  <Skeleton variant="rectangular" height={118}/>
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} lg={3}>
+                  <Skeleton variant="rectangular" height={118}/>
+                </Grid>
+              </>
+            )}
+            {!loading && searchRecipesError && (
               <Grid item xs={12} sm={6} md={4} lg={3}>
                 <Alert severity="error">{searchRecipesError.message}</Alert>
               </Grid>

@@ -90,7 +90,7 @@ export function useUnpublishSite() {
   return useUnpublishSiteMutation({refetchQueries: ['GetMe']});
 }
 
-export function useSearchRecipes(): [Function, { error: ApolloError | undefined, data: Recipe[] | undefined}] {
+export function useSearchRecipes(): [Function, { error: ApolloError | undefined, data: Recipe[] | undefined, loading: boolean}] {
   const [query, {data, error, loading}] = useSearchRecipesLazyQuery();
   function searchRecipes(searchQuery: string) {
     return query({
