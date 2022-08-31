@@ -5,7 +5,8 @@ import {
   AlertTitle,
   Container,
   Grid,
-  Box
+  Box,
+  Skeleton,
 } from '@mui/material';
 import {
   Head,
@@ -59,7 +60,7 @@ export default function MainPage() {
                 <Alert severity="error">{error.message}</Alert>
               </Grid>
             )}
-            {recipes && recipes.map((recipe) => (
+            {recipes && recipes?.map((recipe) => (
               <Grid item xs={12} sm={6} md={4} lg={4} key={recipe.id}>
                 <RecipeCard recipe={recipe} onClick={handleClickRecipe}/>
               </Grid>
@@ -68,6 +69,15 @@ export default function MainPage() {
               <Grid item>
                 <EmptyTagWarning tags={selectedTags}/>
               </Grid>
+            ) : (loading ? (
+              <>
+                <Grid item xs={12} sm={6} md={4} lg={4}>
+                  <Skeleton variant="rectangular" height={118}/>
+                </Grid>
+                <Grid item xs={12} sm={6} md={4} lg={4}>
+                  <Skeleton variant="rectangular" height={118}/>
+                </Grid>
+              </>
             ) : (
               <Grid item>
                 <Alert variant="outlined" severity="info">
@@ -79,7 +89,7 @@ export default function MainPage() {
                   </Link>
                 </Alert>
               </Grid>
-            ))}
+            )))}
           </>
         </Grid>
       </Container>

@@ -55,6 +55,13 @@ export function getCustomTheme(mode: 'dark' | 'light') {
           },
         }
       },
+      MuiSkeleton: {
+        styleOverrides: {
+          root: {
+            borderRadius: '8px', // material 3
+          }
+        }
+      },
       MuiChip: {
         styleOverrides: {
           root: {
