@@ -35,7 +35,12 @@ export function useSingleRecipe(recipeSlug: string) {
   const variables = {
     where: {slug: recipeSlug},
   };
-  return useGetRecipesQuery({ variables, skip: !recipeSlug });
+  const { data, error, loading } = useGetRecipesQuery({ variables, skip: !recipeSlug });
+  return {
+    data,
+    error: error || (!loading && data?.recipes.length === 0 ? {message: '404 recipe not found'} : null),
+    loading,
+  };
 }
 
 type UpsertRawInput = {
