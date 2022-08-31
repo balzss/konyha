@@ -3,7 +3,6 @@
 ## In progress:
 
 - [ ] publish
-  - [ ] store `published` state in sitegen db
   - [ ] publish/unpublish recipes individually
 
 ## Alpha release:

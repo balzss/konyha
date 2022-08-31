@@ -16,5 +16,6 @@ model Site {
   publishId   String    @unique
   ownerId     String    @unique
   title       String?
+  published   Boolean?
   data        String      @default("{}")
 }

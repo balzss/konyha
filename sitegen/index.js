@@ -83,11 +83,13 @@ fastify.post('/api/publish', async function (req, reply) {
     update: {
       data: JSON.stringify(recipes),
       publishId: publishId || previousSite?.publishId || '',
+      published: true,
       ownerId,
     },
     create: {
       data: JSON.stringify(recipes),
       publishId: publishId || previousSite?.publishId || '',
+      published: true,
       ownerId,
     },
   };
@@ -140,7 +142,7 @@ fastify.post('/api/publish', async function (req, reply) {
     await elev.write();
     return reply.send({message: 'success', published: true, publishId});
   } catch (error) {
-    return reply.send({message: 'error', error, published: false, publishId: previousSite.publishId});
+    return reply.send({message: 'error', error, published: !!previousSite?.published, publishId: previousSite.publishId});
   }
 });
 
@@ -151,10 +153,13 @@ fastify.delete('/api/publish', async function (req, reply) {
     where: {
       ownerId: ownerId ?? '',
     },
+    data: {
+      published: false,
+    }
   };
 
   try {
-    const site = await prisma.site.findUnique(siteOptions);
+    const site = await prisma.site.update(siteOptions);
     await fs.rm(`public/r/${site.publishId}`, { recursive: true, force: true });
     return reply.send({message: 'success', published: false});
   } catch (error) {
