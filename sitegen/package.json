@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js --ignore public/**",
+    "dev": "nodemon index.js --ignore public/",
     "prisma:generate": "npx prisma generate",
     "prisma:studio": "npx prisma studio",
     "demo": "node demo.js && cp demo.json public/demo.json",

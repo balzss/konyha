@@ -56,19 +56,24 @@ fastify.get('/:userId/health', function (req, reply) {
 });
 
 fastify.post('/publish', async function (req, reply) {
-  const { publishId, ownerId, recipes } = req.body;
+  const { publishId: reqPublishId, ownerId, recipes } = req.body;
 
   const previousSiteOptions = {
     where: {
       ownerId: ownerId ?? '',
     },
   };
-  let previousSite;
-  try {
-    previousSite = await prisma.site.findUnique(previousSiteOptions);
-  } catch (error) {
-    // TODO check if new users get this error
-    return reply.send({message: 'error', error, published: false});
+
+  const previousSite = await prisma.site.findUnique(previousSiteOptions);
+
+  const publishId = reqPublishId || previousSite?.publishId;
+  if (!publishId) {
+    return reply.send({
+      message: 'error',
+      error: 'publishId is required',
+      published: false,
+      publishId: '',
+    });
   }
 
   const options = {
@@ -77,28 +82,30 @@ fastify.post('/publish', async function (req, reply) {
     },
     update: {
       data: JSON.stringify(recipes),
-      publishId,
+      publishId: publishId || previousSite?.publishId || '',
       ownerId,
     },
     create: {
       data: JSON.stringify(recipes),
-      publishId,
+      publishId: publishId || previousSite?.publishId || '',
       ownerId,
     },
   };
   try {
     const upsertSite = await prisma.site.upsert(options);
   } catch (error) {
+    console.log({error})
     return reply.send({
       message: 'error',
       error: error.code === 'P2002' ? 'publishId already in use' : error.message,
       published: !!previousSite,
+      publishId: previousSite?.publishId,
     });
   }
 
-  if (previousSite?.publishId && previousSite.publishId !== publishId) {
+  if (previousSite?.publishId) {
     try {
-      await fs.rename(`public/r/${previousSite.publishId}`, `public/r/${publishId}`);
+      await fs.rm(`public/r/${previousSite.publishId}`, { recursive: true, force: true });
     } catch (error) {
       console.log(error);
     }
@@ -115,7 +122,7 @@ fastify.post('/publish', async function (req, reply) {
 
   const Tags = getTags(Recipes);
 
-  const elev = new Eleventy('src', `public/r/${publishId}`, {
+  const elev = new Eleventy('src', `public/r/${publishId || previousSite.publishId}`, {
     config: async function (eleventyConfig) {
       eleventyConfig.addGlobalData('Data',
         {
@@ -131,9 +138,9 @@ fastify.post('/publish', async function (req, reply) {
   });
   try {
     await elev.write();
-    return reply.send({message: 'success', published: true});
+    return reply.send({message: 'success', published: true, publishId});
   } catch (error) {
-    return reply.send({message: 'error', error, published: false});
+    return reply.send({message: 'error', error, published: false, publishId: previousSite.publishId});
   }
 });
 

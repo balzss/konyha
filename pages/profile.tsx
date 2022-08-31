@@ -39,17 +39,17 @@ function handleDownloadRecipes(recipesData: any) {
   link.click();
 };
 
-function getPublishModalMessage({publishLoading, publishId, published, publishSiteError}: any) {
+function getPublishModalMessage({publishLoading, publishId, published, publishMessage}: any) {
   const publishDomain = process.env.NEXT_PUBLIC_SITEGEN_DOMAIN;
-  if (publishSiteError) {
-    return publishSiteError.toString();
+  if (publishMessage) {
+    return publishMessage;
   } else if (publishLoading) {
     return 'Updating site...'
   } else if (published) {
     return <>
       Site published at{'\u00A0'}
       <Link blank href={`${publishDomain}/r/${publishId}`}>
-        {publishDomain}/{publishId}
+        {publishDomain?.split('://')[1]}/r/{publishId}
       </Link>
     </>;
   } else if (!publishLoading && !published) {
@@ -70,6 +70,7 @@ export default function ProfilePage({session}: ProfilePageArgs) {
   const [updatePreferences] = useUpdateUserPreferences();
   const [publishSite, {error: publishSiteError, loading: publishLoading}] = usePublishSite();
   const [darkMode, setDarkMode] = useState<boolean>(userThemePreference === 'dark');
+  const [publishMessage, setPublishMessage] = useState<string>('');
   const [downloadConfirmOpen, setDownloadConfirmOpen] = useState<boolean>(false);
   const [publishSettingsOpen, setPublishSettingsOpen] = useState<boolean>(false);
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState<boolean>(false);
@@ -89,24 +90,30 @@ export default function ProfilePage({session}: ProfilePageArgs) {
   };
 
   const handleSitePublish = async (siteOptions: PublishOptions) => {
-    console.log(siteOptions);
     const { published, publishId } = siteOptions;
     try {
-      await publishSite({variables: {
+      const {data} = await publishSite({variables: {
         publishOptions: {
           published,
           publishId,
         }
       }});
+      if (data?.publishSite?.error) {
+        setPublishMessage(data.publishSite.error);
+      } else {
+        setPublishMessage('');
+      }
     } catch (e) {
       console.log({e})
     }
   };
 
-  // TODO separate PUBLISHED and ERROR states so they can happen at the same time
-  const publishModalStatus = publishLoading ? 'LOADING' : publishOptions?.published && !publishSiteError ? 'PUBLISHED' : 'ERROR';
+  const publishModalStatus = publishLoading ? 'LOADING' : publishOptions?.published && !publishMessage ? 'PUBLISHED' : 'ERROR';
   const publishId = publishOptions?.publishId || '';
-  const publishModalMessage = getPublishModalMessage({publishLoading, publishId, published: publishOptions?.published, publishSiteError});
+  const publishModalMessage = {
+    status: publishModalStatus,
+    text: getPublishModalMessage({publishLoading, publishId, published: publishOptions?.published, publishMessage}),
+  };
 
   return (
     <div style={{maxWidth: '900px', margin: '0 auto'}}>
@@ -119,7 +126,7 @@ export default function ProfilePage({session}: ProfilePageArgs) {
         </ListItem>
         <ListItem disablePadding>
           <ListItemButton onClick={() => setPublishSettingsOpen(true)}>
-            <ListItemText primary="Public site" secondary={publishOptions?.published ? `Published at ${publishOptions.publishId}`: '<not published>'}/>
+            <ListItemText primary="Public site" secondary={publishOptions?.published ? `Published at /r/${publishOptions.publishId}`: '<not published>'}/>
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -168,8 +175,8 @@ export default function ProfilePage({session}: ProfilePageArgs) {
       {publishSettingsOpen && (
         <PublishSettingsModal 
           publishId={publishId}
+          published={!!publishOptions?.published}
           message={publishModalMessage}
-          status={publishModalStatus}
           handleClose={() => setPublishSettingsOpen(false)}
           handlePublish={handleSitePublish}
         />

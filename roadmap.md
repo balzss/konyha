@@ -3,7 +3,6 @@
 ## In progress:
 
 - [ ] publish
-  - [ ] error handling
   - [ ] extend publish api: unpublish (delete) site
   - [ ] publish/unpublish recipes individually
 

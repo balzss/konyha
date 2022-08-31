@@ -61,7 +61,6 @@ export default function RecipeDetailsPage() {
   const recipeSlug = router.query.recipeSlug as string;
   const { data: recipesData, error: recipeError } = useSingleRecipe(recipeSlug);
   const { data: meData, error: getMeError } = useGetMe();
-  console.log({meData})
   const recipe = recipesData?.recipes[0];
   const [ deleteRecipe, { error: deleteError } ] = useDeleteRecipe();
   const tags = recipe?.tags;

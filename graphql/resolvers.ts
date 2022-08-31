@@ -6,7 +6,7 @@ import type { Resolvers, Tag } from './generated';
 import slugify from '../utils/slugify';
 import fetch from 'node-fetch';
 
-async function publishSite(userId: string, prisma: any, publishOptions: any) {
+async function publishSite(userId: string, prisma: any, publishOptions: any = {}) {
   const recipesOptions = {
     include: {tags: true},
     where: {
@@ -19,25 +19,22 @@ async function publishSite(userId: string, prisma: any, publishOptions: any) {
     const response = await fetch(`http://${process.env.HOST}:7777/publish`, {
       method: 'post',
       body: JSON.stringify({
-        publishId: publishOptions.publishId,
+        publishId: publishOptions?.publishId || '',
         ownerId: userId,
         recipes,
       }),
       headers: {'Content-Type': 'application/json'},
     });
     const responseData = await response.json();
+    console.log({responseData})
     return {
-      publishOptions: {
-        ...(responseData.message === 'error' ? {error: responseData.error} : {}),
-        published: responseData.published,
-        publishId: publishOptions.publishId,
-      }
+      publishOptions: responseData,
     };
   } catch (error) {
     return {
       error: error as string,
       publishOptions: {
-        published: false,
+        published: publishOptions.published,
         publishId: publishOptions.publishId,
       }
     }
@@ -262,6 +259,14 @@ const resolvers: Resolvers = {
 
       console.log({publishResponse})
 
+      if (publishResponse.publishOptions.message === 'error') {
+        console.log('error')
+        return {
+          message: 'error',
+          error: publishResponse.publishOptions.error,
+        }
+      }
+
       const options = {
         where: {
           id: userId,
@@ -272,10 +277,7 @@ const resolvers: Resolvers = {
       };
       const updatedPreferences = await prisma.user.update(options);
 
-      return publishResponse.error ? {
-        message: 'error',
-        error: publishResponse.error as string,
-      } : {
+      return  {
         message: 'success',
         data: updatedPreferences,
       };
