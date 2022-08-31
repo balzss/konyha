@@ -3,19 +3,20 @@
 ## In progress:
 
 - [ ] publish
-  - [ ] publish/unpublish recipes individually
+  - [ ] publish/unpublish single recipe data hook
+  - [ ] only build site from published recipes
 
 ## Alpha release:
 
 - [ ] import from json
-- [ ] email login
-- [ ] error handling
-- [ ] improve login screen
 - [ ] better slug management (collision)
-- [ ] fix theming
-- [ ] 404 pages
-- [ ] loading states
 - [ ] add footer for generated static sites
+- [ ] fix theming
+- [ ] loading states
+- [ ] error handling
+- [ ] 404 pages
+- [ ] email login
+- [ ] improve login screen
 
 ## Beta release:
 

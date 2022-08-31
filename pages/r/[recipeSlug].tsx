@@ -66,7 +66,7 @@ export default function RecipeDetailsPage() {
   const tags = recipe?.tags;
 
   const [errorConfirmOpen, setErrorConfirmOpen] = useState<boolean>(false);
-  const [showPortionCalculator, setShowPortionCalculator] = useState<boolean>(false);
+  const [checkRecipePublished, setCheckRecipePublished] = useState<boolean>(!!recipe?.published);
 
   const handleClickBack = () => {
     router.push('/');
@@ -106,11 +106,11 @@ export default function RecipeDetailsPage() {
           {icon: <EditIcon/>, action: handleClickEdit, label: 'Edit'},
         ]}
         hiddenActions={[
-          {icon: (<Checkbox
+          ...meData?.me?.publishOptions?.published ? [{icon: (<Checkbox
                   edge="start"
-                  checked={showPortionCalculator}
+                  checked={checkRecipePublished}
                   tabIndex={-1}
-                />), action: () => setShowPortionCalculator((prevState) => !prevState), label: 'Publish'},
+                />), action: () => setCheckRecipePublished((prevState) => !prevState), label: 'Published'}] : [],
           {icon: <DeleteIcon fontSize="small"/>, action: () => setErrorConfirmOpen(true), label: 'Delete recipe'},
         ]}
       />

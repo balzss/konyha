@@ -130,6 +130,7 @@ export default function ProfilePage({session}: ProfilePageArgs) {
     status: publishModalStatus,
     text: getPublishModalMessage({publishLoading, publishId, published: publishOptions?.published, publishMessage}),
   };
+  const sitePublished = !!publishOptions?.published;
 
   return (
     <div style={{maxWidth: '900px', margin: '0 auto'}}>
@@ -189,9 +190,9 @@ export default function ProfilePage({session}: ProfilePageArgs) {
         confirmText={'Download'}
       />
       {publishSettingsOpen && (
-        <PublishSettingsModal 
+        <PublishSettingsModal
           publishId={publishId}
-          published={!!publishOptions?.published}
+          published={sitePublished}
           message={publishModalMessage}
           handleClose={() => setPublishSettingsOpen(false)}
           handlePublish={handleSitePublish}

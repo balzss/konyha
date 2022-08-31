@@ -56,7 +56,7 @@ export default function PublishSettingsModal({
 
   useEffect(() => {
     setPublishStateSwitch(published);
-  }, [published]);
+  }, [published, message]);
 
   const handleSwitch = (e: any) => {
     const { checked } = e.target;
@@ -84,7 +84,7 @@ export default function PublishSettingsModal({
             <ListItemText primary="Publish static site" />
             <Switch
               edge="end"
-              disabled={message.status === 'LOADING'}
+              disabled={message.status === 'LOADING' || (!publishIdValue && !published)}
               onChange={handleSwitch}
               checked={publishStateSwitch}
             />
@@ -120,7 +120,7 @@ export default function PublishSettingsModal({
               published: publishStateSwitch,
             })} 
             variant="outlined"
-            disabled={message.status === 'LOADING'}
+            disabled={message.status === 'LOADING' || !published || !publishIdValue}
           >
             Save
           </Button>
