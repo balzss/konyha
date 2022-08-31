@@ -6,11 +6,11 @@
 
 ## Alpha release:
 
+- [ ] 404 pages
 - [ ] better slug management (collision)
 - [ ] add footer for generated static sites
 - [ ] fix theming
 - [ ] error handling
-- [ ] 404 pages
 - [ ] email login
 - [ ] improve login screen
 
@@ -19,13 +19,13 @@
 - [ ] Feature branch rule on github + use db migrations + use github releases
 - [ ] Lint rules, tests and CI
 - [ ] Desktop view (with sidebar) + shortcuts
+- [ ] bulk/batch edit
 - [ ] i18n (EN/HU)
 - [ ] Offline mode (localStorage without db connection)
 - [ ] Ory Kratos user management (+investigate)
 - [ ] Portion calculator
 - [ ] Page transitions (open card, edit recipe, etc)
 - [ ] Archive: restore deleted recipes
-- [ ] bulk/batch edit
 - [ ] Connect/sync to git repo (or other options like drive, dropbox, etc?)
 - [ ] Groceries list
   - [ ] add items manually

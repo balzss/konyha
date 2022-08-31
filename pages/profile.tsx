@@ -30,6 +30,15 @@ type ProfilePageArgs = {
   session: Session,
 }
 
+async function parseJsonFile(file: File) {
+  return new Promise((resolve, reject) => {
+    const fileReader = new FileReader()
+    fileReader.onload = event => resolve(JSON.parse(event.target.result))
+    fileReader.onerror = error => reject(error)
+    fileReader.readAsText(file)
+  })
+}
+
 function handleDownloadRecipes(recipesData: any) {
   const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
     JSON.stringify(recipesData, null, 2)
@@ -132,6 +141,12 @@ export default function ProfilePage({session}: ProfilePageArgs) {
   };
   const sitePublished = !!publishOptions?.published;
 
+  const handleImport = async (e: any) => {
+    const file = e.target.files[0];
+    const parsedImport = await parseJsonFile(file);
+    console.log({parsedImport});
+  };
+
   return (
     <div style={{maxWidth: '900px', margin: '0 auto'}}>
       <List
@@ -147,8 +162,9 @@ export default function ProfilePage({session}: ProfilePageArgs) {
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
-          <ListItemButton onClick={() => alert('Importing is not yet implemented')}>
+          <ListItemButton component="label">
             <ListItemText primary="Import from json" />
+            <input hidden accept="application/json" type="file" onChange={handleImport}/>
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>

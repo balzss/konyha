@@ -361,7 +361,6 @@ const resolvers: Resolvers = {
       return {
         message: 'success',
       };
-
     },
   }
 };
