@@ -30,6 +30,7 @@ export type Mutation = {
   __typename?: 'Mutation';
   deleteRecipe?: Maybe<Scalars['Boolean']>;
   deleteTags?: Maybe<Scalars['Boolean']>;
+  importRecipes?: Maybe<Response>;
   publishRecipe?: Maybe<Response>;
   publishSite?: Maybe<Response>;
   unpublishSite?: Maybe<Response>;
@@ -45,6 +46,11 @@ export type MutationDeleteRecipeArgs = {
 
 export type MutationDeleteTagsArgs = {
   ids: Array<Scalars['String']>;
+};
+
+
+export type MutationImportRecipesArgs = {
+  data: Array<RecipeUpsertInput>;
 };
 
 
@@ -113,12 +119,13 @@ export type Recipe = {
 };
 
 export type RecipeUpsertInput = {
-  authorId: Scalars['String'];
+  authorId?: InputMaybe<Scalars['String']>;
   description?: InputMaybe<Scalars['String']>;
   ingredients?: InputMaybe<Array<Scalars['String']>>;
   instructions?: InputMaybe<Array<Scalars['String']>>;
   name: Scalars['String'];
   published?: InputMaybe<Scalars['Boolean']>;
+  slug?: InputMaybe<Scalars['String']>;
 };
 
 export type RecipesWhereInput = {
@@ -236,6 +243,13 @@ export type PublishRecipeMutationVariables = Exact<{
 
 export type PublishRecipeMutation = { __typename?: 'Mutation', publishRecipe?: { __typename?: 'Response', message: string, error?: string | null, data?: { __typename?: 'Me', id: string, name: string, email: string, publishOptions?: { __typename?: 'PublishOptions', publishId?: string | null, published?: boolean | null } | null } | { __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, published: boolean, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> } | { __typename?: 'Tag', id: string, name: string, slug: string } | null } | null };
 
+export type ImportRecipesMutationVariables = Exact<{
+  data: Array<RecipeUpsertInput> | RecipeUpsertInput;
+}>;
+
+
+export type ImportRecipesMutation = { __typename?: 'Mutation', importRecipes?: { __typename?: 'Response', message: string, error?: string | null, data?: { __typename?: 'Me', id: string, name: string, email: string, publishOptions?: { __typename?: 'PublishOptions', publishId?: string | null, published?: boolean | null } | null } | { __typename?: 'Recipe', id: string, name: string, slug: string, description?: string | null, ingredients?: Array<string> | null, instructions?: Array<string> | null, published: boolean, tags: Array<{ __typename?: 'Tag', id: string, name: string, slug: string }> } | { __typename?: 'Tag', id: string, name: string, slug: string } | null } | null };
+
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -352,6 +366,7 @@ export type MeResolvers<ContextType = any, ParentType extends ResolversParentTyp
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
   deleteRecipe?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteRecipeArgs, 'slug'>>;
   deleteTags?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<MutationDeleteTagsArgs, 'ids'>>;
+  importRecipes?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<MutationImportRecipesArgs, 'data'>>;
   publishRecipe?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, RequireFields<MutationPublishRecipeArgs, 'publishState' | 'recipeSlug'>>;
   publishSite?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType, Partial<MutationPublishSiteArgs>>;
   unpublishSite?: Resolver<Maybe<ResolversTypes['Response']>, ParentType, ContextType>;
@@ -849,3 +864,36 @@ export function usePublishRecipeMutation(baseOptions?: Apollo.MutationHookOption
 export type PublishRecipeMutationHookResult = ReturnType<typeof usePublishRecipeMutation>;
 export type PublishRecipeMutationResult = Apollo.MutationResult<PublishRecipeMutation>;
 export type PublishRecipeMutationOptions = Apollo.BaseMutationOptions<PublishRecipeMutation, PublishRecipeMutationVariables>;
+export const ImportRecipesDocument = gql`
+    mutation ImportRecipes($data: [RecipeUpsertInput!]!) {
+  importRecipes(data: $data) {
+    ...responseFields
+  }
+}
+    ${ResponseFieldsFragmentDoc}`;
+export type ImportRecipesMutationFn = Apollo.MutationFunction<ImportRecipesMutation, ImportRecipesMutationVariables>;
+
+/**
+ * __useImportRecipesMutation__
+ *
+ * To run a mutation, you first call `useImportRecipesMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useImportRecipesMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [importRecipesMutation, { data, loading, error }] = useImportRecipesMutation({
+ *   variables: {
+ *      data: // value for 'data'
+ *   },
+ * });
+ */
+export function useImportRecipesMutation(baseOptions?: Apollo.MutationHookOptions<ImportRecipesMutation, ImportRecipesMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<ImportRecipesMutation, ImportRecipesMutationVariables>(ImportRecipesDocument, options);
+      }
+export type ImportRecipesMutationHookResult = ReturnType<typeof useImportRecipesMutation>;
+export type ImportRecipesMutationResult = Apollo.MutationResult<ImportRecipesMutation>;
+export type ImportRecipesMutationOptions = Apollo.BaseMutationOptions<ImportRecipesMutation, ImportRecipesMutationVariables>;

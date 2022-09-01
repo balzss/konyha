@@ -19,6 +19,7 @@ import {
   usePublishSiteMutation,
   useUnpublishSiteMutation,
   usePublishRecipeMutation,
+  useImportRecipesMutation,
 } from '../graphql/generated';
 
 export function useRecipes() {
@@ -98,6 +99,10 @@ export function useUnpublishSite() {
 
 export function usePublishRecipe() {
   return usePublishRecipeMutation({refetchQueries: ['GetRecipes']});
+}
+
+export function useImportRecipes() {
+  return useImportRecipesMutation({refetchQueries: ['GetRecipes']});
 }
 
 export function useSearchRecipes(): [Function, { error: ApolloError | undefined, data: Recipe[] | undefined, loading: boolean}] {

@@ -3,10 +3,14 @@
 ## In progress:
 
 - [ ] import from json
+  - [ ] handle tags
+  - [ ] handle slug collision
+- [ ] 404 pages
+  - [ ] create 404 page
+  - [ ] direct to 404 page when needed
 
 ## Alpha release:
 
-- [ ] 404 pages
 - [ ] better slug management (collision)
 - [ ] add footer for generated static sites
 - [ ] fix theming
@@ -19,7 +23,7 @@
 - [ ] Feature branch rule on github + use db migrations + use github releases
 - [ ] Lint rules, tests and CI
 - [ ] Desktop view (with sidebar) + shortcuts
-- [ ] bulk/batch edit
+- [ ] batch edit/delete
 - [ ] i18n (EN/HU)
 - [ ] Offline mode (localStorage without db connection)
 - [ ] Ory Kratos user management (+investigate)

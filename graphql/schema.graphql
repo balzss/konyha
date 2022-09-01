@@ -122,7 +122,8 @@ input RecipesWhereInput {
 }
 
 input RecipeUpsertInput {
-  authorId: String!
+  authorId: String
+  slug: String
   name: String!
   description: String
   ingredients: [String!]
@@ -173,6 +174,12 @@ mutation PublishRecipe ($recipeSlug: String!, $publishState: Boolean!) {
   }
 }
 
+mutation ImportRecipes ($data: [RecipeUpsertInput!]!) {
+  importRecipes(data: $data) {
+    ...responseFields
+  }
+}
+
 type Query {
   recipes(where: RecipesWhereInput): [Recipe!]!
   tags: [Tag!]!
@@ -188,4 +195,5 @@ type Mutation {
   publishSite(publishOptions: PublishOptionsInput): Response
   unpublishSite: Response
   publishRecipe(recipeSlug: String!, publishState: Boolean!): Response
+  importRecipes(data: [RecipeUpsertInput!]!): Response
 }

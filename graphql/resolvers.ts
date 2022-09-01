@@ -163,7 +163,7 @@ const resolvers: Resolvers = {
         throw new AuthenticationError('No session found, please log in');
       }
       const { userId } = session;
-      if (data.authorId !== userId) {
+      if (!data.authorId || data.authorId !== userId) {
         throw new ForbiddenError('Not authorized for this action');
       }
 
@@ -357,6 +357,25 @@ const resolvers: Resolvers = {
           error: e as string,
         };
       }
+
+      return {
+        message: 'success',
+      };
+    },
+    importRecipes: async (_, {data}, {prisma, session}) => {
+      if (!session) {
+        throw new AuthenticationError('No session found, please log in!');
+      }
+      const { userId } = session;
+
+      // TODO handle tags
+      // TODO handle slug collision
+      const options = {
+        data: [
+          ...data.map(r => ({...r, authorId: userId}))
+        ],
+      };
+      const createRecipes = await prisma.recipe.createMany(options);
 
       return {
         message: 'success',

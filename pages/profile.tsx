@@ -23,6 +23,7 @@ import {
   useUpdateUserPreferences,
   usePublishSite,
   useUnpublishSite,
+  useImportRecipes,
 } from '../dataHooks';
 import type { PublishOptions } from '../components/PublishSettingsModal';
 
@@ -33,15 +34,24 @@ type ProfilePageArgs = {
 async function parseJsonFile(file: File) {
   return new Promise((resolve, reject) => {
     const fileReader = new FileReader()
-    fileReader.onload = event => resolve(JSON.parse(event.target.result))
+    fileReader.onload = event => resolve(JSON.parse(event?.target?.result as string))
     fileReader.onerror = error => reject(error)
     fileReader.readAsText(file)
   })
 }
 
 function handleDownloadRecipes(recipesData: any) {
+  const formattedRecipes = recipesData.recipes.map(({name, slug, description, ingredients, instructions, published, tags}: any) => ({
+    description,
+    ingredients,
+    instructions,
+    name,
+    published,
+    slug,
+    tags,
+  }));
   const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
-    JSON.stringify(recipesData, null, 2)
+    JSON.stringify({recipes: formattedRecipes}, null, 2)
   )}`;
   const link = document.createElement('a');
   link.href = jsonString;
@@ -78,6 +88,7 @@ export default function ProfilePage({session}: ProfilePageArgs) {
   const publishOptions = meData?.me.publishOptions;
   const [getRecipes] = useLazyRecipes(handleDownloadRecipes);
   const [updatePreferences] = useUpdateUserPreferences();
+  const [importRecipes] = useImportRecipes();
   const [publishSite, {loading: publishLoading}] = usePublishSite();
   const [unpublishSite] = useUnpublishSite();
   const [darkMode, setDarkMode] = useState<boolean>(userThemePreference === 'dark');
@@ -143,8 +154,20 @@ export default function ProfilePage({session}: ProfilePageArgs) {
 
   const handleImport = async (e: any) => {
     const file = e.target.files[0];
-    const parsedImport = await parseJsonFile(file);
-    console.log({parsedImport});
+    if (!file) return;
+    const parsedImport: any = await parseJsonFile(file);
+    if (!parsedImport?.recipes) return;
+
+    await importRecipes({variables: {
+      data: parsedImport.recipes.map(({name, slug, description, instructions, ingredients, published}: any) => ({
+        description,
+        ingredients,
+        instructions,
+        name,
+        published,
+        slug,
+      })),
+    }});
   };
 
   return (
