@@ -2,16 +2,18 @@
 
 ## In progress:
 
+- [ ] better slug management (collision)
+  - [ ] move to utils
+  - [ ] fix renaming to `xy (n)` if `xy (n)` exists
 - [ ] import from json
-  - [ ] handle tags
   - [ ] handle slug collision
+  - [ ] handle tags
 - [ ] 404 pages
   - [ ] create 404 page
   - [ ] direct to 404 page when needed
 
 ## Alpha release:
 
-- [ ] better slug management (collision)
 - [ ] add footer for generated static sites
 - [ ] fix theming
 - [ ] error handling
@@ -29,7 +31,7 @@
 - [ ] Ory Kratos user management (+investigate)
 - [ ] Portion calculator
 - [ ] Page transitions (open card, edit recipe, etc)
-- [ ] Archive: restore deleted recipes
+- [ ] History + archive: revert or restore recipes
 - [ ] Connect/sync to git repo (or other options like drive, dropbox, etc?)
 - [ ] Groceries list
   - [ ] add items manually
@@ -40,5 +42,4 @@
 - [ ] Timers page
   - [ ] link to timers from recipes
 - [ ] presentation mode
-- [ ] history
 - [ ] report

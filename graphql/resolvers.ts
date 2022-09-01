@@ -168,18 +168,38 @@ const resolvers: Resolvers = {
       }
 
       // handle slug collision
-      const baseSlug = slugify(data.name);
-      const recipesWithSameSlug = await prisma.recipe.findMany({
+      // const baseSlug = slugify(data.name);
+      const recipeWithSameName = await prisma.recipe.findMany({
         where: {
           id: {
             not: id ?? '',
           },
-          slug: {
-            startsWith: baseSlug,
-          }
+          name: {
+            startsWith: data.name,
+          },
         }
       });
-      const slug = baseSlug + (recipesWithSameSlug.length || '');
+      // TODO move to utils + fix renaming to `xy (n)` if `xy (n)` exists
+      const recipeCounts =
+        recipeWithSameName.map((r: any) => r.name).includes(data.name)
+        && recipeWithSameName
+          .map((r: any) => r.name === data.name ? `${data.name} (1)` : r.name)
+          .filter((r: any) => r.match(new RegExp(`${data.name}( \(\d\))?`)))
+          .map((r: any) => {
+            const n = Number(r.split(')')[0].slice(-1));
+            console.log({n});
+            return n;
+          })
+          .sort((a: number, b: number) => a - b);
+      console.log({recipeCounts})
+
+      if (recipeCounts.length) {
+        recipeCounts.push(9999);
+      }
+      const nextRecipeCount = recipeCounts && recipeCounts.find((n: number,i: number) => recipeCounts[i+1]-n > 1 ) + 1;
+
+      const newName = `${data.name}${nextRecipeCount ? ` (${nextRecipeCount})` : ''}`;
+      const slug = slugify(newName);
 
       const formattedTags = tagsConnect.map((tagId) => ({id: tagId}));
 
@@ -207,19 +227,21 @@ const resolvers: Resolvers = {
         },
         update: {
           ...data,
+          name: newName,
           slug,
           tags: {
             set: formattedTags,
             create: newTags,
-          }
+          },
         },
         create: {
           ...data,
+          name: newName,
           slug,
           tags: {
             connect: formattedTags,
             create: newTags,
-          }
+          },
         },
       };
       const upsertRecipe = await prisma.recipe.upsert(options);
@@ -369,7 +391,10 @@ const resolvers: Resolvers = {
       const { userId } = session;
 
       // TODO handle tags
+      //   - check if tags exsist
+      //   - create new tags that don't exist
       // TODO handle slug collision
+      //   - options: override, ignore, rename
       const options = {
         data: [
           ...data.map(r => ({...r, authorId: userId}))
