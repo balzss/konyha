@@ -2,22 +2,10 @@ import { ReactElement, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Session } from 'next-auth';
 import { useSession, signOut } from 'next-auth/react';
-import {
-  Switch,
-  List,
-  ListItem,
-  ListItemText,
-  ListItemButton,
-} from '@mui/material';
-import { 
-  Head,
-  Layout,
-  ConfirmModal,
-  PublishSettingsModal,
-  Link,
-} from '../components/';
+import { Switch, List, ListItem, ListItemText, ListItemButton } from '@mui/material';
+import { Head, Layout, ConfirmModal, PublishSettingsModal, Link } from '../components/';
 import { propsWithAuth } from '../utils/propsWithAuth';
-import { 
+import {
   useGetMe,
   useLazyRecipes,
   useUpdateUserPreferences,
@@ -28,50 +16,54 @@ import {
 import type { PublishOptions } from '../components/PublishSettingsModal';
 
 type ProfilePageArgs = {
-  session: Session,
-}
+  session: Session;
+};
 
 async function parseJsonFile(file: File) {
   return new Promise((resolve, reject) => {
-    const fileReader = new FileReader()
-    fileReader.onload = event => resolve(JSON.parse(event?.target?.result as string))
-    fileReader.onerror = error => reject(error)
-    fileReader.readAsText(file)
-  })
+    const fileReader = new FileReader();
+    fileReader.onload = (event) => resolve(JSON.parse(event?.target?.result as string));
+    fileReader.onerror = (error) => reject(error);
+    fileReader.readAsText(file);
+  });
 }
 
 function handleDownloadRecipes(recipesData: any) {
-  const formattedRecipes = recipesData.recipes.map(({name, slug, description, ingredients, instructions, published, tags}: any) => ({
-    description,
-    ingredients,
-    instructions,
-    name,
-    published,
-    slug,
-    tags,
-  }));
+  const formattedRecipes = recipesData.recipes.map(
+    ({ name, slug, description, ingredients, instructions, published, tags }: any) => ({
+      description,
+      ingredients,
+      instructions,
+      name,
+      published,
+      slug,
+      tags,
+    }),
+  );
   const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
-    JSON.stringify({recipes: formattedRecipes}, null, 2)
+    JSON.stringify({ recipes: formattedRecipes }, null, 2),
   )}`;
   const link = document.createElement('a');
   link.href = jsonString;
   link.download = `konyha-data-export_${new Date().toLocaleDateString('sv')}.json`;
   link.click();
-};
+}
 
-function getPublishModalMessage({publishLoading, publishId, published, publishMessage}: any) {
+function getPublishModalMessage({ publishLoading, publishId, published, publishMessage }: any) {
   const publishDomain = process.env.NEXT_PUBLIC_SITEGEN_DOMAIN;
   if (publishMessage) {
     return publishMessage;
   } else if (publishLoading) {
-    return 'Updating site...'
+    return 'Updating site...';
   } else if (published) {
-    return <>
-      Site published at{'\u00A0'}
-      <Link blank href={`${publishDomain}/r/${publishId}`}>
-        {publishDomain?.split('://')[1]}/r/{publishId}
-      </Link>
-    </>;
+    return (
+      <>
+        Site published at{'\u00A0'}
+        <Link blank href={`${publishDomain}/r/${publishId}`}>
+          {publishDomain?.split('://')[1]}/r/{publishId}
+        </Link>
+      </>
+    );
   } else if (!publishLoading && !published) {
     return 'Site not published';
   } else {
@@ -79,7 +71,7 @@ function getPublishModalMessage({publishLoading, publishId, published, publishMe
   }
 }
 
-export default function ProfilePage({session}: ProfilePageArgs) {
+export default function ProfilePage({ session }: ProfilePageArgs) {
   const router = useRouter();
   const { data: sessionData } = useSession();
   const userThemePreference = sessionData?.theme;
@@ -89,7 +81,7 @@ export default function ProfilePage({session}: ProfilePageArgs) {
   const [getRecipes] = useLazyRecipes(handleDownloadRecipes);
   const [updatePreferences] = useUpdateUserPreferences();
   const [importRecipes] = useImportRecipes();
-  const [publishSite, {loading: publishLoading}] = usePublishSite();
+  const [publishSite, { loading: publishLoading }] = usePublishSite();
   const [unpublishSite] = useUnpublishSite();
   const [darkMode, setDarkMode] = useState<boolean>(userThemePreference === 'dark');
   const [publishMessage, setPublishMessage] = useState<string>('');
@@ -98,16 +90,18 @@ export default function ProfilePage({session}: ProfilePageArgs) {
   const [logoutConfirmOpen, setLogoutConfirmOpen] = useState<boolean>(false);
 
   const handleSignOut = () => {
-    signOut({callbackUrl: '/login'});
+    signOut({ callbackUrl: '/login' });
   };
 
-  const handleChangeTheme = async ({target}: any) => {
+  const handleChangeTheme = async ({ target }: any) => {
     setDarkMode(target.checked);
-    await updatePreferences({variables: {
-      preferences: {
-        theme: target.checked ? 'dark' : 'light',
-      }
-    }});
+    await updatePreferences({
+      variables: {
+        preferences: {
+          theme: target.checked ? 'dark' : 'light',
+        },
+      },
+    });
     router.reload();
   };
 
@@ -115,40 +109,46 @@ export default function ProfilePage({session}: ProfilePageArgs) {
     const { published, publishId } = siteOptions;
     if (!published) {
       try {
-        const {data} = await unpublishSite();
+        const { data } = await unpublishSite();
         if (data?.unpublishSite?.error) {
           setPublishMessage(data.unpublishSite.error);
         } else {
           setPublishMessage('');
         }
       } catch (e) {
-        console.log({e})
+        console.log({ e });
       }
       return;
     }
 
     try {
-      const {data} = await publishSite({variables: {
-        publishOptions: {
-          published,
-          publishId,
-        }
-      }});
+      const { data } = await publishSite({
+        variables: {
+          publishOptions: {
+            published,
+            publishId,
+          },
+        },
+      });
       if (data?.publishSite?.error) {
         setPublishMessage(data.publishSite.error);
       } else {
         setPublishMessage('');
       }
     } catch (e) {
-      console.log({e})
+      console.log({ e });
     }
   };
 
-  const publishModalStatus : 'LOADING' | 'PUBLISHED' | 'ERROR' = publishLoading ? 'LOADING' : publishOptions?.published && !publishMessage ? 'PUBLISHED' : 'ERROR';
+  const publishModalStatus: 'LOADING' | 'PUBLISHED' | 'ERROR' = publishLoading
+    ? 'LOADING'
+    : publishOptions?.published && !publishMessage
+    ? 'PUBLISHED'
+    : 'ERROR';
   const publishId = publishOptions?.publishId || '';
   const publishModalMessage = {
     status: publishModalStatus,
-    text: getPublishModalMessage({publishLoading, publishId, published: publishOptions?.published, publishMessage}),
+    text: getPublishModalMessage({ publishLoading, publishId, published: publishOptions?.published, publishMessage }),
   };
   const sitePublished = !!publishOptions?.published;
 
@@ -158,36 +158,39 @@ export default function ProfilePage({session}: ProfilePageArgs) {
     const parsedImport: any = await parseJsonFile(file);
     if (!parsedImport?.recipes) return;
 
-    await importRecipes({variables: {
-      data: parsedImport.recipes.map(({name, slug, description, instructions, ingredients, published}: any) => ({
-        description,
-        ingredients,
-        instructions,
-        name,
-        published,
-        slug,
-      })),
-    }});
+    await importRecipes({
+      variables: {
+        data: parsedImport.recipes.map(({ name, slug, description, instructions, ingredients, published }: any) => ({
+          description,
+          ingredients,
+          instructions,
+          name,
+          published,
+          slug,
+        })),
+      },
+    });
   };
 
   return (
-    <div style={{maxWidth: '900px', margin: '0 auto'}}>
-      <List
-        sx={{ width: '100%', maxWidth: 480, bgcolor: 'background.default', p: 1}}
-      >
-        <Head title="Személyes"/>
+    <div style={{ maxWidth: '900px', margin: '0 auto' }}>
+      <List sx={{ width: '100%', maxWidth: 480, bgcolor: 'background.default', p: 1 }}>
+        <Head title="Személyes" />
         <ListItem>
-          <ListItemText primary="Email" secondary={email || 'n/a'}/>
+          <ListItemText primary="Email" secondary={email || 'n/a'} />
         </ListItem>
         <ListItem disablePadding>
           <ListItemButton onClick={() => setPublishSettingsOpen(true)}>
-            <ListItemText primary="Public site" secondary={publishOptions?.published ? `Published at /r/${publishOptions.publishId}`: '<not published>'}/>
+            <ListItemText
+              primary="Public site"
+              secondary={publishOptions?.published ? `Published at /r/${publishOptions.publishId}` : '<not published>'}
+            />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
           <ListItemButton component="label">
             <ListItemText primary="Import from json" />
-            <input hidden accept="application/json" type="file" onChange={handleImport}/>
+            <input hidden accept="application/json" type="file" onChange={handleImport} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -239,14 +242,10 @@ export default function ProfilePage({session}: ProfilePageArgs) {
       )}
     </div>
   );
-};
+}
 
 ProfilePage.getLayout = (page: ReactElement) => {
-  return (
-    <Layout>
-      {page}
-    </Layout>
-  );
+  return <Layout>{page}</Layout>;
 };
 
 export const getServerSideProps = propsWithAuth;

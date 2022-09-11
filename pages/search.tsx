@@ -1,23 +1,11 @@
 import { useRouter } from 'next/router';
-import {
-  Box,
-  Alert,
-  Container,
-  Grid,
-  Skeleton,
-} from '@mui/material';
-import {
-  Head,
-  SearchBar,
-  RecipeCard,
-} from '../components';
-import { 
-  useSearchRecipes,
-} from '../dataHooks';
+import { Box, Alert, Container, Grid, Skeleton } from '@mui/material';
+import { Head, SearchBar, RecipeCard } from '../components';
+import { useSearchRecipes } from '../dataHooks';
 
 export default function SearchPage() {
   const router = useRouter();
-  const [searchRecipes, {data: searchResults, error: searchRecipesError, loading}] = useSearchRecipes();
+  const [searchRecipes, { data: searchResults, error: searchRecipesError, loading }] = useSearchRecipes();
   const handleQueryChange = (query: string) => {
     searchRecipes(query);
   };
@@ -26,7 +14,7 @@ export default function SearchPage() {
     router.push(`/r/${recipeSlug}`);
   };
 
-  return(
+  return (
     <Box
       sx={{
         bgcolor: 'background.default',
@@ -35,18 +23,18 @@ export default function SearchPage() {
         py: 8,
       }}
     >
-      <Head title="Search"/>
-      <SearchBar onDebouncedChange={handleQueryChange} delay={500}/>
-      <Container maxWidth="md" sx={{px: 2}} disableGutters>
+      <Head title="Search" />
+      <SearchBar onDebouncedChange={handleQueryChange} delay={500} />
+      <Container maxWidth="md" sx={{ px: 2 }} disableGutters>
         <Grid container spacing={1}>
           <>
             {loading && (
               <>
                 <Grid item xs={12} sm={6} md={4} lg={3}>
-                  <Skeleton variant="rectangular" height={118}/>
+                  <Skeleton variant="rectangular" height={118} />
                 </Grid>
                 <Grid item xs={12} sm={6} md={4} lg={3}>
-                  <Skeleton variant="rectangular" height={118}/>
+                  <Skeleton variant="rectangular" height={118} />
                 </Grid>
               </>
             )}
@@ -55,11 +43,12 @@ export default function SearchPage() {
                 <Alert severity="error">{searchRecipesError.message}</Alert>
               </Grid>
             )}
-            {searchResults && searchResults.map((recipe) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={recipe.id}>
-                <RecipeCard recipe={recipe} onClick={handleClickRecipe}/>
-              </Grid>
-            ))}
+            {searchResults &&
+              searchResults.map((recipe) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={recipe.id}>
+                  <RecipeCard recipe={recipe} onClick={handleClickRecipe} />
+                </Grid>
+              ))}
           </>
         </Grid>
       </Container>

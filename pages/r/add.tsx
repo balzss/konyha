@@ -13,15 +13,8 @@ import {
   Select,
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
-import {
-  Close as CloseIcon,
-  Save as SaveIcon,
-} from '@mui/icons-material'
-import {
-  Head,
-  TopBar,
-  ConfirmModal,
-} from '../../components';
+import { Close as CloseIcon, Save as SaveIcon } from '@mui/icons-material';
+import { Head, TopBar, ConfirmModal } from '../../components';
 import { useSingleRecipe, useTags, useUpsertRecipe } from '../../dataHooks';
 import { propsWithAuth } from '../../utils/propsWithAuth';
 
@@ -36,7 +29,7 @@ export default function EditRecipePage() {
   const router = useRouter();
   const recipeSlug = router.query.recipeSlug as string;
   const pageTitle = recipeSlug ? 'Edit recipe' : 'New recipe';
-  const [ upsertRecipe, {error: recipeUpsertError} ] = useUpsertRecipe();
+  const [upsertRecipe, { error: recipeUpsertError }] = useUpsertRecipe();
   const { data: recipesData } = useSingleRecipe(recipeSlug);
   const recipe = recipesData?.recipes[0];
   const { data: tagsData } = useTags();
@@ -83,7 +76,13 @@ export default function EditRecipePage() {
       tagsCreate: trimmedNewTags,
     };
 
-    const {data: {upsertRecipe: {data: {slug}}}} = await upsertRecipe(upsertOptions);
+    const {
+      data: {
+        upsertRecipe: {
+          data: { slug },
+        },
+      },
+    } = await upsertRecipe(upsertOptions);
     if (slug) {
       router.push(`/r/${slug}`);
     }
@@ -106,13 +105,11 @@ export default function EditRecipePage() {
         paddingTop: '80px',
       }}
     >
-      <Head title={pageTitle}/>
+      <Head title={pageTitle} />
       <TopBar
-        leadingAction={{action: handleClickBack, icon: <CloseIcon/>, label: 'Vissza'}}
+        leadingAction={{ action: handleClickBack, icon: <CloseIcon />, label: 'Vissza' }}
         title={pageTitle}
-        trailingActions={[
-          {icon: <SaveIcon/>, action: () => setSaveConfirmOpen(true), label: 'Mentés'},
-        ]}
+        trailingActions={[{ icon: <SaveIcon />, action: () => setSaveConfirmOpen(true), label: 'Mentés' }]}
         hiddenActions={[]}
       />
       <ConfirmModal
@@ -123,16 +120,16 @@ export default function EditRecipePage() {
         handleConfirm={handleSubmitRecipe}
         confirmText={'Save'}
       />
-      <div style={{maxWidth: '900px', margin: '0 auto', padding: '1rem'}}>
+      <div style={{ maxWidth: '900px', margin: '0 auto', padding: '1rem' }}>
         <form onSubmit={handleSubmitRecipe}>
           <TextField
             label="Name"
             variant="outlined"
             margin="dense"
             required
-            sx={{width: '100%'}}
+            sx={{ width: '100%' }}
             value={recipeName}
-            onChange={({target}) => setRecipeName(target.value)}
+            onChange={({ target }) => setRecipeName(target.value)}
           />
           <TextField
             label="Description"
@@ -140,9 +137,9 @@ export default function EditRecipePage() {
             margin="dense"
             multiline
             minRows={2}
-            sx={{width: '100%'}}
+            sx={{ width: '100%' }}
             value={description}
-            onChange={({target}) => setDescription(target.value)}
+            onChange={({ target }) => setDescription(target.value)}
           />
           <TextField
             label="Ingredients"
@@ -151,9 +148,9 @@ export default function EditRecipePage() {
             required
             multiline
             minRows={4}
-            sx={{width: '100%'}}
+            sx={{ width: '100%' }}
             value={ingredients}
-            onChange={({target}) => setIngredients(target.value)}
+            onChange={({ target }) => setIngredients(target.value)}
           />
           <TextField
             label="Instructions"
@@ -162,11 +159,11 @@ export default function EditRecipePage() {
             required
             multiline
             minRows={4}
-            sx={{width: '100%'}}
+            sx={{ width: '100%' }}
             value={instructions}
-            onChange={({target}) => setInstructions(target.value)}
+            onChange={({ target }) => setInstructions(target.value)}
           />
-          <FormControl margin="dense" sx={{ width: "100%" }}>
+          <FormControl margin="dense" sx={{ width: '100%' }}>
             <InputLabel id="tag-select-label">Tags</InputLabel>
             <Select
               disabled={!tags?.length}
@@ -177,26 +174,28 @@ export default function EditRecipePage() {
               input={<OutlinedInput label="Tags" />}
               renderValue={(selected) => selected.map(getTagNameById).join(', ')}
             >
-              {tags && tags.length > 0 && tags.map(({name, id}) => (
-                <MenuItem key={id} value={id}>
-                  <Checkbox checked={selectedTags.indexOf(id) > -1} />
-                  <ListItemText primary={name} />
-                </MenuItem>
-              ))}
+              {tags &&
+                tags.length > 0 &&
+                tags.map(({ name, id }) => (
+                  <MenuItem key={id} value={id}>
+                    <Checkbox checked={selectedTags.indexOf(id) > -1} />
+                    <ListItemText primary={name} />
+                  </MenuItem>
+                ))}
             </Select>
           </FormControl>
           <TextField
             label="New tags"
             variant="outlined"
             margin="dense"
-            sx={{width: '100%'}}
+            sx={{ width: '100%' }}
             value={newTags}
-            onChange={({target}) => setNewTags(target.value)}
+            onChange={({ target }) => setNewTags(target.value)}
           />
         </form>
       </div>
     </Box>
   );
-};
+}
 
 export const getServerSideProps = propsWithAuth;

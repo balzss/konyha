@@ -6,13 +6,13 @@ import { getSession } from 'next-auth/react';
 import prisma from '../../prisma/prisma-client';
 import resolvers from '../../graphql/resolvers';
 
-const typeDefs = readFileSync(path.resolve('./graphql', 'schema.graphql'), 'utf8')
+const typeDefs = readFileSync(path.resolve('./graphql', 'schema.graphql'), 'utf8');
 const cors = Cors();
 const apolloServer = new ApolloServer({
   resolvers,
   typeDefs,
-  debug: (process.env.NODE_ENV === 'development'),
-  context: async function createContext({req}) {
+  debug: process.env.NODE_ENV === 'development',
+  context: async function createContext({ req }) {
     const session = await getSession({ req });
     return {
       prisma,
@@ -38,4 +38,4 @@ export const config = {
   api: {
     bodyParser: false,
   },
-}
+};

@@ -2,26 +2,22 @@ import type { ReactElement, ReactNode } from 'react';
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import { SessionProvider } from 'next-auth/react';
-import {
-  ApolloClient,
-  ApolloProvider,
-  InMemoryCache,
-} from "@apollo/client";
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { CssBaseline } from '@mui/material';
 import { CustomThemeProvider } from '../components';
 import '../styles/globals.css';
 
 type NextPageWithLayout = NextPage & {
   getLayout?: (page: ReactElement) => ReactNode;
-}
+};
 
 type AppPropsWithLayout = AppProps & {
   Component: NextPageWithLayout;
-}
+};
 
 const client = new ApolloClient({
   uri: '/api/graphql',
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
 });
 
 function App({ Component, pageProps }: AppPropsWithLayout) {
@@ -37,6 +33,6 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
       </ApolloProvider>
     </SessionProvider>
   );
-};
+}
 
 export default App;

@@ -1,22 +1,7 @@
 import type { ReactElement } from 'react';
 import { useRouter } from 'next/router';
-import {
-  Alert,
-  AlertTitle,
-  Container,
-  Grid,
-  Box,
-  Skeleton,
-} from '@mui/material';
-import {
-  Head,
-  BottomNav,
-  Layout,
-  RecipeCard,
-  HomeTopBar,
-  Link,
-  EmptyTagWarning,
-} from '../components';
+import { Alert, AlertTitle, Container, Grid, Box, Skeleton } from '@mui/material';
+import { Head, BottomNav, Layout, RecipeCard, HomeTopBar, Link, EmptyTagWarning } from '../components';
 import { useRecipes, useTags } from '../dataHooks';
 import { propsWithAuth } from '../utils/propsWithAuth';
 import getTagsFromUrl from '../utils/getTagsFromUrl';
@@ -50,9 +35,9 @@ export default function MainPage() {
         py: 8,
       }}
     >
-      <Head title="Recipes"/>
+      <Head title="Recipes" />
       <HomeTopBar />
-      <Container maxWidth="md" sx={{px: 2}} disableGutters>
+      <Container maxWidth="md" sx={{ px: 2 }} disableGutters>
         <Grid container spacing={1.5}>
           <>
             {error && (
@@ -60,50 +45,47 @@ export default function MainPage() {
                 <Alert severity="error">{error.message}</Alert>
               </Grid>
             )}
-            {recipes && recipes?.map((recipe) => (
-              <Grid item xs={12} sm={6} md={4} lg={4} key={recipe.id}>
-                <RecipeCard recipe={recipe} onClick={handleClickRecipe}/>
-              </Grid>
-            ))}
-            {(!recipes || !recipes.length) && (selectedTags.length ? (
-              <Grid item>
-                <EmptyTagWarning tags={selectedTags}/>
-              </Grid>
-            ) : (loading ? (
-              <>
-                <Grid item xs={12} sm={6} md={4} lg={4}>
-                  <Skeleton variant="rectangular" height={118}/>
+            {recipes &&
+              recipes?.map((recipe) => (
+                <Grid item xs={12} sm={6} md={4} lg={4} key={recipe.id}>
+                  <RecipeCard recipe={recipe} onClick={handleClickRecipe} />
                 </Grid>
-                <Grid item xs={12} sm={6} md={4} lg={4}>
-                  <Skeleton variant="rectangular" height={118}/>
+              ))}
+            {(!recipes || !recipes.length) &&
+              (selectedTags.length ? (
+                <Grid item>
+                  <EmptyTagWarning tags={selectedTags} />
                 </Grid>
-              </>
-            ) : (
-              <Grid item>
-                <Alert variant="outlined" severity="info">
-                  <AlertTitle>You don&apos;t have any recipes</AlertTitle>
-                  Your recipes are going to be displayed here after you create them.
-                  <br /><br />
-                  <Link href="/r/add">
-                    Add new recipe
-                  </Link>
-                </Alert>
-              </Grid>
-            )))}
+              ) : loading ? (
+                <>
+                  <Grid item xs={12} sm={6} md={4} lg={4}>
+                    <Skeleton variant="rectangular" height={118} />
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={4} lg={4}>
+                    <Skeleton variant="rectangular" height={118} />
+                  </Grid>
+                </>
+              ) : (
+                <Grid item>
+                  <Alert variant="outlined" severity="info">
+                    <AlertTitle>You don&apos;t have any recipes</AlertTitle>
+                    Your recipes are going to be displayed here after you create them.
+                    <br />
+                    <br />
+                    <Link href="/r/add">Add new recipe</Link>
+                  </Alert>
+                </Grid>
+              ))}
           </>
         </Grid>
       </Container>
-      <BottomNav/>
+      <BottomNav />
     </Box>
   );
 }
 
 MainPage.getLayout = (page: ReactElement) => {
-  return (
-    <Layout>
-      {page}
-    </Layout>
-  );
+  return <Layout>{page}</Layout>;
 };
 
 export const getServerSideProps = propsWithAuth;
