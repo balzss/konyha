@@ -1,9 +1,8 @@
 export default function slugify(input: string): string {
   return input
-    ?.trim()
+    .trim()
     .toLowerCase()
-    .normalize('NFD')
-    .replace(/\p{Diacritic}/gu, '')
+    .normalize('NFKD')
     .replace(/[^\w ]+/g, '')
     .replace(/ +/g, '-');
 }
