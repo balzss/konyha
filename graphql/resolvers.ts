@@ -180,12 +180,24 @@ const resolvers: Resolvers = {
         }
       });
       // TODO move to utils + fix renaming to `xy (n)` if `xy (n)` exists
+      // test scenarios:
+      //   - new recipe name already exists but there arent copies
+      //   - new recipe name exists and there is at least one copy
+      //   - new recipe name is a copy of another name
       const recipeCounts =
         recipeWithSameName.map((r: any) => r.name).includes(data.name)
         && recipeWithSameName
-          .map((r: any) => r.name === data.name ? `${data.name} (1)` : r.name)
-          .filter((r: any) => r.match(new RegExp(`${data.name}( \(\d\))?`)))
           .map((r: any) => {
+            const newName = r.name === data.name ? `${data.name} (1)` : r.name;
+            console.log({newName})
+            return newName;
+          }).filter((r: any) => {
+            const regexString = data.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+            console.log({regexString})
+            const match = r.match(new RegExp(`${regexString}( \(\d\))?`));
+            console.log({match});
+            return match;
+          }).map((r: any) => {
             const n = Number(r.split(')')[0].slice(-1));
             console.log({n});
             return n;
