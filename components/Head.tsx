@@ -4,12 +4,10 @@ type HeadProps = {
   title: string;
 };
 
-export default function Head({
-  title,
-}: HeadProps) {
+export default function Head({ title }: HeadProps) {
   return (
     <NextHead>
       <title>{title}</title>
     </NextHead>
-  )
+  );
 }

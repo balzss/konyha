@@ -14,6 +14,6 @@ export async function propsWithAuth(ctx: GetServerSidePropsContext) {
   return {
     props: {
       session,
-    }
+    },
   };
-};
+}

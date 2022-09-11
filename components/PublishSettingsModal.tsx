@@ -1,16 +1,5 @@
 import { useState, useEffect } from 'react';
-import {
-  Modal,
-  Box,
-  Typography,
-  Button,
-  Stack,
-  Switch,
-  List,
-  ListItem,
-  ListItemText,
-  TextField,
-} from '@mui/material';
+import { Modal, Box, Typography, Button, Stack, Switch, List, ListItem, ListItemText, TextField } from '@mui/material';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import RefreshIcon from '@mui/icons-material/Refresh';
@@ -31,7 +20,7 @@ const modalStyle = {
 export type PublishOptions = {
   publishId: string;
   published: boolean;
-}
+};
 
 type PublishSettingsModalProps = {
   publishId: string;
@@ -70,13 +59,13 @@ export default function PublishSettingsModal({
   return (
     <Modal
       open
-      onClose={(_, reason) => reason === 'backdropClick' ? null : handleClose()}
+      onClose={(_, reason) => (reason === 'backdropClick' ? null : handleClose())}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
-      sx={{zIndex: 9999}}
+      sx={{ zIndex: 9999 }}
     >
       <Box sx={modalStyle}>
-        <Typography component="h2" sx={{fontWeight: 400, fontSize: '24px', marginBottom: '16px'}}>
+        <Typography component="h2" sx={{ fontWeight: 400, fontSize: '24px', marginBottom: '16px' }}>
           Publish options
         </Typography>
         <List>
@@ -90,35 +79,35 @@ export default function PublishSettingsModal({
             />
           </ListItem>
           <ListItem disablePadding>
-          <TextField
-            label="Publish ID"
-            variant="outlined"
-            margin="normal"
-            disabled={message.status === 'LOADING'}
-            value={publishIdValue}
-            onChange={(e: any) => setPublishIdValue(e.target.value)}
-            sx={{width: '100%'}}
-          />
+            <TextField
+              label="Publish ID"
+              variant="outlined"
+              margin="normal"
+              disabled={message.status === 'LOADING'}
+              value={publishIdValue}
+              onChange={(e: any) => setPublishIdValue(e.target.value)}
+              sx={{ width: '100%' }}
+            />
           </ListItem>
         </List>
-        <Typography component="div" sx={{fontWeight: 400, fontSize: '14px', margin: '8px 0', display: 'flex' }}>
+        <Typography component="div" sx={{ fontWeight: 400, fontSize: '14px', margin: '8px 0', display: 'flex' }}>
           {message.status === 'PUBLISHED' ? (
-            <CheckCircleIcon fontSize="small" sx={{mr: 0.5}}/>
-          ) : (message.status === 'LOADING') ? (
-            <RefreshIcon className="rotate" fontSize="small" sx={{mr: 0.5}}/>
+            <CheckCircleIcon fontSize="small" sx={{ mr: 0.5 }} />
+          ) : message.status === 'LOADING' ? (
+            <RefreshIcon className="rotate" fontSize="small" sx={{ mr: 0.5 }} />
           ) : (
-            <CancelIcon fontSize="small" sx={{mr: 0.5}}/>
+            <CancelIcon fontSize="small" sx={{ mr: 0.5 }} />
           )}
-          <span style={{display: 'flex', flexWrap: 'wrap'}}>
-            {message.text}
-          </span>
+          <span style={{ display: 'flex', flexWrap: 'wrap' }}>{message.text}</span>
         </Typography>
-        <Stack direction="row-reverse" spacing={3} sx={{mt: 3}}>
-          <Button 
-            onClick={() => handlePublish({
-              publishId: publishIdValue,
-              published: publishStateSwitch,
-            })} 
+        <Stack direction="row-reverse" spacing={3} sx={{ mt: 3 }}>
+          <Button
+            onClick={() =>
+              handlePublish({
+                publishId: publishIdValue,
+                published: publishStateSwitch,
+              })
+            }
             variant="outlined"
             disabled={message.status === 'LOADING' || !published || !publishIdValue}
           >

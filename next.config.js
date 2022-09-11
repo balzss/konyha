@@ -10,7 +10,7 @@ const nextConfig = {
         source: '/r/:recipeSlug/edit',
         destination: '/r/add',
       },
-    ]
+    ];
   },
 };
 

@@ -1,7 +1,4 @@
-import {
-  AuthenticationError,
-  ForbiddenError,
-} from 'apollo-server-micro';
+import { AuthenticationError, ForbiddenError } from 'apollo-server-micro';
 import type { Resolvers, Tag } from './generated';
 import slugify from '../utils/slugify';
 import fetch from 'node-fetch';
@@ -13,7 +10,7 @@ async function unpublishSite(userId: string) {
       body: JSON.stringify({
         ownerId: userId,
       }),
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
     });
     const responseData = await response.json();
     return {
@@ -23,16 +20,16 @@ async function unpublishSite(userId: string) {
     return {
       error: error as string,
       unpublishOptions: {},
-    }
+    };
   }
 }
 async function publishSite(userId: string, prisma: any, publishOptions: any = {}) {
   const recipesOptions = {
-    include: {tags: true},
+    include: { tags: true },
     where: {
       authorId: userId,
-    }
-  }
+    },
+  };
   const recipes = await prisma.recipe.findMany(recipesOptions);
 
   try {
@@ -43,10 +40,10 @@ async function publishSite(userId: string, prisma: any, publishOptions: any = {}
         ownerId: userId,
         recipes,
       }),
-      headers: {'Content-Type': 'application/json'},
+      headers: { 'Content-Type': 'application/json' },
     });
     const responseData = await response.json();
-    console.log({responseData})
+    console.log({ responseData });
     return {
       publishOptions: responseData,
     };
@@ -56,8 +53,8 @@ async function publishSite(userId: string, prisma: any, publishOptions: any = {}
       publishOptions: {
         published: publishOptions.published,
         publishId: publishOptions.publishId,
-      }
-    }
+      },
+    };
   }
 }
 
@@ -74,31 +71,31 @@ const resolvers: Resolvers = {
     },
   },
   Query: {
-    recipes: async (_, {where}, {prisma, session}) => {
+    recipes: async (_, { where }, { prisma, session }) => {
       if (!session) {
         throw new AuthenticationError('No session found, please log in!');
       }
       const { userId } = session;
       const options = {
-        include: {tags: true},
+        include: { tags: true },
         where: {
           ...(where?.tags && {
             tags: {
               slug: {
                 in: where.tags,
-              }
-            }
+              },
+            },
           }),
           ...(where?.slug && {
             slug: where.slug,
           }),
           authorId: userId,
-        }
+        },
       };
       const recipes = await prisma.recipe.findMany(options);
       return recipes;
     },
-    tags: async (_, {}, {prisma, session}) => {
+    tags: async (_, {}, { prisma, session }) => {
       if (!session) {
         throw new AuthenticationError('No session found, please log in!');
       }
@@ -106,30 +103,30 @@ const resolvers: Resolvers = {
       const options = {
         where: {
           ownerId: userId,
-        }
+        },
       };
       const tags = await prisma.tag.findMany(options);
       return tags;
     },
-    searchRecipes: async (_, {query}, {prisma, session}) => {
+    searchRecipes: async (_, { query }, { prisma, session }) => {
       if (!session) {
         throw new AuthenticationError('No session found, please log in!');
       }
       const { userId } = session;
       const options = {
-        include: {tags: true},
+        include: { tags: true },
         where: {
           authorId: userId,
           OR: [
             { name: { contains: query, mode: 'insensitive' } },
             { description: { contains: query, mode: 'insensitive' } },
           ],
-        }
+        },
       };
       const recipes = await prisma.recipe.findMany(options);
       return recipes;
     },
-    me: async (_, {}, {prisma, session}) => {
+    me: async (_, {}, { prisma, session }) => {
       if (!session) {
         throw new AuthenticationError('No session found, please log in!');
       }
@@ -137,14 +134,14 @@ const resolvers: Resolvers = {
       const options = {
         where: {
           id: userId,
-        }
+        },
       };
       const me = await prisma.user.findUnique(options);
       return me;
     },
   },
   Mutation: {
-    deleteRecipe: async (_, {slug}, {prisma, session}) => {
+    deleteRecipe: async (_, { slug }, { prisma, session }) => {
       if (!session) {
         throw new AuthenticationError('No session found, please log in!');
       }
@@ -153,12 +150,12 @@ const resolvers: Resolvers = {
         where: {
           authorId: userId,
           slug,
-        }
+        },
       };
       const deletedRecipe = await prisma.recipe.deleteMany(options);
       return !!deletedRecipe;
     },
-    upsertRecipe: async (_, {id, data, tagsConnect, tagsCreate}, {prisma, session}) => {
+    upsertRecipe: async (_, { id, data, tagsConnect, tagsCreate }, { prisma, session }) => {
       if (!session) {
         throw new AuthenticationError('No session found, please log in');
       }
@@ -177,7 +174,7 @@ const resolvers: Resolvers = {
           name: {
             startsWith: data.name,
           },
-        }
+        },
       });
       // TODO move to utils + fix renaming to `xy (n)` if `xy (n)` exists
       // test scenarios:
@@ -185,46 +182,49 @@ const resolvers: Resolvers = {
       //   - new recipe name exists and there is at least one copy
       //   - new recipe name is a copy of another name
       const recipeCounts =
-        recipeWithSameName.map((r: any) => r.name).includes(data.name)
-        && recipeWithSameName
+        recipeWithSameName.map((r: any) => r.name).includes(data.name) &&
+        recipeWithSameName
           .map((r: any) => {
             const newName = r.name === data.name ? `${data.name} (1)` : r.name;
-            console.log({newName})
+            console.log({ newName });
             return newName;
-          }).filter((r: any) => {
+          })
+          .filter((r: any) => {
             const regexString = data.name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-            console.log({regexString})
+            console.log({ regexString });
             const match = r.match(new RegExp(`${regexString}( \(\d\))?`));
-            console.log({match});
+            console.log({ match });
             return match;
-          }).map((r: any) => {
+          })
+          .map((r: any) => {
             const n = Number(r.split(')')[0].slice(-1));
-            console.log({n});
+            console.log({ n });
             return n;
           })
           .sort((a: number, b: number) => a - b);
-      console.log({recipeCounts})
+      console.log({ recipeCounts });
 
       if (recipeCounts.length) {
         recipeCounts.push(9999);
       }
-      const nextRecipeCount = recipeCounts && recipeCounts.find((n: number,i: number) => recipeCounts[i+1]-n > 1 ) + 1;
+      const nextRecipeCount =
+        recipeCounts && recipeCounts.find((n: number, i: number) => recipeCounts[i + 1] - n > 1) + 1;
 
       const newName = `${data.name}${nextRecipeCount ? ` (${nextRecipeCount})` : ''}`;
       const slug = slugify(newName);
 
-      const formattedTags = tagsConnect.map((tagId) => ({id: tagId}));
+      const formattedTags = tagsConnect.map((tagId) => ({ id: tagId }));
 
       // handle tag slug collision
       const userTags = await prisma.tag.findMany({
         where: {
           ownerId: userId,
-        }
+        },
       });
 
       const newTags = tagsCreate.map((tagName) => {
         const tagBaseSlug = slugify(tagName);
-        const tagSlugOverlap = userTags.filter(({slug}: Tag) => slug?.startsWith(tagBaseSlug));
+        const tagSlugOverlap = userTags.filter(({ slug }: Tag) => slug?.startsWith(tagBaseSlug));
         return {
           name: tagName,
           ownerId: userId,
@@ -233,7 +233,7 @@ const resolvers: Resolvers = {
       });
 
       const options = {
-        include: {tags: true},
+        include: { tags: true },
         where: {
           id: id ?? '',
         },
@@ -271,7 +271,7 @@ const resolvers: Resolvers = {
         data: upsertRecipe,
       };
     },
-    updateUserPreferences: async (_, {preferences}, {prisma, session}) => {
+    updateUserPreferences: async (_, { preferences }, { prisma, session }) => {
       if (!session) {
         throw new AuthenticationError('No session found, please log in!');
       }
@@ -282,12 +282,12 @@ const resolvers: Resolvers = {
         },
         data: {
           preferences,
-        }
+        },
       };
       const updatedPreferences = await prisma.user.update(options);
       return updatedPreferences;
     },
-    deleteTags: async (_, {ids}, {prisma, session}) => {
+    deleteTags: async (_, { ids }, { prisma, session }) => {
       if (!session) {
         throw new AuthenticationError('No session found, please log in!');
       }
@@ -298,12 +298,12 @@ const resolvers: Resolvers = {
           id: {
             in: ids,
           },
-        }
+        },
       };
       const deletedTag = await prisma.tag.deleteMany(options);
       return !!deletedTag;
     },
-    publishSite: async (_, {publishOptions}, {prisma, session}) => {
+    publishSite: async (_, { publishOptions }, { prisma, session }) => {
       if (!session) {
         throw new AuthenticationError('No session found, please log in!');
       }
@@ -311,14 +311,14 @@ const resolvers: Resolvers = {
 
       const publishResponse = await publishSite(userId, prisma, publishOptions);
 
-      console.log({publishResponse})
+      console.log({ publishResponse });
 
       if (publishResponse.publishOptions.message === 'error') {
-        console.log('error')
+        console.log('error');
         return {
           message: 'error',
           error: publishResponse.publishOptions.error,
-        }
+        };
       }
 
       const options = {
@@ -327,16 +327,16 @@ const resolvers: Resolvers = {
         },
         data: {
           publishOptions: publishResponse.publishOptions,
-        }
+        },
       };
       const updatedPreferences = await prisma.user.update(options);
 
-      return  {
+      return {
         message: 'success',
         data: updatedPreferences,
       };
     },
-    unpublishSite: async (_, {}, {prisma, session}) => {
+    unpublishSite: async (_, {}, { prisma, session }) => {
       if (!session) {
         throw new AuthenticationError('No session found, please log in!');
       }
@@ -345,11 +345,11 @@ const resolvers: Resolvers = {
       const unpublishResponse = await unpublishSite(userId);
 
       if (unpublishResponse.unpublishOptions.message === 'error') {
-        console.log('error')
+        console.log('error');
         return {
           message: 'error',
           error: unpublishResponse.unpublishOptions.error,
-        }
+        };
       }
 
       const options = {
@@ -358,16 +358,16 @@ const resolvers: Resolvers = {
         },
         data: {
           publishOptions: unpublishResponse.unpublishOptions,
-        }
+        },
       };
       const updatedPreferences = await prisma.user.update(options);
 
-      return  {
+      return {
         message: 'success',
         data: updatedPreferences,
       };
     },
-    publishRecipe: async (_, {recipeSlug, publishState}, {prisma, session}) => {
+    publishRecipe: async (_, { recipeSlug, publishState }, { prisma, session }) => {
       if (!session) {
         throw new AuthenticationError('No session found, please log in!');
       }
@@ -396,7 +396,7 @@ const resolvers: Resolvers = {
         message: 'success',
       };
     },
-    importRecipes: async (_, {data}, {prisma, session}) => {
+    importRecipes: async (_, { data }, { prisma, session }) => {
       if (!session) {
         throw new AuthenticationError('No session found, please log in!');
       }
@@ -408,9 +408,7 @@ const resolvers: Resolvers = {
       // TODO handle slug collision
       //   - options: override, ignore, rename
       const options = {
-        data: [
-          ...data.map(r => ({...r, authorId: userId}))
-        ],
+        data: [...data.map((r) => ({ ...r, authorId: userId }))],
       };
       const createRecipes = await prisma.recipe.createMany(options);
 
@@ -418,7 +416,7 @@ const resolvers: Resolvers = {
         message: 'success',
       };
     },
-  }
+  },
 };
 
 export default resolvers;

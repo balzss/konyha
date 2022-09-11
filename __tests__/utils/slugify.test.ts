@@ -30,4 +30,4 @@ describe('utils/slugify', () => {
     const slug = slugify('+h.e?l"l(o#');
     expect(slug).toEqual('hello');
   });
-})
+});

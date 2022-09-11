@@ -1,11 +1,11 @@
 // https://www.prisma.io/docs/support/help-articles/nextjs-prisma-client-dev-practices
 
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '@prisma/client';
 
 declare global {
   // allow global `var` declarations
   // eslint-disable-next-line no-var
-  var prisma: PrismaClient | undefined
+  var prisma: PrismaClient | undefined;
 }
 
 const prisma =

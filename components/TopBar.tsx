@@ -1,17 +1,9 @@
 import { useState } from 'react';
-import {
-  Paper,
-  IconButton,
-  Menu,
-  MenuItem,
-  ListItemIcon,
-} from '@mui/material';
-import {
-  MoreVert as MoreVertIcon,
-} from '@mui/icons-material';
+import { Paper, IconButton, Menu, MenuItem, ListItemIcon } from '@mui/material';
+import { MoreVert as MoreVertIcon } from '@mui/icons-material';
 
 type TopBarAction = {
-  icon: React.ReactNode,
+  icon: React.ReactNode;
   label: string;
   action: (e: any) => void;
 };
@@ -23,12 +15,7 @@ type TopBarProps = {
   hiddenActions?: TopBarAction[];
 };
 
-export default function TopBar({
-  leadingAction,
-  title,
-  trailingActions,
-  hiddenActions,
-}: TopBarProps) {
+export default function TopBar({ leadingAction, title, trailingActions, hiddenActions }: TopBarProps) {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -59,7 +46,7 @@ export default function TopBar({
       }}
       square
     >
-      { leadingAction && (
+      {leadingAction && (
         <IconButton onClick={leadingAction.action} aria-label={leadingAction.label}>
           {leadingAction.icon}
         </IconButton>
@@ -77,12 +64,13 @@ export default function TopBar({
       >
         {title}
       </span>
-      { trailingActions && trailingActions.map(({action, label, icon}) => (
-        <IconButton onClick={action} aria-label={label} key={label}>
-          {icon}
-        </IconButton>
-      ))}
-      { hiddenActions && hiddenActions.length > 0 && (
+      {trailingActions &&
+        trailingActions.map(({ action, label, icon }) => (
+          <IconButton onClick={action} aria-label={label} key={label}>
+            {icon}
+          </IconButton>
+        ))}
+      {hiddenActions && hiddenActions.length > 0 && (
         <>
           <IconButton onClick={handleOpenMenu}>
             <MoreVertIcon />
@@ -103,19 +91,22 @@ export default function TopBar({
               vertical: 'top',
               horizontal: 'left',
             }}
-            sx={{zIndex: 2000}}
+            sx={{ zIndex: 2000 }}
           >
-            { hiddenActions.map(({icon, label, action}) => (
-              <MenuItem key={label} onClick={(e) => { action(e); }}>
-                <ListItemIcon>
-                  {icon}
-                </ListItemIcon>
+            {hiddenActions.map(({ icon, label, action }) => (
+              <MenuItem
+                key={label}
+                onClick={(e) => {
+                  action(e);
+                }}
+              >
+                <ListItemIcon>{icon}</ListItemIcon>
                 {label}
               </MenuItem>
-            )) }
+            ))}
           </Menu>
         </>
-      ) }
+      )}
     </Paper>
   );
 }

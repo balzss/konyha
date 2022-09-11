@@ -22,15 +22,15 @@ async function main() {
       ingredients: [],
       instructions: [],
       authorId: firstUser.id,
-    }
+    },
   });
 }
 
 main()
-    .catch((e) => {
-        console.error(e);
-        process.exit(1);
-    })
-    .finally(async () => {
-        await prisma.$disconnect();
-    });
+  .catch((e) => {
+    console.error(e);
+    process.exit(1);
+  })
+  .finally(async () => {
+    await prisma.$disconnect();
+  });

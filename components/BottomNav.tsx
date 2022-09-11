@@ -1,8 +1,5 @@
 import { useRouter } from 'next/router';
-import {
-  BottomNavigation,
-  BottomNavigationAction,
-} from '@mui/material';
+import { BottomNavigation, BottomNavigationAction } from '@mui/material';
 
 import {
   MenuBook as MenuBookIcon,
@@ -56,8 +53,8 @@ export default function BottomBar() {
         bgcolor: 'background.default',
       }}
     >
-      {bottomNavItems.map(({displayName, icon, disabled}) => (
-        <BottomNavigationAction key={displayName} label={displayName} icon={icon} disabled={disabled}/>
+      {bottomNavItems.map(({ displayName, icon, disabled }) => (
+        <BottomNavigationAction key={displayName} label={displayName} icon={icon} disabled={disabled} />
       ))}
     </BottomNavigation>
   );

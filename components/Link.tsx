@@ -1,6 +1,4 @@
-import {
-  Link as MuiLink,
-} from '@mui/material';
+import { Link as MuiLink } from '@mui/material';
 import NextLink from 'next/link';
 
 type LinkProps = {
@@ -9,14 +7,12 @@ type LinkProps = {
   blank?: boolean;
 };
 
-export default function Link({
-  href,
-  children,
-  blank,
-}: LinkProps) {
+export default function Link({ href, children, blank }: LinkProps) {
   return (
     <NextLink href={href} passHref>
-      <MuiLink target={blank ? '_blank' : '_self'} variant="body2" underline="hover">{children}</MuiLink>
+      <MuiLink target={blank ? '_blank' : '_self'} variant="body2" underline="hover">
+        {children}
+      </MuiLink>
     </NextLink>
   );
 }

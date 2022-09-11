@@ -1,34 +1,20 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useDebouncedCallback } from 'use-debounce';
-import {
-  Paper,
-  IconButton,
-  InputBase,
-} from '@mui/material';
-import {
-  ArrowBack as ArrowBackIcon,
-  Close as CloseIcon,
-} from '@mui/icons-material';
-
+import { Paper, IconButton, InputBase } from '@mui/material';
+import { ArrowBack as ArrowBackIcon, Close as CloseIcon } from '@mui/icons-material';
 
 type SearchBarProps = {
   onDebouncedChange: (query: string) => void;
   delay: number;
 };
 
-export default function SearchBar({
-  onDebouncedChange,
-  delay,
-}: SearchBarProps) {
+export default function SearchBar({ onDebouncedChange, delay }: SearchBarProps) {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const debounce = useDebouncedCallback(
-    (value: string) => {
-      onDebouncedChange(value);
-    },
-    delay,
-  );
+  const debounce = useDebouncedCallback((value: string) => {
+    onDebouncedChange(value);
+  }, delay);
 
   const handleClickBack = (_e: React.SyntheticEvent) => {
     router.push('/');
@@ -36,8 +22,8 @@ export default function SearchBar({
 
   const handleChangeQuery = (e: any) => {
     setSearchQuery(e.target.value);
-    debounce(e.target.value)
-  }
+    debounce(e.target.value);
+  };
 
   return (
     <Paper
@@ -61,7 +47,7 @@ export default function SearchBar({
       square
     >
       <IconButton onClick={handleClickBack} aria-label="back">
-        <ArrowBackIcon/>
+        <ArrowBackIcon />
       </IconButton>
       <InputBase
         sx={{ ml: 2, flex: 1, lineHeight: 1.5 }}

@@ -1,10 +1,4 @@
-import {
-  Modal,
-  Box,
-  Typography,
-  Button,
-  Stack,
-} from '@mui/material';
+import { Modal, Box, Typography, Button, Stack } from '@mui/material';
 
 const modalStyle = {
   position: 'absolute' as 'absolute',
@@ -42,21 +36,19 @@ export default function ConfirmModal({
       onClose={handleClose}
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
-      sx={{zIndex: 9999}}
+      sx={{ zIndex: 9999 }}
     >
       <Box sx={modalStyle}>
-        { title && (
-          <Typography component="h2" sx={{fontWeight: 400, fontSize: '24px', marginBottom: '16px'}}>
+        {title && (
+          <Typography component="h2" sx={{ fontWeight: 400, fontSize: '24px', marginBottom: '16px' }}>
             {title}
           </Typography>
-        ) }
-        { description && (
-          <Typography sx={{color: '#CAC4D0'}}>
-            {description}
-          </Typography>
-        ) }
-        <Stack direction="row-reverse" spacing={3} sx={{mt: 3}}>
-          <Button onClick={handleConfirm} variant="outlined">{confirmText}</Button>
+        )}
+        {description && <Typography sx={{ color: '#CAC4D0' }}>{description}</Typography>}
+        <Stack direction="row-reverse" spacing={3} sx={{ mt: 3 }}>
+          <Button onClick={handleConfirm} variant="outlined">
+            {confirmText}
+          </Button>
           <Button onClick={handleClose}>Cancel</Button>
         </Stack>
       </Box>

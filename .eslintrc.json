@@ -1,6 +1,7 @@
 {
   "plugins": ["prettier"],
   "extends": ["next/core-web-vitals", "prettier"],
+  "ignorePatterns": ["node_modules/**", "sitegen/**", "graphql/generated.ts"],
   "rules": {
     "prettier/prettier": "error"
   }
