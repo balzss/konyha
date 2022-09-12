@@ -28,6 +28,6 @@ describe('utils/slugify', () => {
 
   it('removes non url characters', () => {
     const slug = slugify('+h.e?l"l(o#');
-    expect(slug).toEqual('hello')
+    expect(slug).toEqual('hello');
   });
 });
