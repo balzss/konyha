@@ -28,7 +28,8 @@
     "homepage:build": "cd sitegen/homepage && yarn build",
     "tmux:dev": "tmux send-keys 'yarn next:dev' C-m  && tmux split-window -h && tmux send-keys 'yarn docker:db' C-m && tmux split-window -v && tmux send-keys 'yarn sitegen:dev' C-m",
     "gh-pages": "cd sitegen && yarn gh-pages",
-    "test": "jest --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix"
   },
