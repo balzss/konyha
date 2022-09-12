@@ -23,13 +23,13 @@
 ## Beta release:
 
 - [ ] Feature branch rule on github + use db migrations + use github releases
-- [ ] Lint rules, tests and CI
+- [ ] add e2e/integration tests (with playwright?)
+- [ ] target and achive a specific unit test coverage (80% ?)
 - [ ] Desktop view (with sidebar) + shortcuts
 - [ ] batch edit/delete
 - [ ] i18n (EN/HU)
 - [ ] Offline mode (localStorage without db connection)
 - [ ] Ory Kratos user management (+investigate)
-- [ ] Portion calculator
 - [ ] Page transitions (open card, edit recipe, etc)
 - [ ] History + archive: revert or restore recipes
 - [ ] Connect/sync to git repo (or other options like drive, dropbox, etc?)
@@ -39,7 +39,8 @@
 
 ## Post beta
 
+- [ ] Portion calculator
 - [ ] Timers page
   - [ ] link to timers from recipes
-- [ ] presentation mode
 - [ ] report
+- [ ] presentation mode
