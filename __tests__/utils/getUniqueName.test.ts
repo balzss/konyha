@@ -53,4 +53,9 @@ describe('utils/getUniqueName', () => {
     ]);
     expect(newName).toEqual('hello (2)');
   });
+
+  it('returns with 1 if indexing starts higher', () => {
+    const newName = getUniqueName('hello', ['hello', 'hello (3)', 'hello (4)']);
+    expect(newName).toEqual('hello (1)');
+  });
 });

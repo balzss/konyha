@@ -2,9 +2,6 @@
 
 ## In progress:
 
-- [ ] better slug management (collision)
-  - [ ] move to utils
-  - [ ] fix renaming to `xy (n)` if `xy (n)` exists
 - [ ] import from json
   - [ ] handle slug collision
   - [ ] handle tags

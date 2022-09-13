@@ -23,6 +23,9 @@ export default function getUniqueName(targetName: string, collidingNames: string
     })
     .sort((a: number, b: number) => a - b);
 
+  // start from zero index
+  nameIndexes.unshift(0);
+
   // if there are no indexed duplicates
   if (!nameIndexes.length) {
     return `${targetName} (1)`;
@@ -30,6 +33,6 @@ export default function getUniqueName(targetName: string, collidingNames: string
 
   // calculating the next appropriate index
   const nextIndex =
-    (nameIndexes.find((n: number, i: number) => nameIndexes[i + 1] - n > 1) || Math.max(...nameIndexes)) + 1;
+    (nameIndexes.find((n: number, i: number) => nameIndexes[i + 1] - n > 1) ?? Math.max(...nameIndexes)) + 1;
   return `${targetName} (${nextIndex})`;
 }
