@@ -34,7 +34,7 @@ export function useSingleRecipe(recipeSlug: string) {
   const { data, error, loading } = useGetRecipesQuery({ variables, skip: !recipeSlug });
   return {
     data,
-    error: error || (!loading && data?.recipes.length === 0 ? { message: '404 recipe not found' } : null),
+    error: error || (!loading && data?.recipes.length === 0 ? { code: 404, message: 'recipe not found' } : null),
     loading,
   };
 }

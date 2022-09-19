@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
+import Error from 'next/error';
 import {
   Alert,
   Box,
@@ -105,6 +106,10 @@ export default function RecipeDetailsPage() {
       setPublishConfirmOpen(false);
     }
   };
+
+  if (recipeError?.code === 404) {
+    return <Error statusCode={404} title={recipeError.message} />;
+  }
 
   return (
     <Box

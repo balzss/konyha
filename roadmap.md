@@ -20,12 +20,12 @@
 ## Beta release:
 
 - [ ] Feature branch rule on github + use db migrations + use github releases
+- [ ] batch edit/delete
+- [ ] Offline mode (localStorage without db connection)
+- [ ] Desktop view (with sidebar) + shortcuts
 - [ ] add e2e/integration tests (with playwright?)
 - [ ] target and achive a specific unit test coverage (80% ?)
-- [ ] Desktop view (with sidebar) + shortcuts
-- [ ] batch edit/delete
 - [ ] i18n (EN/HU)
-- [ ] Offline mode (localStorage without db connection)
 - [ ] Ory Kratos user management (+investigate)
 - [ ] Page transitions (open card, edit recipe, etc)
 - [ ] History + archive: revert or restore recipes
