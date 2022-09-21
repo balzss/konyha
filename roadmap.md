@@ -5,9 +5,6 @@
 - [ ] import from json
   - [ ] handle slug collision
   - [ ] handle tags
-- [ ] 404 pages
-  - [ ] create 404 page
-  - [ ] direct to 404 page when needed
 
 ## Alpha release:
 

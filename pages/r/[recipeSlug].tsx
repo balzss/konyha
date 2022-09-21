@@ -15,6 +15,7 @@ import {
   Stack,
 } from '@mui/material';
 import { ArrowBack as ArrowBackIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
+import NotFoundPage from '../404';
 import { TopBar, Head, ConfirmModal } from '../../components';
 import { useSingleRecipe, useDeleteRecipe, useGetMe, usePublishRecipe } from '../../dataHooks';
 import { propsWithAuth } from '../../utils/propsWithAuth';
@@ -108,7 +109,7 @@ export default function RecipeDetailsPage() {
   };
 
   if (recipeError?.code === 404) {
-    return <Error statusCode={404} title={recipeError.message} />;
+    return <NotFoundPage />;
   }
 
   return (
