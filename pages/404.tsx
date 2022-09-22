@@ -12,9 +12,9 @@ export default function NotFoundPage() {
         pt: 4,
       }}
     >
-      <Head title="404" />
+      <Head title="Page Not Found" />
       <Container maxWidth="sm">
-        <Typography variant="h4">Error 404</Typography>
+        <Typography variant="h4">404</Typography>
         <Typography variant="h5">Page Not Found</Typography>
         <div style={{ paddingTop: '24px' }}>
           <Link href="/">Go home</Link>
