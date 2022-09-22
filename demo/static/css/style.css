@@ -2,6 +2,7 @@
 
 html {
   height: 100%;
+  box-sizing: border-box;
 }
 
 body {
@@ -10,6 +11,13 @@ body {
   color: #E6E1E5;
   min-height: 100%;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
 }
 
 a {
@@ -19,6 +27,14 @@ a {
 }
 a:hover {
   text-decoration: underline;
+}
+
+footer {
+  margin-top: auto;
+  text-align: center;
+  opacity: 0.8;
+  color: #aaa;
+  font-size: 14px;
 }
 
 .recipe-card {
@@ -44,7 +60,7 @@ a:hover {
 
 .recipe-section {
   max-width: 960px;
-  margin: auto;
+  width: 100%;
   padding: 16px;
   padding-bottom: 32px;
 }
@@ -83,15 +99,16 @@ a:hover {
 
 .recipe-nav {
   height: 64px;
+  width: 100%;
   display: flex;
   align-items: center;
+  justify-content: center;
   background-color: inherit;
   font-size: 22px;
 }
 
 .recipe-nav-inner {
   max-width: 960px;
-  margin: 0 auto;
   padding: 0 16px;
   width: 100%;
   display: flex;
