@@ -8,10 +8,10 @@
 
 ## Alpha release:
 
-- [ ] add footer for generated static sites
 - [ ] error handling
 - [ ] email login
 - [ ] improve login screen
+  - [ ] fix social login buttons (no redirect)
 
 ## Beta release:
 
@@ -19,6 +19,9 @@
 - [ ] batch edit/delete
 - [ ] Offline mode (localStorage without db connection)
 - [ ] Desktop view (with sidebar) + shortcuts
+- [ ] improve generated sites
+  - [ ] add light theme (or more)
+  - [ ] use css variables
 - [ ] add e2e/integration tests (with playwright?)
 - [ ] target and achive a specific unit test coverage (80% ?)
 - [ ] i18n (EN/HU)
