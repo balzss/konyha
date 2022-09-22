@@ -9,7 +9,6 @@
 ## Alpha release:
 
 - [ ] add footer for generated static sites
-- [ ] fix theming
 - [ ] error handling
 - [ ] email login
 - [ ] improve login screen
