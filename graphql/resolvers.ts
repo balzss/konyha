@@ -37,14 +37,13 @@ async function publishSite(userId: string, prisma: any, publishOptions: any = {}
     const response = await fetch(`http://${process.env.HOST}:7777/api/publish`, {
       method: 'post',
       body: JSON.stringify({
-        publishId: publishOptions?.publishId || '',
+        publishId: slugify(publishOptions?.publishId as string), // TODO handle if publish id missing
         ownerId: userId,
         recipes,
       }),
       headers: { 'Content-Type': 'application/json' },
     });
     const responseData = await response.json();
-    console.log({ responseData });
     return {
       publishOptions: responseData,
     };
@@ -165,8 +164,6 @@ const resolvers: Resolvers = {
         throw new ForbiddenError('Not authorized for this action');
       }
 
-      // handle slug collision
-      // const baseSlug = slugify(data.name);
       const recipeWithSameName = await prisma.recipe.findMany({
         where: {
           id: {
@@ -178,11 +175,11 @@ const resolvers: Resolvers = {
         },
       });
 
+      // handle slug collision
       const newName = getUniqueName(
         data.name,
         recipeWithSameName.map((r: any) => r.name),
       );
-      console.log({ recipeWithSameName: recipeWithSameName.map((r: any) => r.name), newName });
       const slug = slugify(newName);
 
       const formattedTags = tagsConnect.map((tagId) => ({ id: tagId }));
@@ -280,13 +277,9 @@ const resolvers: Resolvers = {
         throw new AuthenticationError('No session found, please log in!');
       }
       const { userId } = session;
-
       const publishResponse = await publishSite(userId, prisma, publishOptions);
 
-      console.log({ publishResponse });
-
       if (publishResponse.publishOptions.message === 'error') {
-        console.log('error');
         return {
           message: 'error',
           error: publishResponse.publishOptions.error,
@@ -317,7 +310,6 @@ const resolvers: Resolvers = {
       const unpublishResponse = await unpublishSite(userId);
 
       if (unpublishResponse.unpublishOptions.message === 'error') {
-        console.log('error');
         return {
           message: 'error',
           error: unpublishResponse.unpublishOptions.error,

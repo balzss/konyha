@@ -3,6 +3,7 @@ export default function slugify(input: string): string {
     .trim()
     .toLowerCase()
     .normalize('NFKD')
-    .replace(/[^\w ]+/g, '')
-    .replace(/ +/g, '-');
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }

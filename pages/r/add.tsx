@@ -9,7 +9,6 @@ import {
   FormControl,
   Box,
   TextField,
-  Container,
   Select,
 } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
@@ -93,7 +92,8 @@ export default function EditRecipePage() {
   };
 
   const handleClickBack = (_e: React.SyntheticEvent) => {
-    router.push('/');
+    if (recipeSlug) router.back();
+    else router.push('/');
   };
 
   return (
@@ -107,9 +107,9 @@ export default function EditRecipePage() {
     >
       <Head title={pageTitle} />
       <TopBar
-        leadingAction={{ action: handleClickBack, icon: <CloseIcon />, label: 'Vissza' }}
+        leadingAction={{ action: handleClickBack, icon: <CloseIcon />, label: 'Close' }}
         title={pageTitle}
-        trailingActions={[{ icon: <SaveIcon />, action: () => setSaveConfirmOpen(true), label: 'Mentés' }]}
+        trailingActions={[{ icon: <SaveIcon />, action: () => setSaveConfirmOpen(true), label: 'Save' }]}
         hiddenActions={[]}
       />
       <ConfirmModal

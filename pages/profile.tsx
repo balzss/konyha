@@ -175,7 +175,7 @@ export default function ProfilePage({ session }: ProfilePageArgs) {
   return (
     <div style={{ maxWidth: '900px', margin: '0 auto' }}>
       <List sx={{ width: '100%', maxWidth: 480, bgcolor: 'background.default', p: 1 }}>
-        <Head title="Személyes" />
+        <Head title="Profile" />
         <ListItem>
           <ListItemText primary="Email" secondary={email || 'n/a'} />
         </ListItem>
