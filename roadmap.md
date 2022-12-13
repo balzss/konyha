@@ -2,6 +2,8 @@
 
 ## In progress:
 
+- [ ] improve login screen
+  - [ ] fix social login buttons (no redirect)
 - [ ] import from json
   - [ ] handle slug collision
   - [ ] handle tags
@@ -10,8 +12,6 @@
 
 - [ ] error handling
 - [ ] email login
-- [ ] improve login screen
-  - [ ] fix social login buttons (no redirect)
 
 ## Beta release:
 

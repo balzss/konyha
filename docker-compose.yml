@@ -24,7 +24,6 @@ services:
     environment:
       - MANAGER_DOMAIN="http://localhost:3000"
       - SITEGEN_DOMAIN="http://localhost:7777"
-      - HOST="localhost"
     env_file:
       - .env
   sitegen:

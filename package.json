@@ -11,7 +11,7 @@
     "prisma:generate": "prisma generate",
     "prisma:push": "HOST=localhost prisma db push",
     "gql:generate": "graphql-codegen --config ./graphql/codegen.yml",
-    "docker:manager": "docker compose up manager",
+    "docker:manager": "HOST='host.docker.internal' docker compose up manager",
     "docker:manager:build": "docker compose up --no-deps --build manager",
     "docker:manager:entrypoint": "npx prisma db push && node server.js",
     "docker:db": "docker compose up db",

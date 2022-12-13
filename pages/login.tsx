@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import NextLink from 'next/link';
 import { signIn } from 'next-auth/react';
@@ -7,11 +8,15 @@ import { GitHub as GitHubIcon, Google as GoogleIcon } from '@mui/icons-material'
 import { Head, BrandHero } from '../components';
 
 export default function LoginPage() {
+  const { data: sessionData } = useSession();
+  console.log({ sessionData });
   const router = useRouter();
   const [email, setEmail] = useState<string>('');
 
-  const handleLogin = () => {
-    router.push('/');
+  const handleLogin = (provider: 'google' | 'github') => {
+    signIn(provider, { callbackUrl: 'http://localhost:3000/' })
+      .then(() => {})
+      .catch((e) => console.error({ e }));
   };
 
   return (
@@ -47,12 +52,9 @@ export default function LoginPage() {
                 value={email}
                 onChange={({ target }) => setEmail(target.value)}
               />
-              <Button variant="outlined" onClick={handleLogin} sx={{ minWidth: '240px', alignSelf: 'center' }} disabled>
-                Link küldése
+              <Button variant="outlined" sx={{ minWidth: '240px', alignSelf: 'center' }} disabled>
+                Send link
               </Button>
-              <Typography variant="caption" sx={{ textAlign: 'center' }}>
-                vagy
-              </Typography>
               <Stack direction="row" spacing={2} sx={{ justifyContent: 'center' }}>
                 <NextLink href="/api/auth/signin" passHref>
                   <Button
@@ -64,11 +66,7 @@ export default function LoginPage() {
                   </Button>
                 </NextLink>
                 <NextLink href="/api/auth/signin" passHref>
-                  <Button
-                    variant="text"
-                    startIcon={<GoogleIcon />}
-                    onClick={() => signIn('google', { callbackUrl: '/' })}
-                  >
+                  <Button variant="text" startIcon={<GoogleIcon />} onClick={() => handleLogin('google')}>
                     Google
                   </Button>
                 </NextLink>

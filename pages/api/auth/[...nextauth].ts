@@ -5,6 +5,7 @@ import GoogleProvider from 'next-auth/providers/google';
 import prisma from '../../../prisma/prisma-client';
 
 export default NextAuth({
+  secret: process.env.NEXTAUTH_SECRET,
   adapter: PrismaAdapter(prisma),
   providers: [
     GithubProvider({
@@ -17,7 +18,8 @@ export default NextAuth({
     }),
   ],
   callbacks: {
-    async session({ session, user }: { session: any; user: any }) {
+    async session({ session, user, token }: { session: any; user: any; token: any }) {
+      console.log({ session, user, token });
       session.userId = user.id;
       const theme = user?.preferences?.theme;
       if (theme) {
@@ -25,6 +27,19 @@ export default NextAuth({
       }
       return session;
     },
+    async signIn(options: any) {
+      console.log({ options });
+      return true;
+    },
+    async redirect({ url, baseUrl }) {
+      // Allows relative callback URLs
+      if (url.startsWith('/')) return `${baseUrl}${url}`;
+      // Allows callback URLs on the same origin
+      else if (new URL(url).origin === baseUrl) return url;
+      return baseUrl;
+    },
   },
-  secret: process.env.NEXTAUTH_SECRET,
+  pages: {
+    signIn: '/login',
+  },
 });
